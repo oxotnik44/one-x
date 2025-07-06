@@ -1,0 +1,50 @@
+import type { User } from 'entities/User';
+import { useUserStore } from 'entities/User/model/slice/userStore';
+import toast from 'react-hot-toast';
+import { api } from 'shared/api/api';
+import bcrypt from 'bcryptjs';
+
+interface RegistrationProps {
+    email: string;
+    password: string;
+}
+
+export const registrationUser = async (authData: RegistrationProps): Promise<User | null> => {
+    return toast
+        .promise(
+            (async () => {
+                // Проверяем, что email ещё не зарегистрирован
+                const existingUsersResponse = await api.get<User[]>('/users', {
+                    params: { email: authData.email },
+                });
+
+                if (existingUsersResponse.data.length > 0) {
+                    throw new Error('Пользователь с таким email уже существует');
+                }
+
+                // Хэшируем пароль перед отправкой
+                const salt = bcrypt.genSaltSync(10);
+                const hashedPassword = bcrypt.hashSync(authData.password, salt);
+
+                const response = await api.post<User>('/users', {
+                    email: authData.email,
+                    password: hashedPassword,
+                });
+
+                if (!response.data) {
+                    throw new Error('Empty response');
+                }
+
+                const setAuthData = useUserStore.getState().setAuthData;
+                setAuthData(response.data);
+
+                return response.data;
+            })(),
+            {
+                loading: 'Регистрация...',
+                success: 'Вы успешно зарегистрировались',
+                error: (err) => err.message || 'Ошибка при регистрации',
+            },
+        )
+        .catch(() => null);
+};

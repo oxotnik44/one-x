@@ -1,0 +1,79 @@
+{
+    "name": "one-x",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "concurrently \"vite\" \"json-server --watch db.json --port 4000\"",
+        "start": "pnpm dev",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
+        "prepare": "husky install",
+        "commit": "cz"
+    },
+    "dependencies": {
+        "@storybook/react": "^9.0.15",
+        "@tailwindcss/vite": "^4.1.11",
+        "axios": "^1.10.0",
+        "bcryptjs": "^3.0.2",
+        "clsx": "^2.1.1",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "react-hook-form": "^7.60.0",
+        "react-hot-toast": "^2.5.2",
+        "react-icons": "^5.5.0",
+        "react-router-dom": "^7.6.3",
+        "tailwind-merge": "^3.3.1",
+        "zustand": "^5.0.6"
+    },
+    "devDependencies": {
+        "@chromatic-com/storybook": "4.0.1",
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/config-conventional": "^19.8.1",
+        "@eslint/js": "^9.29.0",
+        "@storybook/addon-a11y": "9.0.15",
+        "@storybook/addon-docs": "9.0.15",
+        "@storybook/addon-onboarding": "9.0.15",
+        "@storybook/addon-vitest": "9.0.15",
+        "@storybook/react-vite": "9.0.15",
+        "@types/node": "^24.0.10",
+        "@types/react": "^19.1.8",
+        "@types/react-dom": "^19.1.6",
+        "@vitejs/plugin-react": "^4.5.2",
+        "@vitest/browser": "^3.2.4",
+        "@vitest/coverage-v8": "^3.2.4",
+        "autoprefixer": "^10.4.21",
+        "commitizen": "^4.3.1",
+        "concurrently": "^9.2.0",
+        "cz-conventional-changelog": "^3.3.0",
+        "eslint": "^9.29.0",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "eslint-plugin-storybook": "9.0.15",
+        "globals": "^16.2.0",
+        "husky": "^8.0.0",
+        "json-server": "1.0.0-beta.3",
+        "lint-staged": "^16.1.2",
+        "playwright": "^1.53.2",
+        "postcss": "^8.5.6",
+        "storybook": "9.0.15",
+        "tailwindcss": "^4.1.11",
+        "typescript": "~5.8.3",
+        "typescript-eslint": "^8.34.1",
+        "vite": "^7.0.0",
+        "vitest": "^3.2.4"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,jsx}": [
+            "eslint --fix",
+            "git add"
+        ]
+    }
+}
