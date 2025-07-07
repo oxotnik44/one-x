@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 import type { User, UserSchema } from '../types/user';
 import toast from 'react-hot-toast';
+import { USER_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 
 interface UserStore extends UserSchema {
     authData?: User;
-    setAuthData: (user: any) => void;
+    setAuthData: (user: User) => void;
     logout: () => void;
 }
 
@@ -15,7 +15,7 @@ export const useUserStore = create<UserStore>()(
         (set) => ({
             authData: undefined,
 
-            setAuthData: (user) => {
+            setAuthData: (user: User) => {
                 set({ authData: user });
             },
 

@@ -1,0 +1,21 @@
+// src/features/Registration/ui/RegistrationModal.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RegistrationModal } from './RegistrationModal';
+
+const meta: Meta<typeof RegistrationModal> = {
+    title: 'Features/Registration/RegistrationModal',
+    component: RegistrationModal,
+    parameters: {
+        layout: 'centered',
+    },
+};
+
+export default meta;
+type Story = StoryObj<typeof RegistrationModal>;
+
+export const Default: Story = {
+    args: {
+        isOpen: true,
+        onClose: () => alert('Модалка закрыта'),
+    },
+};

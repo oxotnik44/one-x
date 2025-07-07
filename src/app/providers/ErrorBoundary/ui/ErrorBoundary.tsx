@@ -1,4 +1,4 @@
-import React, { type ErrorInfo, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface ErrorBoundaryProps {
@@ -20,8 +20,7 @@ class ErrorBoundaryBase extends React.Component<ErrorBoundaryProps, ErrorBoundar
         return { hasError: true };
     }
 
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        console.error(error, errorInfo);
+    componentDidCatch() {
         this.props.navigate('/error'); // <- навигация
     }
 
@@ -37,5 +36,13 @@ class ErrorBoundaryBase extends React.Component<ErrorBoundaryProps, ErrorBoundar
 // HOC to inject `navigate`
 export function ErrorBoundaryWithRouter({ children }: { children: ReactNode }) {
     const navigate = useNavigate();
-    return <ErrorBoundaryBase navigate={navigate}>{children}</ErrorBoundaryBase>;
+    return (
+        <ErrorBoundaryBase
+            navigate={(to) => {
+                void navigate(to);
+            }}
+        >
+            {children}
+        </ErrorBoundaryBase>
+    );
 }

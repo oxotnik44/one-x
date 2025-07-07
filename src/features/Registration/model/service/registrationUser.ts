@@ -43,7 +43,12 @@ export const registrationUser = async (authData: RegistrationProps): Promise<Use
             {
                 loading: 'Регистрация...',
                 success: 'Вы успешно зарегистрировались',
-                error: (err) => err.message || 'Ошибка при регистрации',
+                error: (err: unknown) => {
+                    if (err instanceof Error) {
+                        return err.message;
+                    }
+                    return 'Ошибка при регистрации';
+                },
             },
         )
         .catch(() => null);

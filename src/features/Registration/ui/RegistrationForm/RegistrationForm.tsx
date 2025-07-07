@@ -30,8 +30,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         }
     };
 
+    // обёртка, чтобы onSubmit не возвращал Promise напрямую
+    const onFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+        void handleSubmit(onSubmit)(e);
+    };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="" autoComplete="off" noValidate>
+        <form onSubmit={onFormSubmit} className="" autoComplete="off" noValidate>
             <Text title="Регистрация" />
 
             {/* Email */}
@@ -50,7 +55,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                     disabled={isSubmitting}
                     placeholder="you@example.com"
                     className={errors.email ? 'border-red-500' : 'border-gray-300'}
-                    onChange={() => isSubmitted && trigger('email')}
+                    onChange={() => {
+                        if (isSubmitted) {
+                            void trigger('email');
+                        }
+                    }}
                 />
                 {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -72,8 +81,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                     className={errors.password ? 'border-red-500' : 'border-gray-300'}
                     onChange={() => {
                         if (isSubmitted) {
-                            trigger('password');
-                            trigger('confirmPassword');
+                            void trigger('password');
+                            void trigger('confirmPassword');
                         }
                     }}
                 />
@@ -98,7 +107,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                     disabled={isSubmitting}
                     placeholder="••••••"
                     className={errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}
-                    onChange={() => isSubmitted && trigger('confirmPassword')}
+                    onChange={() => {
+                        if (isSubmitted) {
+                            void trigger('confirmPassword');
+                        }
+                    }}
                 />
                 {errors.confirmPassword && (
                     <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>

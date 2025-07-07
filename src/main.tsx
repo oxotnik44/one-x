@@ -7,7 +7,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProviders } from 'app/providers/ThemeProviders/ThemeProviders.tsx';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root');
+
+if (!container) {
+    throw new Error('Контейнер #root не найден в DOM');
+}
+
+createRoot(container).render(
     <StrictMode>
         <BrowserRouter>
             <ThemeProviders>

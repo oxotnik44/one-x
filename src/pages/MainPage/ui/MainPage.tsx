@@ -23,9 +23,9 @@ export const MainPage: FC = () => {
                 ...playerSize,
                 backgroundColor: theme['--bg-container'],
                 marginLeft: isCollapsed
-                    ? `calc(var(--sidebar-width-collapsed) - 4.4rem )`
-                    : `calc(var(--sidebar-width) - 4.4rem)`,
-                height: `calc(100vh - var(--player-height) - 5rem)`, // высота с учётом плеера + 1rem отступа
+                    ? 'calc(var(--sidebar-width-collapsed) - 4.4rem )'
+                    : 'calc(var(--sidebar-width) - 4.4rem)',
+                height: 'calc(100vh - var(--player-height) - 5rem)', // высота с учётом плеера + 1rem отступа
                 right: '1.5rem',
             }}
         >

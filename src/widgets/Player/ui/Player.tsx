@@ -55,8 +55,8 @@ export const Player: FC = () => {
 
     const buttonColor = theme['--button-color'] || '#ec4899';
     const sidebarLeft = isCollapsed
-        ? `calc(var(--sidebar-width-collapsed) + 1.5rem)`
-        : `calc(var(--sidebar-width) + 1.5rem)`;
+        ? 'calc(var(--sidebar-width-collapsed) + 1.5rem)'
+        : 'calc(var(--sidebar-width) + 1.5rem)';
 
     return (
         <div

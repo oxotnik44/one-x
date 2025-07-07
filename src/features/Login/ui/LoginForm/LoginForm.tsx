@@ -41,7 +41,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="" autoComplete="off" noValidate>
+        <form
+            onSubmit={(e) => {
+                void handleSubmit(onSubmit)(e);
+            }}
+            className=""
+            autoComplete="off"
+            noValidate
+        >
             <Text title="Авторизация" />
 
             <div className="mb-6">

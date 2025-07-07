@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Player } from './Player';
 import { ThemeProviders } from 'app/providers/ThemeProviders/ThemeProviders';
 

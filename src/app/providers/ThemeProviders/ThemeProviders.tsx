@@ -1,7 +1,7 @@
-// src/app/providers/ThemeProviders.tsx
 import { type ReactNode, useEffect } from 'react';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { normalTheme } from 'shared/config/theme/themes/normal';
+import type { ThemeVars } from 'shared/config/theme/types'; // импортируй тип
 
 interface ThemeProvidersProps {
     children: ReactNode;
@@ -11,11 +11,10 @@ export const ThemeProviders = ({ children }: ThemeProvidersProps) => {
     const { theme, setTheme } = useThemeStore();
 
     useEffect(() => {
-        // Пытаемся загрузить тему из localStorage
         const storedTheme = localStorage.getItem('app-theme');
         if (storedTheme) {
             try {
-                const parsed = JSON.parse(storedTheme);
+                const parsed = JSON.parse(storedTheme) as ThemeVars;
                 setTheme(parsed);
             } catch {
                 setTheme(normalTheme);
@@ -26,7 +25,6 @@ export const ThemeProviders = ({ children }: ThemeProvidersProps) => {
     }, [setTheme]);
 
     useEffect(() => {
-        // Сохраняем изменения темы в localStorage
         localStorage.setItem('app-theme', JSON.stringify(theme));
     }, [theme]);
 

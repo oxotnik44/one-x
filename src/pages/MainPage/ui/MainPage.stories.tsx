@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MainPage } from './MainPage';
 import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
 import { ThemeProviders } from 'app/providers/ThemeProviders/ThemeProviders';

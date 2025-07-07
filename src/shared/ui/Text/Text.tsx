@@ -55,3 +55,4 @@ export const Text = memo(
         );
     },
 );
+Text.displayName = 'Text';

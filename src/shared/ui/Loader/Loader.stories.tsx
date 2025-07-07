@@ -1,5 +1,5 @@
 // src/shared/ui/Loader/Loader.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Loader } from './Loader';
 
 const meta: Meta<typeof Loader> = {

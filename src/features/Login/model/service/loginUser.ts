@@ -40,7 +40,12 @@ export const loginUser = async (authData: LoginProps): Promise<User | null> => {
             {
                 loading: 'Авторизация...',
                 success: 'Вы успешно вошли в систему',
-                error: (err) => err.message || 'Ошибка при авторизации',
+                error: (err: unknown) => {
+                    if (err instanceof Error) {
+                        return err.message;
+                    }
+                    return 'Ошибка при авторизации';
+                },
             },
         )
         .catch(() => null);
