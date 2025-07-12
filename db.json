@@ -1,9 +1,31 @@
 {
-    "users": [
-        {
-            "id": "e924",
-            "email": "a@gmail.com",
-            "password": "$2b$10$AmCYRT2ZxFWAClI7zbuHu.GS33ht.qhH7gPuuJVGt0WWd220ET8ii"
-        }
-    ]
+  "users": [
+    {
+      "id": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
+      "email": "s@gmail.com",
+      "password": "$2b$10$jKR8QPC68LKPUQao1GgP1OyVyc722kWSu1yUeIcphyW8kV5iQna0C"
+    }
+  ],
+  "groups": [
+    {
+      "id": "664c83dc-57b5-400d-817e-bdfdcbc32bc6",
+      "name": "Three Days Grace",
+      "description": "",
+      "genre": "Рок",
+      "cover": "/static/groups/Three Days Grace/cover.webp",
+      "createdAt": "2025-07-10T14:46:52.982Z"
+    }
+  ],
+  "tracks": [
+    {
+      "idTrack": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "title": "Its All Over",
+      "duration": 0,
+      "cover": "",
+      "albumId": "",
+      "artistId": "artist-123",
+      "audioUrl": "static/traks/Its All Over.mp3",
+      "id": "af98"
+    }
+  ]
 }

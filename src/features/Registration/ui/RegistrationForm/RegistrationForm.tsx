@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Text } from 'shared/ui/Text/Text';
 import { Button } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
-import type { RegistrationSchema } from '../../model/types/registrationSchema';
-import { registrationUser } from 'features/Registration/model/service/registrationUser';
+import type { RegistrationSchema } from '../../../../entities/User/model/types/registrationSchema';
+import { registrationUser } from 'entities/User/model/api/Registration/registrationUser';
 
 interface RegistrationFormProps {
     onSuccess: () => void;

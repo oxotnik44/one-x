@@ -1,54 +1,39 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { useUserStore } from 'entities/User/model/slice/userStore';
 import AppRouter from './AppRouter';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+import * as userStoreModule from 'entities/User/model/slice/useUserStore';
 
-// Импортируем весь модуль routeConfig для мокирования
-import * as routeModule from 'shared/config/routeConfig/routeConfig';
-
-vi.mock('entities/User/model/slice/userStore');
-const mockedUseUserStore = vi.mocked(useUserStore);
+vi.mock('entities/User/model/slice/useUserStore');
 
 describe('AppRouter', () => {
     beforeEach(() => {
-        // Мокаем routeConfig, чтобы для ABOUT был реальный элемент
-        vi.spyOn(routeModule, 'routeConfig', 'get').mockReturnValue({
-            ...routeModule.routeConfig,
-            [routeModule.AppRoutes.ABOUT]: {
-                path: routeModule.RoutePath.about,
-                element: <div>About page content</div>, // добавляем реальный элемент для теста
-                authOnly: true,
-            },
-        });
+        vi.clearAllMocks();
     });
 
-    it('редиректит неавторизованного пользователя с authOnly маршрута', () => {
-        mockedUseUserStore.mockReturnValue(false); // неавторизован
+    it('разрешает доступ к /my_group авторизованному пользователю', () => {
+        const mockUser = {
+            userId: '1',
+            username: 'TestUser',
+            password: 'hashed-password',
+            avatar: 'avatar.png',
+        };
+
+        vi.spyOn(userStoreModule, 'useUserStore').mockImplementation((selector) =>
+            selector({
+                authData: mockUser,
+                setAuthData: vi.fn(),
+                logout: vi.fn(),
+            }),
+        );
 
         render(
-            <MemoryRouter initialEntries={['/about']}>
+            <MemoryRouter initialEntries={['/my_group']}>
                 <AppRouter />
             </MemoryRouter>,
         );
 
-        // Проверяем, что контент защищённого роута не рендерится
-        expect(screen.queryByText('About page content')).toBeNull(); // <- исправлено
-
-        // Можно также проверить, что редирект на главную
-        expect(window.location.pathname).toBe('/');
-    });
-
-    it('показывает маршруты для авторизованного пользователя', () => {
-        mockedUseUserStore.mockReturnValue(true); // авторизован
-
-        render(
-            <MemoryRouter initialEntries={['/about']}>
-                <AppRouter />
-            </MemoryRouter>,
-        );
-
-        // Проверяем, что защищённый маршрут отображается
-        expect(screen.queryByText('About page content')).not.toBeNull();
+        // Вместо toBeInTheDocument просто проверяем, что элемент найден
+        expect(screen.queryByTestId('MyGroupPage')).not.toBeNull();
     });
 });

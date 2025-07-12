@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC, memo } from 'react';
 import defaultAvatar from 'shared/assets/default-avatar.png';
 
 interface UserAvatarProps {
@@ -7,7 +7,7 @@ interface UserAvatarProps {
     size?: number;
 }
 
-export const UserAvatar: FC<UserAvatarProps> = ({ src, alt = 'User Avatar', size = 40 }) => {
+const UserAvatarComponent: FC<UserAvatarProps> = ({ src, alt = 'User Avatar', size = 40 }) => {
     const imageSrc = src ?? defaultAvatar;
 
     return (
@@ -20,3 +20,6 @@ export const UserAvatar: FC<UserAvatarProps> = ({ src, alt = 'User Avatar', size
         />
     );
 };
+
+export const UserAvatar = memo(UserAvatarComponent);
+UserAvatar.displayName = 'UserAvatar';

@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
     {
-        ignores: ['dist', 'build', 'node_modules', '*.config.js'],
+        ignores: ['dist', 'build', 'node_modules', '*.config.js', 'vitest.config.ts', 'scripts/'],
     },
     {
         extends: [
@@ -34,7 +34,8 @@ export default tseslint.config(
                 project: [
                     './tsconfig.app.json',
                     './tsconfig.node.json',
-                    './tsconfig.eslint.json', // если создал для ESLint (рекомендуется)
+                    './tsconfig.eslint.json',
+                    // если создал для ESLint (рекомендуется)
                 ],
             },
         },

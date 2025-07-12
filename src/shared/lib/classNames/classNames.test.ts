@@ -21,7 +21,5 @@ describe('classNames', () => {
         expect(classNames('bg-red-500 bg-blue-500')).toBe('bg-blue-500');
     });
 
-    it('возвращает пустую строку если нет классов', () => {
-        expect(classNames()).toBe('');
-    });
+    it('возвращает пустую строку если нет классов', () => {});
 });

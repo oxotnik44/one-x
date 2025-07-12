@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ThemeSchema } from './types';
 import { normalTheme } from './themes/normal';
+import { THEME_LOCALSTORAGE_KEY } from 'shared/const/localstorage';
 
 export const useThemeStore = create<ThemeSchema>()(
     persist(
@@ -16,7 +17,7 @@ export const useThemeStore = create<ThemeSchema>()(
             },
         }),
         {
-            name: 'theme',
+            name: THEME_LOCALSTORAGE_KEY,
         },
     ),
 );

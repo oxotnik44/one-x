@@ -35,7 +35,7 @@ export const Default: Story = {
 
 // Пример обёртки для передачи состояния через пропсы (если изменить useProfileMenu сложно)
 import { Dropdown } from 'shared/ui/Dropdown/Dropdown';
-import { useUserStore } from 'entities/User/model/slice/userStore';
+import { useUserStore } from 'entities/User/model/slice/useUserStore';
 
 interface ProfileMenuWrapperProps {
     isOpen: boolean;

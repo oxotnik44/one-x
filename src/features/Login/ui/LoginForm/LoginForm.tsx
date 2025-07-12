@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Text } from 'shared/ui/Text/Text';
 import { Button } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
-import type { LoginSchema } from '../../model/types/loginSchema';
-import { loginUser } from 'features/Login/model/service/loginUser';
+import type { LoginSchema } from '../../../../entities/User/model/types/loginSchema';
+import { loginUser } from 'entities/User/model/api/Login/loginUser';
 
 interface LoginFormProps {
     onSuccess: () => void;

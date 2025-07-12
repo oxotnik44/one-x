@@ -1,24 +1,48 @@
-import { useState, Suspense, lazy } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { AppRouter } from './providers/routes';
-import { useUserStore } from 'entities/User/model/slice/userStore';
+import { useUserStore } from 'entities/User/model/slice/useUserStore';
 import { Sidebar } from 'widgets/Sidebar';
 import { useThemeStore } from 'shared/config/theme/themeStore';
-import { Player } from 'widgets/Player/ui/Player';
+import { Player } from 'features/Player';
+import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
+import { fetchGroup } from 'entities/Group/model/api/fetchGroup';
 
-// Ленивая загрузка AuthModal
 const AuthModal = lazy(() => import('widgets/AuthModal'));
 
 function App() {
     const user = useUserStore((state) => state.authData);
     const theme = useThemeStore((state) => state.theme);
+    const setCurrentGroup = useGroupStore((state) => state.setCurrentGroup);
+
     const [isOpen, setIsOpen] = useState(true);
     const [isLogin, setIsLogin] = useState(true);
+    const [loadingGroup, setLoadingGroup] = useState(false);
 
     const onCloseModal = () => setIsOpen(false);
 
+    useEffect(() => {
+        if (!user) {
+            useGroupStore.getState().clearCurrentGroup();
+            return;
+        }
+
+        async function loadGroup() {
+            setLoadingGroup(true);
+            if (user) {
+                const group = await fetchGroup(user.userId);
+                if (group) {
+                    setCurrentGroup(group);
+                } else {
+                    useGroupStore.getState().clearCurrentGroup();
+                }
+                setLoadingGroup(false);
+            }
+        }
+        void loadGroup();
+    }, [user, setCurrentGroup]);
+
     if (!user) {
-        // Ленивая загрузка и рендер только если нет user
         return (
             <Suspense fallback={null}>
                 <AuthModal
@@ -29,6 +53,10 @@ function App() {
                 />
             </Suspense>
         );
+    }
+
+    if (loadingGroup) {
+        return <div>Загрузка данных группы...</div>;
     }
 
     return (

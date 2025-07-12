@@ -1,4 +1,4 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import { memo, type FC, type ReactNode, type CSSProperties } from 'react';
 import clsx from 'clsx';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 
@@ -9,7 +9,7 @@ export interface DropdownProps {
     style?: CSSProperties;
 }
 
-export const Dropdown: FC<DropdownProps> = ({ isOpen, children, style }) => {
+const DropdownComponent: FC<DropdownProps> = ({ isOpen, children, style }) => {
     const theme = useThemeStore((state) => state.theme);
 
     if (!isOpen) return null;
@@ -30,3 +30,6 @@ export const Dropdown: FC<DropdownProps> = ({ isOpen, children, style }) => {
         </div>
     );
 };
+
+// ✅ мемоизация по props (без учета сторов)
+export const Dropdown = memo(DropdownComponent);

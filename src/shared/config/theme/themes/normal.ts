@@ -10,4 +10,6 @@ export const normalTheme: ThemeVars = {
     '--input-color': '#880015',
     '--heart-color': '#880015',
     '--inverted-heart-color': '#ffffff',
+    '--primary-color': '#880015',
+    '--inverted-primary-color': '#FF7F27',
 };

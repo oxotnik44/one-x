@@ -1,7 +1,7 @@
 import { useRef, useEffect, type FC } from 'react';
 import { useProfileMenu } from '../../model/useProfileMenu';
 import { Dropdown } from 'shared/ui/Dropdown/Dropdown';
-import { useUserStore } from 'entities/User/model/slice/userStore';
+import { useUserStore } from 'entities/User/model/slice/useUserStore';
 
 export const ProfileMenu: FC = () => {
     const { isOpen, close } = useProfileMenu();

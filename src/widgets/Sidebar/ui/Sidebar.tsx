@@ -1,15 +1,35 @@
+import React, { useCallback } from 'react';
 import type { FC } from 'react';
 import { sidebarItems } from '../model/items';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useSidebarStore } from '../model/sidebarStore';
 import Logo from 'shared/assets/Logo.png';
-import Avatar from 'shared/assets/default-avatar.png';
 import { Text } from 'shared/ui/Text/Text';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
+import Avatar from 'shared/assets/default-avatar.png';
 
-export const Sidebar: FC = () => {
+export const Sidebar: FC = React.memo(() => {
     const theme = useThemeStore((state) => state.theme);
-    const { isCollapsed, toggleCollapsed } = useSidebarStore();
+    const { isCollapsed, toggleCollapsed, setSelectedItem } = useSidebarStore();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const coverGroup = useGroupStore((state) => state.currentGroup);
+
+    const pathname = location.pathname.replace(/^\/+/, '');
+
+    const onNavItemClick = useCallback(
+        (label: string, href: string) => {
+            setSelectedItem(label);
+            navigate(href);
+        },
+        [setSelectedItem, navigate],
+    );
+
+    const onToggleCollapsed = useCallback(() => {
+        toggleCollapsed();
+    }, [toggleCollapsed]);
 
     return (
         <aside
@@ -36,41 +56,50 @@ export const Sidebar: FC = () => {
 
                 {/* Навигация */}
                 <nav className="flex flex-col gap-3">
-                    {sidebarItems.map((item) => (
-                        <div
-                            key={item.label}
-                            className={classNames(
-                                'flex items-center cursor-pointer px-2 py-1 rounded hover:text-white transition',
-                                item.label === 'Главная' ? 'text-white font-bold' : 'text-gray-400',
-                                isCollapsed ? 'justify-center' : 'gap-3',
-                            )}
-                        >
-                            {item.icon}
-                            {!isCollapsed && (
-                                <Text
-                                    text={item.label}
-                                    size="default"
-                                    className="select-none"
-                                    isLink={false}
-                                />
-                            )}
-                        </div>
-                    ))}
+                    {sidebarItems.map(({ icon: Icon, label, href }) => {
+                        const isActive = pathname.startsWith(href);
+                        const iconColor = isActive
+                            ? theme['--primary-color']
+                            : theme['--inverted-primary-color'];
+
+                        return (
+                            <div
+                                key={label}
+                                onClick={() => onNavItemClick(label, href)}
+                                className={classNames(
+                                    'flex items-center cursor-pointer px-2 py-1 rounded hover:text-white transition',
+                                    isCollapsed ? 'justify-center' : 'gap-3',
+                                )}
+                                style={{ color: iconColor }}
+                            >
+                                <Icon size={isCollapsed ? 20 : 24} />
+                                {!isCollapsed && (
+                                    <Text
+                                        text={label}
+                                        size="default"
+                                        isActive={isActive}
+                                        isLink={false}
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
                 </nav>
             </div>
 
+            {/* Аватар и кнопка сворачивания */}
             <div className="flex items-center justify-between gap-3 mt-8">
                 <div className="flex items-center justify-center gap-3">
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-pink-600 bg-white">
                         <img
-                            src={Avatar}
+                            src={coverGroup?.cover || Avatar}
                             alt="Аватар пользователя"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     {!isCollapsed && (
                         <Text
-                            text="Артём Н."
+                            text={coverGroup?.name || 'User'}
                             size="small"
                             className="font-semibold"
                             isLink={false}
@@ -79,7 +108,7 @@ export const Sidebar: FC = () => {
                 </div>
                 <div className="group relative">
                     <div
-                        onClick={toggleCollapsed}
+                        onClick={onToggleCollapsed}
                         className="cursor-pointer p-1 rounded hover:bg-gray-600 transition"
                         aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
                     >
@@ -105,4 +134,6 @@ export const Sidebar: FC = () => {
             </div>
         </aside>
     );
-};
+});
+
+Sidebar.displayName = 'Sidebar';

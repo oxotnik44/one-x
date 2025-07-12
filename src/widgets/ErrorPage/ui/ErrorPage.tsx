@@ -1,16 +1,21 @@
+import { memo, useCallback } from 'react';
 import { Button } from 'shared/ui/Button/Button';
+import { Text } from 'shared/ui/Text/Text';
 
-export const ErrorPage = () => {
-    const reloadPage = () => {
+const ErrorPageComponent = () => {
+    const reloadPage = useCallback(() => {
         location.reload();
-    };
+    }, []);
 
     return (
         <div className="w-full h-screen flex flex-col items-center justify-center">
-            <p className="text-xl md:text-2xl font-semibold mb-4">
+            <Text className="text-xl md:text-2xl font-semibold mb-4">
                 Произошла непредвиденная ошибка
-            </p>
+            </Text>
             <Button onClick={reloadPage}>Обновить страницу</Button>
         </div>
     );
 };
+
+export const ErrorPage = memo(ErrorPageComponent);
+ErrorPage.displayName = 'ErrorPage';

@@ -1,7 +1,7 @@
 import { routeConfig } from 'shared/config/routeConfig/routeConfig';
 import { memo, Suspense, useMemo, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useUserStore } from 'entities/User/model/slice/userStore';
+import { useUserStore } from 'entities/User/model/slice/useUserStore';
 
 // Ленивая загрузка PageLoader
 const PageLoader = lazy(() => import('shared/ui/PageLoader/PageLoader'));

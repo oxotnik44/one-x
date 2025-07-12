@@ -25,7 +25,7 @@ export const MainPage: FC = () => {
                 marginLeft: isCollapsed
                     ? 'calc(var(--sidebar-width-collapsed) - 4.4rem )'
                     : 'calc(var(--sidebar-width) - 4.4rem)',
-                height: 'calc(100vh - var(--player-height) - 5rem)', // высота с учётом плеера + 1rem отступа
+                height: 'calc(100vh - var(--player-height) - 4rem)', // высота с учётом плеера + 1rem отступа
                 right: '1.5rem',
             }}
         >

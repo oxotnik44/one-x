@@ -1,4 +1,6 @@
+import { AddTrackPage } from 'pages/AddTrackPage';
 import { MainPage } from 'pages/MainPage';
+import { MyGroupPage } from 'pages/MyGroupPage';
 import React from 'react';
 import type { RouteProps } from 'react-router-dom';
 
@@ -10,13 +12,15 @@ export type AppRoutesProps = RouteProps & {
 
 export enum AppRoutes {
     MAIN = 'main',
-    ABOUT = 'about',
+    MY_GROUP = 'my_group',
     NOT_FOUND = 'not_found',
+    ADD_TRACK = 'add_track',
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.MAIN]: '/',
-    [AppRoutes.ABOUT]: '/about',
+    [AppRoutes.MAIN]: '/main',
+    [AppRoutes.MY_GROUP]: '/my_group',
+    [AppRoutes.ADD_TRACK]: '/my_group/add_track',
     [AppRoutes.NOT_FOUND]: '*',
 };
 
@@ -25,9 +29,14 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         path: RoutePath.main,
         element: <MainPage />,
     },
-    [AppRoutes.ABOUT]: {
-        path: RoutePath.about,
-        element: null,
+    [AppRoutes.MY_GROUP]: {
+        path: RoutePath.my_group,
+        element: <MyGroupPage />,
+        authOnly: true,
+    },
+    [AppRoutes.ADD_TRACK]: {
+        path: RoutePath.add_track,
+        element: <AddTrackPage />,
         authOnly: true,
     },
     [AppRoutes.NOT_FOUND]: {

@@ -7,7 +7,9 @@ export type CSSVarName =
     | '--bg-container'
     | '--input-color'
     | '--heart-color'
-    | '--inverted-heart-color';
+    | '--inverted-heart-color'
+    | '--primary-color'
+    | '--inverted-primary-color';
 
 export type ThemeVars = Record<CSSVarName, string>;
 
