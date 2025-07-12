@@ -26,15 +26,15 @@ export const registrationUser = async (authData: RegistrationProps): Promise<Use
                 // Хэшируем пароль перед отправкой
                 const salt = bcrypt.genSaltSync(10);
                 const hashedPassword = bcrypt.hashSync(authData.password, salt);
-
-                // Генерируем UUID для нового пользователя
-                const newUserId = uuidv4();
-
-                const response = await api.post<User>('/users', {
-                    id: newUserId,
+                const newUser: User = {
+                    id: uuidv4(),
                     email: authData.email,
                     password: hashedPassword,
-                });
+                    avatar: '',
+                    username: '',
+                    createdAt: new Date().toISOString(),
+                };
+                const response = await api.post<User>('/users', { newUser });
 
                 if (!response.data) {
                     throw new Error('Empty response');

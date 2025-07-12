@@ -8,24 +8,25 @@
   ],
   "groups": [
     {
-      "id": "664c83dc-57b5-400d-817e-bdfdcbc32bc6",
+      "id": "cb073a79-63e9-4478-9eb2-7baa8024e617",
+      "description": "asd",
       "name": "Three Days Grace",
-      "description": "",
+      "userId": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
       "genre": "Рок",
       "cover": "/static/groups/Three Days Grace/cover.webp",
-      "createdAt": "2025-07-10T14:46:52.982Z"
+      "createdAt": "2025-07-12T04:59:56.768Z",
+      "updatedAt": ""
     }
   ],
   "tracks": [
     {
-      "idTrack": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "id": "bd77f4fe-0d07-4ffc-b5ed-785d5a33a8af",
       "title": "Its All Over",
       "duration": 0,
-      "cover": "",
-      "albumId": "",
-      "artistId": "artist-123",
-      "audioUrl": "static/traks/Its All Over.mp3",
-      "id": "af98"
+      "cover": "/static/groups/Three Days Grace/Tracks/Its All Over/cover.png",
+      "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
+      "audioUrl": "/static/groups/Three Days Grace/Tracks/Its All Over/Its All Over.mp3",
+      "createdAt": "2025-07-12T05:00:04.307Z"
     }
   ]
 }

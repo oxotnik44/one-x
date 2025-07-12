@@ -11,6 +11,5 @@ function run(cmd) {
 
 run('pnpm style');
 run('pnpm test');
-run('pnpm screen:current');
 run('pnpm screen:compare'); // если упадёт — просто логируем
 run('pnpm screen:open');

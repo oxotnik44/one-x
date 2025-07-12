@@ -1,12 +1,12 @@
 // src/entities/Group/model/types/group.ts
 
 export interface Group {
-    groupId: string; // уникальный идентификатор группы
+    id: string; // уникальный идентификатор группы
     userId: string; // ID пользователя — владельца группы
     name: string;
     description?: string | null;
     cover: string; // URL или base64 иконки группы
-    genre: string;
+    genre: Genre;
     createdAt: string; // дата создания, ISO строка
     updatedAt?: string; // дата обновления, ISO строка (опционально)
 }

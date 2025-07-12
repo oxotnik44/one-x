@@ -1,5 +1,6 @@
 import type { User } from 'entities/User';
 import { useUserStore } from 'entities/User/model/slice/useUserStore';
+import toast from 'react-hot-toast';
 import { api } from 'shared/api/api';
 import bcrypt from 'bcryptjs';
 
@@ -9,27 +10,39 @@ interface LoginProps {
 }
 
 export const loginUser = async (authData: LoginProps): Promise<User | null> => {
-    try {
-        const response = await api.get<User[]>('/users', {
-            params: { email: authData.email },
-        });
+    return toast
+        .promise(
+            (async () => {
+                const response = await api.get<User[]>('/users', {
+                    params: { email: authData.email },
+                });
 
-        if (!response.data || response.data.length === 0) {
-            return null;
-        }
+                if (!response.data || response.data.length === 0) {
+                    throw new Error('Пользователь с таким email не найден');
+                }
 
-        const user = response.data[0];
+                const user = response.data[0];
 
-        const isPasswordValid = bcrypt.compareSync(authData.password, user.password);
-        if (!isPasswordValid) {
-            return null;
-        }
+                const isPasswordValid = bcrypt.compareSync(authData.password, user.password);
+                if (!isPasswordValid) {
+                    throw new Error('Неверный пароль');
+                }
 
-        const setAuthData = useUserStore.getState().setAuthData;
-        setAuthData(user);
+                const setAuthData = useUserStore.getState().setAuthData;
+                setAuthData(user);
 
-        return user;
-    } catch {
-        return null;
-    }
+                return user;
+            })(),
+            {
+                loading: 'Вход в систему...',
+                success: 'Вы успешно вошли',
+                error: (err: unknown) => {
+                    if (err instanceof Error) {
+                        return err.message;
+                    }
+                    return 'Ошибка при входе в систему';
+                },
+            },
+        )
+        .catch(() => null);
 };

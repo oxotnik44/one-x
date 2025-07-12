@@ -32,14 +32,29 @@ describe('addTrack', () => {
             groupName: 'Test Group',
         };
 
-        (axios.post as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
-            status: 201,
-            statusText: 'Created',
+        (axios.get as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
+            data: [{ id: 'group-id-123', name: 'Test Group' }],
         });
+
+        (axios.post as unknown as ReturnType<typeof vi.fn>)
+            .mockResolvedValueOnce({
+                status: 201,
+                statusText: 'Created',
+                data: {
+                    coverUrl: 'some_cover_url',
+                    audioUrl: 'some_audio_url',
+                    duration: 120,
+                },
+            })
+            .mockResolvedValueOnce({
+                status: 201,
+                statusText: 'Created',
+                data: {},
+            });
 
         await addTrack(data);
 
-        expect(axios.post).toHaveBeenCalledTimes(1);
+        expect(axios.post).toHaveBeenCalledTimes(2);
         expect(toast.success).toHaveBeenCalledWith('Трек успешно добавлен');
     });
 

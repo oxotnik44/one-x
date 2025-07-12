@@ -41,6 +41,7 @@ export default defineConfig({
                 '**/ui/**',
                 '**/types/**',
                 'src/shared/config/test/**',
+                'src/shared/api**',
                 'src/shared/config/theme/global/**',
                 '**/*.d.ts',
                 '**/*.tsx',

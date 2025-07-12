@@ -5,6 +5,7 @@ import { useThemeStore } from 'shared/config/theme/themeStore';
 export enum ButtonTheme {
     OUTLINE = 'outline',
     CLEAR = 'clear',
+    BACK = 'back',
 }
 
 export enum ButtonSize {
@@ -50,7 +51,7 @@ export const Button = memo((props: ButtonProps) => {
     const themeVars = useThemeStore((state) => state.theme);
 
     const inlineStyles =
-        theme === ButtonTheme.OUTLINE
+        theme === ButtonTheme.OUTLINE || theme === ButtonTheme.BACK
             ? {
                   backgroundColor: themeVars['--button-color'],
                   color: '#fff',
@@ -60,9 +61,11 @@ export const Button = memo((props: ButtonProps) => {
                   color: themeVars['--text-color'],
               };
 
+    const themeClass = theme === ButtonTheme.BACK ? 'absolute top-20 left-80' : '';
+
     const sizeClass = square ? squareSizeClasses[size] : sizeClasses[size];
     const shapeClass = square ? 'rounded-full p-0' : '';
-    const btnClassName = classNames(baseStyle, sizeClass, shapeClass, className);
+    const btnClassName = classNames(baseStyle, sizeClass, shapeClass, themeClass, className);
 
     return (
         <button className={btnClassName} style={inlineStyles} disabled={disabled} {...otherProps}>

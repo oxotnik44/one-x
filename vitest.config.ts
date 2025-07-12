@@ -31,7 +31,7 @@ export default defineConfig({
         // Запускаем **только** .test.tsx и .spec.tsx
         include: ['src/**/*.{test,spec}.tsx'],
         // Полностью исключаем все .ts (и декларации)
-        exclude: ['**/*.ts', '**/*.d.ts', '.storybook/**', '**/*.index.ts'],
+        exclude: ['**/*.ts', '**/*.d.ts', '.storybook/**', '**/*.index.ts', 'src/main.tsx'],
 
         coverage: {
             // Считаем покрытие только по JSX‑файлам
@@ -39,6 +39,7 @@ export default defineConfig({
             exclude: [
                 'node_modules',
                 'src/app',
+                'src/main.tsx',
                 'dist',
                 '.storybook/**',
                 '**/*.stories.tsx',

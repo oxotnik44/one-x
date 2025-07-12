@@ -1,7 +1,6 @@
 // src/entities/Track/model/trackStore.test.ts
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchTrackById } from 'entities/Track/api/fetchTrack';
 import { useTrackStore } from './useTrackStore';
 import type { Track } from '../model/types/track';
 
@@ -28,34 +27,5 @@ describe('useTrackStore', () => {
 
         const currentTrack = useTrackStore.getState().currentTrack;
         expect(currentTrack).toEqual(track);
-    });
-
-    it('loadTrack загружает трек и устанавливает currentTrack', async () => {
-        const mockTrack = { id: '2', title: 'Loaded Track' };
-        (fetchTrackById as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockTrack);
-
-        await useTrackStore.getState().loadTrack('2');
-
-        expect(fetchTrackById).toHaveBeenCalled();
-        expect(useTrackStore.getState().currentTrack).toEqual(mockTrack);
-    });
-
-    it('loadTrack не меняет currentTrack при ошибке', async () => {
-        (fetchTrackById as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(
-            new Error('fail'),
-        );
-
-        const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-        await useTrackStore.getState().loadTrack('bad-id');
-
-        expect(fetchTrackById).toHaveBeenCalled();
-        expect(useTrackStore.getState().currentTrack).toBeNull();
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-            'Ошибка загрузки трека по ID',
-            expect.any(Error),
-        );
-
-        consoleErrorSpy.mockRestore();
     });
 });

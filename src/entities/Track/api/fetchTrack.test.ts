@@ -21,7 +21,6 @@ describe('fetchTrackById', () => {
         const mockTrackState: TrackState = {
             currentTrack: null,
             setTrack: vi.fn(),
-            loadTrack: vi.fn(),
             // добавь остальные свойства, если они есть в TrackState
         };
 
@@ -40,7 +39,6 @@ describe('fetchTrackById', () => {
         const mockTrackState: TrackState = {
             currentTrack: null,
             setTrack: vi.fn(),
-            loadTrack: vi.fn(),
         };
 
         useTrackStore.getState = vi.fn(() => mockTrackState);
@@ -56,7 +54,6 @@ describe('fetchTrackById', () => {
         const mockTrackState: TrackState = {
             currentTrack: null,
             setTrack: vi.fn(),
-            loadTrack: vi.fn(),
         };
 
         useTrackStore.getState = vi.fn(() => mockTrackState);

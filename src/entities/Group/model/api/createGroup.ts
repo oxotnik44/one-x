@@ -36,26 +36,27 @@ export const createGroup = async (groupData: CreateGroupFormData): Promise<Store
             if (!uploadResp.ok) throw new Error('Ошибка при загрузке иконки');
             const { url: iconUrl } = (await uploadResp.json()) as UploadResponse;
 
-            const groupId = uuidv4();
+            const id = uuidv4();
             const createdAt = new Date().toISOString();
 
-            const payload = {
-                id: groupId,
-                name: groupData.name,
+            const payload: Group = {
+                id,
                 description: groupData.description ?? '',
-                userId: user.userId,
-                genre: groupData.genre,
+                name: groupData.name,
+                userId: user.id,
+                genre: groupData.genre ?? 'Рок',
                 cover: iconUrl,
                 createdAt,
+                updatedAt: '',
             };
 
             const { data: apiGroup } = await api.post<Group>('/groups', payload);
             if (!apiGroup) throw new Error('Ошибка при создании группы');
 
-            await api.patch(`/users/${user.userId}`, { groupId });
+            await api.patch(`/users/${user.id}`, { id });
 
             const storeGroup: StoreGroup = {
-                groupId,
+                id: uuidv4(),
                 name: apiGroup.name,
                 description: apiGroup.description ?? '',
                 cover: apiGroup.cover,

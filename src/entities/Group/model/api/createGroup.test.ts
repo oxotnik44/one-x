@@ -4,6 +4,7 @@ import { useUserStore } from 'entities/User/model/slice/useUserStore';
 import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
 import { api } from 'shared/api/api';
 import type { CreateGroupFormData } from 'features/CreateGroup/model/types/types';
+import type { Group } from '../types/group';
 
 vi.mock('shared/api/api', () => ({
     api: {
@@ -33,18 +34,18 @@ vi.mock('react-hot-toast', () => ({
 }));
 const patchMock = vi.mocked(api.patch);
 describe('createGroup', () => {
-    const fakeUser = { userId: 'user123' };
-    const fakeGroup = {
+    const fakeUser = { id: 'user123' };
+    const fakeGroup: Group = {
         id: 'group123',
         name: 'Test Group',
         description: 'desc',
-        userId: fakeUser.userId,
-        genre: 'rock',
+        userId: fakeUser.id,
+        genre: 'Рок',
         cover: 'url',
         createdAt: new Date().toISOString(),
     };
     const fakeStoreGroup = {
-        groupId: 'group123',
+        id: 'group123',
         name: fakeGroup.name,
         description: fakeGroup.description,
         cover: fakeGroup.cover,
@@ -92,9 +93,9 @@ describe('createGroup', () => {
         expect(global.fetch).toHaveBeenCalled();
         expect(api.post).toHaveBeenCalled();
         expect(patchMock).toHaveBeenCalledWith(
-            `/users/${fakeUser.userId}`,
+            `/users/${fakeUser.id}`,
             expect.objectContaining({
-                groupId: expect.any(String) as string,
+                id: expect.any(String) as string,
             }),
         );
 
@@ -106,7 +107,7 @@ describe('createGroup', () => {
 
         expect(result).not.toBeNull();
         if (result) {
-            expect(result.groupId).toEqual(expect.any(String));
+            expect(result.id).toEqual(expect.any(String));
             expect(result.name).toBe(fakeStoreGroup.name);
             expect(result.description).toBe(fakeStoreGroup.description);
             expect(result.cover).toBe(fakeStoreGroup.cover);

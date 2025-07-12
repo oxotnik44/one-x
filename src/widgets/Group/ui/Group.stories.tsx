@@ -27,7 +27,7 @@ export const Default: Story = {
             useGroupStore.setState({
                 currentGroup: {
                     groupId: 'group-1',
-                    name: 'One-X Music',
+                    name: 'User',
                     cover: '',
                     description: 'Лучшая группа всех времён',
                     genre: 'Рок',
