@@ -1,1 +1,1 @@
-export { MyGroupPage } from './ui/MyGroupPage';
+export { MyGroupPage as default } from './ui/MyGroupPage';

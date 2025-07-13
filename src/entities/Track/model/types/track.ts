@@ -3,9 +3,10 @@ export interface Track {
     title: string;
     duration: number;
     cover: string;
+    groupName?: string;
     albumId?: string;
     groupId: string;
     audioUrl: string;
-    createdAt: string; // дата создания, ISO строка
-    updatedAt?: string; // дата обновления, ISO строка (опционально)
+    createdAt: string;
+    updatedAt?: string;
 }

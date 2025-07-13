@@ -1,54 +1,39 @@
-import React, { useEffect, useRef, useState, type FC } from 'react';
+import React, { useCallback, type FC } from 'react';
 import { sidebarSize, playerSize } from 'shared/config/theme/global/variables';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
-import { Button, ButtonTheme, ButtonSize } from 'shared/ui/Button/Button';
-import {
-    FaHeart,
-    FaStepBackward,
-    FaPlay,
-    FaPause,
-    FaStepForward,
-    FaVolumeUp,
-    FaVolumeMute,
-} from 'react-icons/fa';
+import { ButtonTheme } from 'shared/ui/Button/Button';
 import { usePlayer } from '../model/usePlayer';
-import { useTrackStore } from 'entities/Track/slice/useTrackStore';
-import { fetchTrackById } from 'entities/Track/api/fetchTrack';
 import { Text } from 'shared/ui/Text/Text';
+import { usePlayerStore } from 'entities/Player/model';
+import { Like } from 'shared/ui/Like/Like';
+import { PlayButton } from 'shared/ui/PlayButton/PlayButton';
+import { TrackControlButton } from 'shared/ui/TrackControlButton/TrackControlButton';
+import { VolumeControl } from './VolumeControl';
+import { useUserStore } from 'entities/User/model/slice/useUserStore';
+import { likeTrack } from 'entities/User';
 
 export const Player: FC = React.memo(() => {
     const theme = useThemeStore((state) => state.theme);
     const isCollapsed = useSidebarStore((state) => state.isCollapsed);
-
-    const currentTrack = useTrackStore((state) => state.currentTrack);
-
-    useEffect(() => {
-        const fetchTrack = async () => {
-            await fetchTrackById();
-        };
-        void fetchTrack();
-    }, []);
-
-    const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-    const hideTimeout = useRef<NodeJS.Timeout | null>(null);
-
-    const {
-        progress,
-        isPlaying,
-        volume,
-        isMuted,
-        togglePlay,
-        onSeek,
-        onVolumeChange,
-        toggleMute,
-        onPrev,
-    } = usePlayer({ onPrevTrack: () => onPrev() });
+    const currentTrack = usePlayerStore((state) => state.currentTrack);
+    const authData = useUserStore((state) => state.authData);
+    const { progress, isPlaying, togglePlay, onSeek, onPrev } = usePlayer({});
 
     const buttonColor = theme['--button-color'] || '#ec4899';
     const sidebarLeft = isCollapsed
         ? 'calc(var(--sidebar-width-collapsed) + 1.5rem)'
         : 'calc(var(--sidebar-width) + 1.5rem)';
+
+    // Проверяем лайкнут ли текущий трек
+    const liked = currentTrack ? Boolean(authData?.likedTracks?.includes(currentTrack.id)) : false;
+
+    // Обработчик лайка
+    const toggleLike = useCallback(() => {
+        if (!currentTrack) return;
+        likeTrack(currentTrack.id);
+        // Здесь можно добавить логику обновления стора/перерисовки
+    }, [currentTrack]);
 
     return (
         <div
@@ -68,117 +53,65 @@ export const Player: FC = React.memo(() => {
                 type="range"
                 min={0}
                 max={100}
-                value={progress}
+                value={Number.isFinite(progress) ? progress : 0}
                 onChange={onSeek}
                 className="w-full h-1 rounded-t-3xl appearance-none cursor-pointer bg-gray-700"
                 style={{
                     background: `linear-gradient(
-                        to right,
-                        ${buttonColor} 0%,
-                        ${buttonColor} ${progress}%,
-                        #4b5563 ${progress}%,
-                        #4b5563 100%
-                    )`,
+            to right,
+            ${buttonColor} 0%,
+            ${buttonColor} ${Math.min(progress + 0, 100)}%,
+            #4b5563 ${Math.min(progress + 0, 100)}%,
+            #4b5563 100%
+        )`,
                     accentColor: buttonColor,
                 }}
+                aria-label="Прогресс воспроизведения"
             />
 
-            <div className="flex items-center flex-1 mt-2">
+            <div className="flex items-center flex-1 mt-2 relative">
                 {/* Левый блок: обложка + информация */}
-                <div className="flex items-center flex-none">
-                    <div className="w-12 h-12 rounded-lg overflow-hidden mr-4">
-                        <img
-                            src={currentTrack?.cover || '/assets/default-cover.png'}
-                            alt={currentTrack?.title || 'Обложка трека'}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                        <Text className="text-sm font-semibold truncate">
-                            {currentTrack?.title ?? 'Загрузка...'}
-                        </Text>
-                        <Text className="text-xs text-gray-400 truncate">
-                            {currentTrack?.artistId ?? 'Исполнитель не указан'}
-                        </Text>
-                    </div>
+                <div className="w-[192px] flex-shrink-0 flex items-center">
+                    {currentTrack && (
+                        <>
+                            <div className="w-12 h-12 rounded-lg overflow-hidden mr-4">
+                                <img
+                                    src={currentTrack.cover || '/assets/default-cover.png'}
+                                    alt={currentTrack.title || 'Обложка трека'}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <Text className="text-sm font-semibold truncate">
+                                    {currentTrack.title}
+                                </Text>
+                                <Text className="text-xs text-gray-400 truncate">
+                                    {currentTrack.groupName ?? 'Исполнитель не указан'}
+                                </Text>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Центральный блок: управление */}
-                <div className="flex items-center mx-auto space-x-2">
-                    <Button theme={ButtonTheme.CLEAR} size={ButtonSize.M} square>
-                        <FaHeart
-                            className="h-5 w-5"
-                            style={{ color: theme['--inverted-heart-color'] }}
-                        />
-                    </Button>
-                    <Button size={ButtonSize.M} square onClick={onPrev}>
-                        <FaStepBackward className="h-5 w-5" />
-                    </Button>
-                    <Button size={ButtonSize.L} square onClick={togglePlay}>
-                        {isPlaying ? (
-                            <FaPause className="h-6 w-6" />
-                        ) : (
-                            <FaPlay className="h-6 w-6" />
-                        )}
-                    </Button>
-                    <Button
-                        size={ButtonSize.M}
-                        square
-                        onClick={() => {
-                            /* next logic */
-                        }}
-                    >
-                        <FaStepForward className="h-5 w-5" />
-                    </Button>
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
+                    {currentTrack && <Like liked={liked} onToggle={toggleLike} />}
+                    <TrackControlButton
+                        direction="prev"
+                        onClick={onPrev}
+                        ariaLabel="Предыдущий трек"
+                    />
+                    <PlayButton
+                        isPlaying={isPlaying}
+                        isCurrent
+                        onClick={togglePlay}
+                        theme={ButtonTheme.OUTLINE}
+                    />
+                    <TrackControlButton direction="next" ariaLabel="Следующий трек" />
                 </div>
 
                 {/* Регулировка громкости */}
-                <div
-                    className="flex-none ml-4 relative flex items-center space-x-2"
-                    onMouseEnter={() => {
-                        if (hideTimeout.current) {
-                            clearTimeout(hideTimeout.current);
-                            hideTimeout.current = null;
-                        }
-                        setShowVolumeSlider(true);
-                    }}
-                    onMouseLeave={() => {
-                        hideTimeout.current = setTimeout(() => {
-                            setShowVolumeSlider(false);
-                        }, 500);
-                    }}
-                >
-                    <Button
-                        size={ButtonSize.M}
-                        square
-                        onClick={toggleMute}
-                        aria-label={isMuted ? 'Включить звук' : 'Выключить звук'}
-                    >
-                        {isMuted || volume === 0 ? (
-                            <FaVolumeMute className="h-5 w-5" />
-                        ) : (
-                            <FaVolumeUp className="h-5 w-5" />
-                        )}
-                    </Button>
-                    <input
-                        type="range"
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={volume}
-                        onChange={onVolumeChange}
-                        className={`absolute -top-16 left-4 -translate-x-1/2 w-24 h-6
-                            rotate-[-90deg] origin-center cursor-pointer rounded
-                            transition-opacity duration-300
-                            ${showVolumeSlider ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-                        `}
-                        style={{
-                            accentColor: theme['--button-color'],
-                            border: `1px solid ${theme['--bg-container']}`,
-                        }}
-                        aria-label="Регулировка громкости"
-                    />
-                </div>
+                <VolumeControl />
             </div>
         </div>
     );

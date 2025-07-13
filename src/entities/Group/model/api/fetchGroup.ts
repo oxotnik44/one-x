@@ -1,6 +1,7 @@
 import { api } from 'shared/api/api';
 import type { Group } from '../types/group';
 import toast from 'react-hot-toast';
+import { SERVER_BASE_URL } from 'shared/const/localstorage';
 
 export async function fetchGroup(userId: string): Promise<Group | null> {
     try {
@@ -8,22 +9,21 @@ export async function fetchGroup(userId: string): Promise<Group | null> {
         if (groups.length === 0) return null;
 
         const group = groups[0];
+
         try {
             const coverResp = await fetch(
-                `http://localhost:4001/groupCover/${encodeURIComponent(group.name)}`,
+                `${SERVER_BASE_URL}/groupCover/${encodeURIComponent(group.name)}`,
             );
             if (coverResp.ok) {
-                const blob = await coverResp.blob();
-                group.cover = URL.createObjectURL(blob);
+                group.cover = `${SERVER_BASE_URL}/groupCover/${encodeURIComponent(group.name)}`;
             }
         } catch {
             toast.error('Не удалось получить иконку группы');
         }
-
         return group;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         toast.error('Ошибка при загрузке группы пользователя');
+        console.log(error);
         return null;
     }
 }

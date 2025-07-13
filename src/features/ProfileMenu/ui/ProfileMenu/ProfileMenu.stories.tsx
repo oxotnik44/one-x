@@ -15,6 +15,4 @@ type Story = StoryObj<typeof ProfileMenu>;
 
 export const Default: Story = {
     render: () => <ProfileMenu />,
-    // В реальном сторис можно добавить обертку с состоянием открытия меню,
-    // но для базового примера достаточно простого рендера
 };

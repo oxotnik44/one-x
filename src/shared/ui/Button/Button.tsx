@@ -68,7 +68,13 @@ export const Button = memo((props: ButtonProps) => {
     const btnClassName = classNames(baseStyle, sizeClass, shapeClass, themeClass, className);
 
     return (
-        <button className={btnClassName} style={inlineStyles} disabled={disabled} {...otherProps}>
+        <button
+            type="button"
+            className={btnClassName}
+            style={inlineStyles}
+            disabled={disabled}
+            {...otherProps}
+        >
             {children}
         </button>
     );

@@ -7,11 +7,12 @@ export type TextSize = 'small' | 'medium' | 'large' | 'default';
 interface TextProps {
     title?: string;
     text?: string;
-    children?: ReactNode; // добавляем
+    children?: ReactNode;
     className?: string;
     size?: TextSize;
     isLink?: boolean;
     isActive?: boolean;
+    error?: boolean; // добавили проп error
 }
 
 export const Text = memo(
@@ -23,6 +24,7 @@ export const Text = memo(
         size = 'default',
         isLink = false,
         isActive = false,
+        error = false,
     }: TextProps) => {
         const theme = useThemeStore((state) => state.theme);
 
@@ -33,11 +35,15 @@ export const Text = memo(
             default: 'text-lg',
         };
 
-        const textColor = isActive
+        // Если error, то используем primary-color
+        const textColor = error
             ? theme['--primary-color']
-            : isLink
-              ? '#ff9a75'
-              : theme['--text-color'];
+            : isActive
+              ? theme['--primary-color']
+              : isLink
+                ? '#ff9a75'
+                : theme['--text-color'];
+
         const textClass = clsx(
             'font-semibold',
             sizeClassMap[size],

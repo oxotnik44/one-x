@@ -28,7 +28,11 @@ export default defineConfig({
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },
         },
+        watch: {
+            ignored: ['**/db.json'], // <-- исключаем файл db.json из слежения
+        },
     },
+
     test: {
         projects: [
             {

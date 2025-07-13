@@ -1,1 +1,1 @@
-export { AddTrackPage } from './ui/AddTrackPage';
+export { AddTrackPage as default } from './ui/AddTrackPage';

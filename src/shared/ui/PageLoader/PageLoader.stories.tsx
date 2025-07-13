@@ -18,9 +18,3 @@ type Story = StoryObj<typeof PageLoader>;
 export const Default: Story = {
     args: {},
 };
-
-export const WithCustomClass: Story = {
-    args: {
-        className: 'bg-gray-100',
-    },
-};

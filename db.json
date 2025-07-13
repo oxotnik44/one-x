@@ -3,19 +3,22 @@
     {
       "id": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
       "email": "s@gmail.com",
-      "password": "$2b$10$jKR8QPC68LKPUQao1GgP1OyVyc722kWSu1yUeIcphyW8kV5iQna0C"
+      "password": "$2b$10$jKR8QPC68LKPUQao1GgP1OyVyc722kWSu1yUeIcphyW8kV5iQna0C",
+      "likedTracks": [
+        "4dacc5d0-9a7c-4547-a055-ab03445abfe1"
+      ]
     }
   ],
   "groups": [
     {
       "id": "cb073a79-63e9-4478-9eb2-7baa8024e617",
-      "description": "asd",
+      "description": "фывфывфыв",
       "name": "Three Days Grace",
       "userId": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
       "genre": "Рок",
-      "cover": "/static/groups/Three Days Grace/cover.webp",
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/cover.webp",
       "createdAt": "2025-07-12T04:59:56.768Z",
-      "updatedAt": ""
+      "updatedAt": "2025-07-13T17:53:53.614Z"
     }
   ],
   "tracks": [
@@ -27,6 +30,15 @@
       "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
       "audioUrl": "/static/groups/Three Days Grace/Tracks/Its All Over/Its All Over.mp3",
       "createdAt": "2025-07-12T05:00:04.307Z"
+    },
+    {
+      "id": "4dacc5d0-9a7c-4547-a055-ab03445abfe1",
+      "title": "On My Own",
+      "duration": 0,
+      "cover": "/static/groups/Three Days Grace/Tracks/On My Own/cover.png",
+      "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
+      "audioUrl": "/static/groups/Three Days Grace/Tracks/On My Own/On My Own.mp3",
+      "createdAt": "2025-07-13T07:44:42.676Z"
     }
   ]
 }

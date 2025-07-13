@@ -1,35 +1,83 @@
+// src/features/Player/model/usePlayer.test.ts
 import { act, renderHook } from '@testing-library/react';
 import type { ChangeEvent } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { usePlayer } from './usePlayer';
+import { create } from 'zustand';
 
-// Мокаем useTrackStore
+// Мокаем useTrackStore с фиктивным треком
 vi.mock('entities/Track/slice/useTrackStore', () => ({
-    useTrackStore: vi.fn(),
+    useTrackStore: () => ({ id: '1', audioUrl: 'test.mp3' }),
 }));
-import { useTrackStore } from 'entities/Track/slice/useTrackStore';
+
+// Глобальный мок Audio
+const mockAudio = {
+    play: vi.fn().mockResolvedValue(undefined),
+    pause: vi.fn(),
+    duration: 100,
+    currentTime: 0,
+    volume: 1,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+};
+
+// Типизация состояния PlayerStore для Zustand
+interface PlayerState {
+    progress: number;
+    isPlaying: boolean;
+    duration: number;
+    volume: number;
+    isMuted: boolean;
+    audio: typeof mockAudio;
+    setProgress: (val: number) => void;
+    setVolume: (val: number) => void;
+    setIsMuted: (val: boolean) => void;
+    togglePlay: () => void;
+}
+
+// Создаём реальный Zustand стор для теста
+const createTestStore = () =>
+    create<PlayerState>((set, get) => ({
+        progress: 0,
+        isPlaying: false,
+        duration: 100,
+        volume: 1,
+        isMuted: false,
+        audio: { ...mockAudio, currentTime: 0, volume: 1 },
+        setProgress: (val) => set({ progress: val }),
+        setVolume: (val) => set({ volume: val }),
+        setIsMuted: (val) => set({ isMuted: val }),
+        togglePlay: () => {
+            const { isPlaying, audio } = get();
+            if (!audio) return;
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            set({ isPlaying: !isPlaying });
+        },
+    }));
+
+let testStore = createTestStore();
+
+vi.mock('entities/Player/model', () => {
+    const originalModule = vi.importActual('entities/Player/model') as unknown as {
+        usePlayerStore: <T>(selector: (state: PlayerState) => T) => T;
+    };
+
+    return {
+        ...originalModule,
+        usePlayerStore: <T>(selector: (state: PlayerState) => T): T => {
+            return testStore(selector);
+        },
+    };
+});
 
 describe('usePlayer', () => {
-    let mockAudio: Partial<HTMLAudioElement>;
-    const dummyTrack = { id: '1', audioUrl: 'test.mp3' };
-
     beforeEach(() => {
-        mockAudio = {
-            play: vi.fn().mockResolvedValue(undefined),
-            pause: vi.fn(),
-            duration: 100,
-            currentTime: 0,
-            addEventListener: vi.fn(),
-            removeEventListener: vi.fn(),
-        };
-
-        vi.stubGlobal('Audio', vi.fn(() => mockAudio) as unknown as typeof Audio);
-
-        // Приводим useTrackStore к нужному типу и мокаем возврат
-        (useTrackStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue(dummyTrack);
-    });
-
-    afterEach(() => {
+        // Перед каждым тестом пересоздаём стор, чтобы сбросить состояние
+        testStore = createTestStore();
         vi.clearAllMocks();
     });
 
@@ -69,7 +117,6 @@ describe('usePlayer', () => {
         act(() => {
             result.current.onVolumeChange(createChangeEvent('0.5'));
         });
-
         expect(result.current.volume).toBe(0.5);
         expect(result.current.isMuted).toBe(false);
 
@@ -88,7 +135,9 @@ describe('usePlayer', () => {
     it('onPrev сбрасывает прогресс если время > 5', () => {
         const { result } = renderHook(() => usePlayer());
 
-        mockAudio.currentTime = 10;
+        act(() => {
+            testStore.setState({ audio: { ...mockAudio, currentTime: 10 } });
+        });
 
         act(() => {
             result.current.onPrev();
@@ -102,7 +151,9 @@ describe('usePlayer', () => {
 
         const { result } = renderHook(() => usePlayer({ onPrevTrack: onPrevTrackMock }));
 
-        mockAudio.currentTime = 3;
+        act(() => {
+            testStore.setState({ audio: { ...mockAudio, currentTime: 3 } });
+        });
 
         act(() => {
             result.current.onPrev();

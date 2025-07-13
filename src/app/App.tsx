@@ -11,15 +11,12 @@ import { fetchGroup } from 'entities/Group/model/api/fetchGroup';
 const AuthModal = lazy(() => import('widgets/AuthModal'));
 
 function App() {
-    const user = useUserStore((state) => state.authData);
-    const theme = useThemeStore((state) => state.theme);
-    const setCurrentGroup = useGroupStore((state) => state.setCurrentGroup);
-
+    const user = useUserStore((s) => s.authData);
+    const theme = useThemeStore((s) => s.theme);
+    const setCurrentGroup = useGroupStore((s) => s.setCurrentGroup);
     const [isOpen, setIsOpen] = useState(true);
     const [isLogin, setIsLogin] = useState(true);
     const [loadingGroup, setLoadingGroup] = useState(false);
-
-    const onCloseModal = () => setIsOpen(false);
 
     useEffect(() => {
         if (!user) {
@@ -27,41 +24,36 @@ function App() {
             return;
         }
 
-        async function loadGroup() {
+        (async () => {
             setLoadingGroup(true);
-            if (user) {
-                const group = await fetchGroup(user.userId);
-                if (group) {
-                    setCurrentGroup(group);
-                } else {
-                    useGroupStore.getState().clearCurrentGroup();
-                }
-                setLoadingGroup(false);
+            const group = await fetchGroup(user.id);
+            if (group) {
+                setCurrentGroup(group);
+            } else {
+                useGroupStore.getState().clearCurrentGroup();
             }
-        }
-        void loadGroup();
-    }, [user, setCurrentGroup]);
 
-    if (!user) {
+            setLoadingGroup(false);
+        })();
+    }, [setCurrentGroup]);
+
+    if (!user)
         return (
             <Suspense fallback={null}>
                 <AuthModal
                     isOpen={isOpen}
-                    onClose={onCloseModal}
+                    onClose={() => setIsOpen(false)}
                     isLogin={isLogin}
                     setIsLogin={setIsLogin}
                 />
             </Suspense>
         );
-    }
 
-    if (loadingGroup) {
-        return <div>Загрузка данных группы...</div>;
-    }
+    if (loadingGroup) return <div>Загрузка данных группы...</div>;
 
     return (
         <div
-            className={classNames('app', {}, [])}
+            className={classNames('app')}
             style={{
                 backgroundColor: theme['--bg-color'],
                 minHeight: '100vh',

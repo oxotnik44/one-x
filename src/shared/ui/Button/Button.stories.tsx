@@ -5,9 +5,10 @@ const meta: Meta<typeof Button> = {
     title: 'shared/Button',
     component: Button,
     tags: ['autodocs'],
-
     args: {
         children: 'Button',
+        theme: ButtonTheme.OUTLINE,
+        size: ButtonSize.L,
     },
 };
 
@@ -26,30 +27,51 @@ export const Clear: Story = {
     },
 };
 
-export const SquareM: Story = {
+export const Back: Story = {
+    args: {
+        theme: ButtonTheme.BACK,
+        children: '<',
+    },
+};
+
+export const SizeM: Story = {
     args: {
         size: ButtonSize.M,
-        children: 'Text',
+    },
+};
+
+export const SizeL: Story = {
+    args: {
+        size: ButtonSize.L,
+    },
+};
+
+export const SizeXL: Story = {
+    args: {
+        size: ButtonSize.XL,
+    },
+};
+
+export const SquareM: Story = {
+    args: {
+        square: true,
+        size: ButtonSize.M,
+        children: '>',
     },
 };
 
 export const SquareL: Story = {
     args: {
+        square: true,
         size: ButtonSize.L,
-        children: 'Text',
+        children: '>',
     },
 };
 
 export const SquareXL: Story = {
     args: {
-        size: ButtonSize.XL,
-        children: 'Text',
-    },
-};
-
-export const Square: Story = {
-    args: {
         square: true,
+        size: ButtonSize.XL,
         children: '>',
     },
 };
@@ -59,10 +81,11 @@ export const Disabled: Story = {
         disabled: true,
     },
 };
+
 export const SquareDisabled: Story = {
     args: {
         square: true,
         disabled: true,
-        children: 'Text',
+        children: '>',
     },
 };

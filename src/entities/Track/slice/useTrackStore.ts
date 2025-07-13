@@ -1,18 +1,27 @@
-// src/entities/Track/model/trackStore.ts
 import { create } from 'zustand';
 import type { Track } from '../model/types/track';
 
 export interface TrackState {
-    /** Текущая выбранная песня */
-    currentTrack: Track | null;
-    /** Установить текущую песню вручную */
-    setTrack: (track: Track) => void;
+    tracks: Track[];
+
+    setTracks: (tracks: Track[]) => void;
+    addTrack: (track: Track) => void;
+    updateTrack: (track: Track) => void;
+    removeTrack: (id: string) => void;
 }
 
-export const useTrackStore = create<TrackState>()((set) => ({
+export const useTrackStore = create<TrackState>((set) => ({
     currentTrack: null,
+    tracks: [],
 
-    setTrack: (track) => {
-        set({ currentTrack: track });
-    },
+    setTracks: (tracks) => set({ tracks }),
+    addTrack: (track) => set((state) => ({ tracks: [...state.tracks, track] })),
+    updateTrack: (updatedTrack) =>
+        set((state) => ({
+            tracks: state.tracks.map((t) => (t.id === updatedTrack.id ? updatedTrack : t)),
+        })),
+    removeTrack: (id) =>
+        set((state) => ({
+            tracks: state.tracks.filter((t) => t.id !== id),
+        })),
 }));

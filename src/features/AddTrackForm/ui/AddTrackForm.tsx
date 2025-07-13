@@ -23,13 +23,12 @@ export const AddTrackForm: React.FC = () => {
     const titleValue = watch('title');
 
     return (
-        <form
+        <div
             onSubmit={(e) => {
                 e.preventDefault();
                 void submitHandler()(e); // ← вызываем возвращённую функцию с событием
             }}
             className="flex flex-col gap-6 w-full max-w-md mx-auto"
-            noValidate
         >
             <div className="flex gap-4">
                 <FilePicker
@@ -50,9 +49,7 @@ export const AddTrackForm: React.FC = () => {
                     title="Добавить аудиофайл"
                     active={audioSelected}
                 />
-                {errors.audio && (
-                    <Text className="text-red-600 text-sm mt-1">Аудиофайл обязателен</Text>
-                )}
+                {errors.audio && <p className="text-red-600 text-sm mt-1">Аудиофайл обязателен</p>}
             </div>
 
             <Input
@@ -75,6 +72,6 @@ export const AddTrackForm: React.FC = () => {
             >
                 Добавить
             </Button>
-        </form>
+        </div>
     );
 };

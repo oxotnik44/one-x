@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vite
 import { fetchGroup } from './fetchGroup';
 import { api } from 'shared/api/api';
 import toast from 'react-hot-toast';
+import { SERVER_BASE_URL } from 'shared/const/localstorage';
 
 vi.mock('shared/api/api', () => ({
     api: {
@@ -49,7 +50,6 @@ describe('fetchGroup', () => {
     });
 
     it('возвращает группу с обновлённым cover при успешном запросе cover', async () => {
-        // Глубокая копия fakeGroup, чтобы менять cover локально, не мутируя исходный объект
         const groupCopy = { ...fakeGroup };
 
         (api.get as Mock).mockResolvedValue({ data: [groupCopy] });
@@ -61,18 +61,20 @@ describe('fetchGroup', () => {
             blob: () => Promise.resolve(fakeBlob),
         } as unknown as Response);
 
-        // Мокаем URL.createObjectURL, возвращаем строку с префиксом blob:
-        global.URL.createObjectURL = vi.fn(() => 'blob:test-url');
+        // НЕ мокаем URL.createObjectURL, он не вызывается в коде
 
         const result = await fetchGroup(fakeUserId);
 
         expect(api.get).toHaveBeenCalledWith('/groups', { params: { userId: fakeUserId } });
         expect(global.fetch).toHaveBeenCalledWith(
-            `http://localhost:4001/groupCover/${encodeURIComponent(fakeGroup.name)}`,
+            `${SERVER_BASE_URL}/groupCover/${encodeURIComponent(fakeGroup.name)}`,
         );
-        expect(global.URL.createObjectURL).toHaveBeenCalledWith(fakeBlob);
+
+        // Проверяем, что cover установлен именно в строку URL
         expect(result).not.toBeNull();
-        expect(result?.cover).toContain('blob:'); // Теперь проверка пройдет успешно
+        expect(result?.cover).toBe(
+            `${SERVER_BASE_URL}/groupCover/${encodeURIComponent(fakeGroup.name)}`,
+        );
     });
 
     it('выводит ошибку если не удалось получить cover, но возвращает группу', async () => {

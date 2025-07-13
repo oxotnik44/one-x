@@ -1,116 +1,67 @@
-import { useTrackStore } from 'entities/Track/slice/useTrackStore';
-import { useState, useEffect, useRef, useCallback, useMemo, type ChangeEvent } from 'react';
+// src/entities/Player/model/usePlayer.ts
+import { usePlayerStore } from 'entities/Player/model';
+import { useCallback, useMemo } from 'react';
 
-interface UsePlayerProps {
+export interface UsePlayerProps {
     onPrevTrack?: () => void;
+    onNextTrack?: () => void;
 }
 
-export const usePlayer = ({ onPrevTrack }: UsePlayerProps = {}) => {
-    const track = useTrackStore((s) => s.currentTrack);
-    const [progress, setProgress] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(1);
-    const [isMuted, setIsMuted] = useState(false);
+export const usePlayer = ({ onPrevTrack, onNextTrack }: UsePlayerProps = {}) => {
+    // Селектим только то, что нужно
+    const progress = usePlayerStore((state) => state.progress);
+    const isPlaying = usePlayerStore((state) => state.isPlaying);
+    const duration = usePlayerStore((state) => state.duration);
+    const volume = usePlayerStore((state) => state.volume);
+    const isMuted = usePlayerStore((state) => state.isMuted);
+    const audio = usePlayerStore((state) => state.audio);
 
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-    // Обновление аудио при смене трека
-    useEffect(() => {
-        if (!track) return;
-
-        // Очистка предыдущего
-        if (audioRef.current) {
-            audioRef.current.pause();
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        }
-
-        const audio = new Audio(track.audioUrl);
-        audio.volume = isMuted ? 0 : volume;
-        audioRef.current = audio;
-
-        const onLoadedMetadata = () => {
-            setDuration(audio.duration);
-        };
-
-        audio.addEventListener('loadedmetadata', onLoadedMetadata);
-
-        return () => {
-            audio.pause();
-            audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            audioRef.current = null;
-        };
-    }, [track]);
-
-    // Обновляем громкость при изменении volume или isMuted
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = isMuted ? 0 : volume;
-        }
-    }, [volume, isMuted]);
-
-    const updateProgress = useCallback(() => {
-        if (!audioRef.current) return;
-        const currentTime = audioRef.current.currentTime;
-        const dur = audioRef.current.duration || 1;
-        setProgress((currentTime / dur) * 100);
-    }, []);
-
-    const togglePlay = useCallback(() => {
-        if (!audioRef.current) return;
-
-        if (isPlaying) {
-            audioRef.current.pause();
-            setIsPlaying(false);
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        } else {
-            audioRef.current.play();
-            setIsPlaying(true);
-            updateProgress();
-            intervalRef.current = setInterval(updateProgress, 100);
-        }
-    }, [isPlaying, updateProgress]);
+    const setProgress = usePlayerStore((state) => state.setProgress);
+    const setVolume = usePlayerStore((state) => state.setVolume);
+    const setIsMuted = usePlayerStore((state) => state.setIsMuted);
+    const togglePlay = usePlayerStore((state) => state.togglePlay);
 
     const onSeek = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            if (!audioRef.current) return;
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (!audio) return;
             const newProgress = Number(e.target.value);
             setProgress(newProgress);
-            audioRef.current.currentTime = (newProgress / 100) * duration;
-            updateProgress();
+            audio.currentTime = (newProgress / 100) * duration;
         },
-        [duration, updateProgress],
+        [audio, duration, setProgress],
     );
 
-    const onVolumeChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        const newVolume = Number(e.target.value);
-        setVolume(newVolume);
-        setIsMuted(newVolume === 0);
-        if (audioRef.current) {
-            audioRef.current.volume = newVolume;
-        }
-    }, []);
+    const onVolumeChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const v = Number(e.target.value);
+            setVolume(v);
+            setIsMuted(v === 0);
+            if (audio) audio.volume = v;
+        },
+        [audio, setVolume, setIsMuted],
+    );
 
     const toggleMute = useCallback(() => {
-        setIsMuted((prev) => {
-            const next = !prev;
-            if (audioRef.current) audioRef.current.volume = next ? 0 : volume;
-            return next;
-        });
-    }, [volume]);
+        const next = !isMuted;
+        setIsMuted(next);
+        if (audio) audio.volume = next ? 0 : volume;
+    }, [audio, isMuted, volume, setIsMuted]);
 
     const onPrev = useCallback(() => {
-        if (!audioRef.current) return;
-        if (audioRef.current.currentTime > 5) {
-            audioRef.current.currentTime = 0;
+        if (!audio) return;
+        if (audio.currentTime > 5) {
+            audio.currentTime = 0;
             setProgress(0);
         } else {
-            if (onPrevTrack) onPrevTrack();
+            onPrevTrack?.();
         }
-    }, [onPrevTrack]);
+    }, [audio, onPrevTrack, setProgress]);
 
+    const onNext = useCallback(() => {
+        onNextTrack?.();
+    }, [onNextTrack]);
+
+    // Мемо для объекта
     return useMemo(
         () => ({
             progress,
@@ -118,12 +69,12 @@ export const usePlayer = ({ onPrevTrack }: UsePlayerProps = {}) => {
             duration,
             volume,
             isMuted,
-            track,
             togglePlay,
             onSeek,
             onVolumeChange,
             toggleMute,
             onPrev,
+            onNext,
         }),
         [
             progress,
@@ -131,12 +82,12 @@ export const usePlayer = ({ onPrevTrack }: UsePlayerProps = {}) => {
             duration,
             volume,
             isMuted,
-            track,
             togglePlay,
             onSeek,
             onVolumeChange,
             toggleMute,
             onPrev,
+            onNext,
         ],
     );
 };
