@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'shared/ui/Text/Text';
 import { Button, ButtonTheme, ButtonSize } from 'shared/ui/Button/Button';
 import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
 
 export const NotFoundPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation('notFoundPage'); // namespace notFound
 
     const goHome = () => {
         navigate('/');
@@ -13,9 +15,9 @@ export const NotFoundPage = () => {
     return (
         <PageWrapper>
             <div className="flex flex-col items-center justify-center h-full gap-6">
-                <Text title="Страница не найдена" size="large" />
+                <Text title={t('title')} size="large" />
                 <Button onClick={goHome} theme={ButtonTheme.OUTLINE} size={ButtonSize.L}>
-                    Перейти на главную страницу
+                    {t('goHome')}
                 </Button>
             </div>
         </PageWrapper>

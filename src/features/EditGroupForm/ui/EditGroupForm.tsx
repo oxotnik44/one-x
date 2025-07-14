@@ -7,63 +7,65 @@ import { Text } from 'shared/ui/Text/Text';
 import { useEditGroupForm } from '../model/useEditGroupForm';
 import { genresList } from 'entities/Group/model/types/group';
 import { GroupCover } from 'shared/ui/GroupCover/GroupCover';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const EditGroupForm: FC = () => {
     const theme = useThemeStore((s) => s.theme);
     const { control, register, errors, isSubmitting, preview, handleIconChange, onSubmit } =
         useEditGroupForm();
-    // При клике вызываем onSubmit вручную
+    const navigate = useNavigate();
+    const { t } = useTranslation('editGroupForm');
+
     const handleSaveClick = () => {
         onSubmit();
+        navigate('/my_group');
     };
 
     return (
-        <form
-            className="flex flex-col md:flex-row md:items-center md:justify-center gap-14 max-w-4xl p-6 rounded-lg max-h-[80vh] overflow-hidden mx-auto"
-            // Убираем onSubmit, так как это не форма
-        >
+        <form className="flex flex-col md:flex-row md:items-center md:justify-center gap-14 max-w-4xl p-6 rounded-lg max-h-[80vh] overflow-hidden mx-auto">
             <GroupCover edit preview={preview} onIconChange={handleIconChange} />
 
             <div
                 className="flex flex-col flex-1 overflow-y-auto"
                 style={{ maxHeight: '80vh', minWidth: 0 }}
             >
-                <Text title="Редактирование группы" className="mb-4" />
+                <Text title={t('title')} className="mb-4" />
 
-                <Text text="Название группы" size="medium" className="text-white" />
+                <Text text={t('name.label')} size="medium" className="text-white" />
                 <Input
                     {...register('name', {
-                        required: 'Название обязательно',
-                        maxLength: { value: 50, message: 'Максимум 50 символов' },
+                        required: t('name.required'),
+                        maxLength: { value: 50, message: t('name.max') },
                     })}
-                    placeholder="Введите название"
+                    placeholder={t('name.placeholder')}
                     className="bg-gray-700 border-gray-600 w-full min-w-0 mb-1"
                 />
                 {errors.name && (
-                    <Text error size={'small'}>
+                    <Text error size="small">
                         {errors.name.message}
                     </Text>
                 )}
 
-                <Text text="Краткое описание" size="medium" className="text-white mt-2" />
+                <Text text={t('description.label')} size="medium" className="text-white mt-2" />
                 <Input
                     {...register('description', {
-                        maxLength: { value: 200, message: 'Максимум 200 символов' },
+                        maxLength: { value: 200, message: t('description.max') },
                     })}
-                    placeholder="Введите описание (необязательно)"
+                    placeholder={t('description.placeholder')}
                     className="p-2 rounded bg-gray-700 border border-gray-600 text-white resize-none focus:outline-none focus:border-pink-600 w-full min-w-0 mb-4"
                 />
                 {errors.description && (
-                    <Text error size={'small'}>
+                    <Text error size="small">
                         {errors.description.message}
                     </Text>
                 )}
 
-                <Text text="Выберите жанр" size="medium" className="text-white mb-2" />
+                <Text text={t('genre.label')} size="medium" className="text-white mb-2" />
                 <Controller
                     control={control}
                     name="genre"
-                    rules={{ required: 'Жанр обязателен' }}
+                    rules={{ required: t('genre.required') }}
                     render={({ field }) => (
                         <div className="flex flex-wrap gap-2 mb-4">
                             {genresList.map((genre) => {
@@ -99,14 +101,14 @@ export const EditGroupForm: FC = () => {
                 )}
 
                 <Button
-                    type="button" // теперь просто кнопка
+                    type="button"
                     disabled={isSubmitting}
                     theme={ButtonTheme.OUTLINE}
                     size={ButtonSize.L}
                     className="self-center"
-                    onClick={handleSaveClick} // вызов сабмита вручную
+                    onClick={handleSaveClick}
                 >
-                    Сохранить изменения
+                    {t('submit')}
                 </Button>
             </div>
         </form>

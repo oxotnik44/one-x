@@ -3,8 +3,11 @@ import { Button, ButtonSize } from 'shared/ui/Button/Button';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 import { usePlayerStore } from 'entities/Player/model/slice/usePlayerStore';
 import { useThemeStore } from 'shared/config/theme/themeStore';
+import { useTranslation } from 'react-i18next';
 
 export const VolumeControl = memo(() => {
+    const { t } = useTranslation('volumeControl');
+
     const volume = usePlayerStore((s) => s.volume);
     const isMuted = usePlayerStore((s) => s.isMuted);
     const audio = usePlayerStore((s) => s.audio);
@@ -55,7 +58,7 @@ export const VolumeControl = memo(() => {
                 size={ButtonSize.M}
                 square
                 onClick={toggleMute}
-                aria-label={isMuted ? 'Включить звук' : 'Выключить звук'}
+                aria-label={isMuted ? t('unmute') : t('mute')}
             >
                 {isMuted || volume === 0 ? (
                     <FaVolumeMute className="h-5 w-5" />
@@ -79,7 +82,7 @@ export const VolumeControl = memo(() => {
                     accentColor: theme['--button-color'],
                     border: `1px solid ${theme['--bg-container']}`,
                 }}
-                aria-label="Регулировка громкости"
+                aria-label={t('volumeControl')}
             />
         </div>
     );

@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from 'shared/ui/Modal/Modal';
 import { Loader } from 'shared/ui/Loader/Loader';
 import { LoginForm } from 'features/Login/ui/LoginForm/LoginForm';
@@ -14,23 +15,31 @@ interface AuthModalProps {
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isLogin, setIsLogin }) => (
-    <Modal isOpen={isOpen} onClose={onClose} lazy>
-        <Suspense fallback={<Loader />}>
-            {isLogin ? <LoginForm onSuccess={onClose} /> : <RegistrationForm onSuccess={onClose} />}
-            <Button
-                theme={ButtonTheme.CLEAR}
-                onClick={() => {
-                    setIsLogin(!isLogin);
-                }}
-                className="w-full"
-            >
-                <Text
-                    text={isLogin ? 'Регистрация' : 'Авторизация'}
-                    className="text-center"
-                    isLink={true}
-                />
-            </Button>
-        </Suspense>
-    </Modal>
-);
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, isLogin, setIsLogin }) => {
+    const { t } = useTranslation('authModal'); // namespace authModal
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} lazy>
+            <Suspense fallback={<Loader />}>
+                {isLogin ? (
+                    <LoginForm onSuccess={onClose} />
+                ) : (
+                    <RegistrationForm onSuccess={onClose} />
+                )}
+                <Button
+                    theme={ButtonTheme.CLEAR}
+                    onClick={() => {
+                        setIsLogin(!isLogin);
+                    }}
+                    className="w-full"
+                >
+                    <Text
+                        text={isLogin ? t('toRegister') : t('toLogin')}
+                        className="text-center"
+                        isLink={true}
+                    />
+                </Button>
+            </Suspense>
+        </Modal>
+    );
+};

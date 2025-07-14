@@ -17,8 +17,8 @@ describe('sidebarItems', () => {
         });
     });
 
-    it('should contain expected labels and hrefs', () => {
-        expect(sidebarItems.map((item) => item.label)).toEqual(['Поиск', 'Главная', 'Моя группа']);
+    it('should contain expected label keys and hrefs', () => {
+        expect(sidebarItems.map((item) => item.label)).toEqual(['search', 'main', 'myGroup']);
         expect(sidebarItems.map((item) => item.href)).toEqual(['search', 'main', 'my_group']);
     });
 });

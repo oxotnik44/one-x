@@ -1,5 +1,5 @@
 // src/entities/Track/model/slice/trackService.test.ts
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock, afterEach } from 'vitest';
 import { api } from 'shared/api/api';
 import axios from 'axios';
 import { useTrackStore, type TrackState } from '../slice/useTrackStore';
@@ -34,6 +34,9 @@ describe('fetchTracksByGroupName', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        // Мокаем console.error, чтобы не засорять вывод
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+
         mockTrackState = {
             tracks: [],
             setTracks: vi.fn(),
@@ -41,10 +44,11 @@ describe('fetchTracksByGroupName', () => {
             updateTrack: vi.fn(),
             removeTrack: vi.fn(),
         };
-        // Подменяем Zustand
         (useTrackStore.getState as Mock) = vi.fn(() => mockTrackState);
     });
-
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
     it('успешно объединяет данные и вызывает setTracks', async () => {
         const mainTracks = [
             {
@@ -85,6 +89,8 @@ describe('fetchTracksByGroupName', () => {
     });
 
     it('возвращает пустой массив если main API вернул не массив', async () => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        errorSpy.mockRestore();
         mockedApi.get.mockResolvedValue({ data: null });
         // чтобы второй запрос не падал
         mockedAxios.get.mockResolvedValue({ data: [] });

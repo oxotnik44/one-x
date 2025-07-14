@@ -6,6 +6,7 @@ import { Button, ButtonSize, ButtonTheme } from 'shared/ui/Button/Button';
 import { FilePicker } from 'shared/ui/FilePicker/FilePicker';
 import { Text } from 'shared/ui/Text/Text';
 import { useAddTrackForm } from '../model/useAddTrackForm';
+import { useTranslation } from 'react-i18next';
 
 export const AddTrackForm: React.FC = () => {
     const {
@@ -20,13 +21,14 @@ export const AddTrackForm: React.FC = () => {
         submitHandler,
     } = useAddTrackForm();
 
+    const { t } = useTranslation('addTrackForm');
     const titleValue = watch('title');
 
     return (
-        <div
+        <form
             onSubmit={(e) => {
                 e.preventDefault();
-                void submitHandler()(e); // ← вызываем возвращённую функцию с событием
+                void submitHandler()(e);
             }}
             className="flex flex-col gap-6 w-full max-w-md mx-auto"
         >
@@ -36,9 +38,9 @@ export const AddTrackForm: React.FC = () => {
                     onChange={onCoverChange}
                     previewUrl={coverPreview}
                     placeholder={<RxAvatar size={48} />}
-                    title="Добавить обложку"
+                    title={t('addCover')}
                 />
-                {errors.cover && <p className="text-red-600 text-sm mt-1">Обложка обязательна</p>}
+                {errors.cover && <p className="text-red-600 text-sm mt-1">{t('coverRequired')}</p>}
 
                 <FilePicker
                     accept="audio/mpeg"
@@ -46,21 +48,20 @@ export const AddTrackForm: React.FC = () => {
                     placeholder={
                         audioSelected ? <IoMdMusicalNote size={48} /> : <RxSpeakerLoud size={48} />
                     }
-                    title="Добавить аудиофайл"
+                    title={t('addAudio')}
                     active={audioSelected}
                 />
-                {errors.audio && <p className="text-red-600 text-sm mt-1">Аудиофайл обязателен</p>}
+                {errors.audio && <p className="text-red-600 text-sm mt-1">{t('audioRequired')}</p>}
             </div>
 
             <Input
-                placeholder="Название трека"
+                placeholder={t('trackTitle')}
                 {...register('title')}
                 className={errors.title ? 'border-red-600' : ''}
             />
             {!titleValue && audioSelected && (
                 <Text className="text-yellow-600 text-sm mt-1" size="medium">
-                    Название трека не заполнено, будет взято из файла:{' '}
-                    <b>{audioFileName?.replace(/\.[^/.]+$/, '')}</b>
+                    {t('titleFromFile')} <b>{audioFileName?.replace(/\.[^/.]+$/, '')}</b>
                 </Text>
             )}
 
@@ -70,8 +71,8 @@ export const AddTrackForm: React.FC = () => {
                 size={ButtonSize.L}
                 className="self-center mt-2"
             >
-                Добавить
+                {t('addButton')}
             </Button>
-        </div>
+        </form>
     );
 };

@@ -1,17 +1,20 @@
+// src/entities/Player/model/slice/usePlayerStore.ts
 import { create } from 'zustand';
 import type { Track } from 'entities/Track/model/types/track';
 
 export interface PlayerState {
     currentTrack: Track | null;
-    progress: number;
+    progress: number; // [%]
+    currentTime: number; // в секундах
     isPlaying: boolean;
-    duration: number;
+    duration: number; // в секундах
     volume: number;
     isMuted: boolean;
     audio: HTMLAudioElement | null;
 
     setCurrentTrack: (track: Track) => void;
     setProgress: (progress: number) => void;
+    setCurrentTime: (time: number) => void;
     setIsPlaying: (isPlaying: boolean) => void;
     setDuration: (duration: number) => void;
     setVolume: (volume: number) => void;
@@ -23,6 +26,7 @@ export interface PlayerState {
 export const usePlayerStore = create<PlayerState>((set, get) => ({
     currentTrack: null,
     progress: 0,
+    currentTime: 0,
     isPlaying: false,
     duration: 0,
     volume: 1,
@@ -30,40 +34,37 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     audio: null,
 
     setCurrentTrack: (track) => {
-        const { audio, volume, isMuted, currentTrack: prevTrack } = get();
-
-        if (audio) {
-            audio.pause();
-            audio.src = '';
+        const prev = get();
+        if (prev.audio) {
+            prev.audio.pause();
+            prev.audio.src = '';
         }
 
-        const newAudio = new Audio(track.audioUrl);
-        newAudio.volume = isMuted ? 0 : volume;
+        const audio = new Audio(track.audioUrl);
+        audio.volume = prev.isMuted ? 0 : prev.volume;
 
-        newAudio.addEventListener('loadedmetadata', () => {
-            set({ duration: newAudio.duration });
+        audio.addEventListener('loadedmetadata', () => {
+            set({ duration: audio.duration });
         });
 
-        newAudio.addEventListener('timeupdate', () => {
-            set({ progress: (newAudio.currentTime / newAudio.duration) * 100 });
+        audio.addEventListener('timeupdate', () => {
+            set({
+                progress: (audio.currentTime / audio.duration) * 100,
+                currentTime: audio.currentTime,
+            });
         });
 
-        newAudio.play().catch(() => {
-            // Можно обработать ошибку play (например, автозапуск запрещён)
+        audio.play().catch(() => {
+            console.warn('Автовоспроизведение запрещено браузером');
         });
-
-        // Объединяем предыдущее состояние трека и новый трек, чтобы не потерять поля
-        const mergedTrack = {
-            ...prevTrack,
-            ...track,
-        };
 
         set({
-            currentTrack: mergedTrack,
+            currentTrack: track,
             progress: 0,
+            currentTime: 0,
             isPlaying: true,
-            duration: newAudio.duration,
-            audio: newAudio,
+            duration: 0, // будет обновлено в loadedmetadata
+            audio,
         });
     },
 
@@ -75,7 +76,9 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
         set({ progress });
     },
 
-    setIsPlaying: (isPlaying) => {
+    setCurrentTime: (time) => set({ currentTime: time }),
+
+    setIsPlaying: (isPlaying: boolean) => {
         const audio = get().audio;
         if (!audio) return;
 
@@ -93,17 +96,13 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
     setVolume: (volume) => {
         const audio = get().audio;
-        if (audio) {
-            audio.volume = volume;
-        }
+        if (audio) audio.volume = volume;
         set({ volume });
     },
 
     setIsMuted: (isMuted) => {
         const audio = get().audio;
-        if (audio) {
-            audio.volume = isMuted ? 0 : get().volume;
-        }
+        if (audio) audio.volume = isMuted ? 0 : get().volume;
         set({ isMuted });
     },
 
@@ -114,12 +113,11 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
     resetPlayer: () => {
         const audio = get().audio;
-        if (audio) {
-            audio.pause();
-        }
+        if (audio) audio.pause();
         set({
             currentTrack: null,
             progress: 0,
+            currentTime: 0,
             isPlaying: false,
             duration: 0,
             audio: null,

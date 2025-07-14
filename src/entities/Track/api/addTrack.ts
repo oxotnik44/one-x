@@ -8,6 +8,7 @@ interface AddTrackData {
     cover: File;
     audio: File;
     groupName?: string;
+    duration: number;
 }
 
 export async function addTrack(data: AddTrackData): Promise<void> {
@@ -48,16 +49,15 @@ export async function addTrack(data: AddTrackData): Promise<void> {
 
         // 3. Формируем трек с данными из uploadResponse
         // Ожидается, что uploadResponse.data содержит { coverUrl, audioUrl, duration }
-        const { coverUrl, audioUrl, duration } = uploadResponse.data as {
+        const { coverUrl, audioUrl } = uploadResponse.data as {
             coverUrl: string;
             audioUrl: string;
-            duration: number;
         };
 
         const newTrack: Track = {
             id: uuidv4(),
             title: data.title,
-            duration: duration ?? 0,
+            duration: data.duration,
             cover: coverUrl,
             groupId: group.id,
             audioUrl,

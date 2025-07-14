@@ -19,10 +19,10 @@ describe('useAddTrackForm', () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        // Правильно возвращаем строку groupName
-        (useGroupStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue('TestGroup');
+        (useGroupStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+            currentGroup: { name: 'TestGroup' },
+        });
 
-        // Мокаем URL.createObjectURL, т.к. jsdom его не поддерживает
         global.URL.createObjectURL = vi.fn(() => 'mocked-url');
     });
 
@@ -35,26 +35,28 @@ describe('useAddTrackForm', () => {
         expect(result.current.audioFileName).toBeNull();
     });
 
-    it('обрабатывает смену файла cover и создает preview', () => {
+    it('обрабатывает смену cover и устанавливает preview', async () => {
         const { result } = renderHook(() => useAddTrackForm());
-
         const file = new File(['dummy'], 'cover.png', { type: 'image/png' });
 
-        act(() => {
+        await act(async () => {
             result.current.onCoverChange([file] as unknown as FileList);
+            // Ждём, пока React применит все обновления состояния
+            await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
         expect(global.URL.createObjectURL).toHaveBeenCalledWith(file);
         expect(result.current.coverPreview).toBe('mocked-url');
     });
 
-    it('обрабатывает смену аудио и устанавливает имя файла', () => {
+    it('обрабатывает смену аудио и устанавливает имя файла', async () => {
         const { result } = renderHook(() => useAddTrackForm());
-
         const file = new File(['dummy'], 'audio.mp3', { type: 'audio/mp3' });
 
-        act(() => {
+        await act(async () => {
             result.current.onAudioChange([file] as unknown as FileList);
+            // Ждём, пока React применит все обновления состояния
+            await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
         expect(result.current.audioSelected).toBe(true);

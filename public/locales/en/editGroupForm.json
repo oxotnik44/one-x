@@ -1,0 +1,19 @@
+{
+    "title": "Edit Group",
+    "name": {
+        "label": "Group Name",
+        "placeholder": "Enter group name",
+        "required": "Name is required",
+        "max": "Maximum 50 characters"
+    },
+    "description": {
+        "label": "Short Description",
+        "placeholder": "Enter description (optional)",
+        "max": "Maximum 200 characters"
+    },
+    "genre": {
+        "label": "Select genre",
+        "required": "Genre is required"
+    },
+    "submit": "Save Changes"
+}

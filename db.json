@@ -5,7 +5,8 @@
       "email": "s@gmail.com",
       "password": "$2b$10$jKR8QPC68LKPUQao1GgP1OyVyc722kWSu1yUeIcphyW8kV5iQna0C",
       "likedTracks": [
-        "4dacc5d0-9a7c-4547-a055-ab03445abfe1"
+        "4dacc5d0-9a7c-4547-a055-ab03445abfe1",
+        "580de053-72a7-4c77-a04c-fdaff80be131"
       ]
     }
   ],
@@ -16,29 +17,29 @@
       "name": "Three Days Grace",
       "userId": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
       "genre": "Рок",
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/cover.webp",
+      "cover": "http://localhost:4001/groupCover/Three%20Days%20Grace",
       "createdAt": "2025-07-12T04:59:56.768Z",
-      "updatedAt": "2025-07-13T17:53:53.614Z"
+      "updatedAt": "2025-07-14T07:01:17.067Z"
     }
   ],
   "tracks": [
     {
-      "id": "bd77f4fe-0d07-4ffc-b5ed-785d5a33a8af",
+      "id": "059c2026-d43d-4b5b-ac50-5ed6c7480772",
       "title": "Its All Over",
-      "duration": 0,
+      "duration": 249,
       "cover": "/static/groups/Three Days Grace/Tracks/Its All Over/cover.png",
       "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
       "audioUrl": "/static/groups/Three Days Grace/Tracks/Its All Over/Its All Over.mp3",
-      "createdAt": "2025-07-12T05:00:04.307Z"
+      "createdAt": "2025-07-14T13:05:52.262Z"
     },
     {
-      "id": "4dacc5d0-9a7c-4547-a055-ab03445abfe1",
+      "id": "580de053-72a7-4c77-a04c-fdaff80be131",
       "title": "On My Own",
-      "duration": 0,
+      "duration": 186,
       "cover": "/static/groups/Three Days Grace/Tracks/On My Own/cover.png",
       "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
       "audioUrl": "/static/groups/Three Days Grace/Tracks/On My Own/On My Own.mp3",
-      "createdAt": "2025-07-13T07:44:42.676Z"
+      "createdAt": "2025-07-14T13:06:00.332Z"
     }
   ]
 }

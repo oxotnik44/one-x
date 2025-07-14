@@ -12,7 +12,7 @@ interface TextProps {
     size?: TextSize;
     isLink?: boolean;
     isActive?: boolean;
-    error?: boolean; // добавили проп error
+    error?: boolean;
 }
 
 export const Text = memo(

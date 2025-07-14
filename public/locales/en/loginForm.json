@@ -1,0 +1,16 @@
+{
+    "title": "Login",
+    "email": {
+        "label": "Email",
+        "placeholder": "you@example.com",
+        "required": "Enter email",
+        "invalid": "Invalid email format"
+    },
+    "password": {
+        "label": "Password",
+        "placeholder": "••••••",
+        "required": "Enter password",
+        "minLength": "Minimum 6 characters"
+    },
+    "submit": "Log in"
+}

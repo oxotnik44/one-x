@@ -16,7 +16,7 @@ describe('useCreateGroupForm', () => {
         global.URL.revokeObjectURL = vi.fn();
     });
 
-    it('устанавливает preview при смене иконки', () => {
+    it('устанавливает preview при смене иконки', async () => {
         const { result } = renderHook(() => useCreateGroupForm());
 
         const file = new File(['dummy'], 'icon.png', { type: 'image/png' });
@@ -25,12 +25,13 @@ describe('useCreateGroupForm', () => {
             length: 1,
             item: (index: number) => (index === 0 ? file : null),
         } as unknown as FileList;
-        act(() => {
-            // Обновляем значение icon через setValue, чтобы сработал watch и эффект
+
+        await act(async () => {
             result.current.setValue('icon', fileList, { shouldValidate: true });
+            // ждём, пока React применит обновления
+            await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
-        // Проверяем, что createObjectURL вызван и preview обновился
         expect(global.URL.createObjectURL).toHaveBeenCalledWith(file);
         expect(result.current.preview).toBe('mocked-url');
     });

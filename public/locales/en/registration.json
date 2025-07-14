@@ -1,0 +1,19 @@
+{
+    "title": "Registration",
+    "email": {
+        "label": "Email",
+        "required": "Enter email",
+        "invalid": "Invalid email"
+    },
+    "password": {
+        "label": "Password",
+        "required": "Enter password",
+        "minLength": "Minimum 6 characters"
+    },
+    "confirmPassword": {
+        "label": "Confirm Password",
+        "required": "Confirm your password",
+        "match": "Passwords do not match"
+    },
+    "submit": "Register"
+}

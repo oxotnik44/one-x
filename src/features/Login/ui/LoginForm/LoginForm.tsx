@@ -3,21 +3,24 @@ import { useForm } from 'react-hook-form';
 import { Text } from 'shared/ui/Text/Text';
 import { Button } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
-import type { LoginSchema } from '../../../../entities/User/model/types/loginSchema';
+import type { LoginSchema } from 'entities/User/model/types/loginSchema';
 import { loginUser } from 'entities/User/model/api/Login/loginUser';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
     onSuccess: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
+    const { t } = useTranslation('loginForm');
+
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting, isSubmitted },
         trigger,
     } = useForm<LoginSchema>({
-        mode: 'onSubmit', // валидировать только при отправке
+        mode: 'onSubmit',
     });
 
     const [email, setEmail] = useState<string>('');
@@ -25,7 +28,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
     const onEmailChange = (value: string) => {
         setEmail(value);
-        if (isSubmitted) trigger('email'); // после первого сабмита валидируем при вводе
+        if (isSubmitted) trigger('email');
     };
 
     const onPasswordChange = (value: string) => {
@@ -45,30 +48,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
             onSubmit={(e) => {
                 void handleSubmit(onSubmit)(e);
             }}
-            className=""
             autoComplete="off"
             noValidate
         >
-            <Text title="Авторизация" />
+            <Text title={t('title')} />
 
             <div className="mb-6">
-                <Text className="block mb-2 font-semibold text-black text-lg" text="Email" />
+                <Text
+                    className="block mb-2 font-semibold text-black text-lg"
+                    text={t('email.label')}
+                />
                 <Input
                     id="email"
                     type="email"
                     {...register('email', {
-                        required: 'Введите email',
+                        required: t('email.required'),
                         pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: 'Некорректный email',
+                            message: t('email.invalid'),
                         },
                     })}
                     value={email}
                     onChangeHandler={onEmailChange}
                     disabled={isSubmitting}
-                    placeholder="you@example.com"
-                    className={`${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-                    autoComplete="off"
+                    placeholder={t('email.placeholder')}
+                    className={errors.email ? 'border-red-500' : 'border-gray-300'}
                 />
                 {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -76,21 +80,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
             </div>
 
             <div className="mb-8">
-                <Text className="block mb-2 font-semibold text-black text-lg" text="Пароль" />
-
+                <Text
+                    className="block mb-2 font-semibold text-black text-lg"
+                    text={t('password.label')}
+                />
                 <Input
                     id="password"
                     type="password"
                     {...register('password', {
-                        required: 'Введите пароль',
-                        minLength: { value: 6, message: 'Минимум 6 символов' },
+                        required: t('password.required'),
+                        minLength: { value: 6, message: t('password.minLength') },
                     })}
                     value={password}
                     onChangeHandler={onPasswordChange}
                     disabled={isSubmitting}
-                    placeholder="••••••"
-                    className={`${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-                    autoComplete="off"
+                    placeholder={t('password.placeholder')}
+                    className={errors.password ? 'border-red-500' : 'border-gray-300'}
                 />
                 {errors.password && (
                     <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
@@ -98,7 +103,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
             </div>
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
-                <Text text="Войти" />
+                <Text text={t('submit')} />
             </Button>
         </form>
     );

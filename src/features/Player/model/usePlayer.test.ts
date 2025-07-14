@@ -89,6 +89,25 @@ describe('usePlayer', () => {
         expect(result.current.volume).toBe(1);
         expect(result.current.isMuted).toBe(false);
     });
+    it('onSeek обновляет прогресс и устанавливает текущее время аудио', () => {
+        const { result } = renderHook(() => usePlayer());
+
+        // Создаём мок-событие изменения input[type=range] со значением 50
+        const event = {
+            target: {
+                value: '50',
+            },
+        } as React.ChangeEvent<HTMLInputElement>;
+
+        act(() => {
+            result.current.onSeek(event);
+        });
+
+        expect(result.current.progress).toBe(50);
+        expect(testStore.getState().audio.currentTime).toBeCloseTo(
+            (50 / 100) * testStore.getState().duration,
+        );
+    });
 
     it('переключает проигрывание', () => {
         const { result } = renderHook(() => usePlayer());

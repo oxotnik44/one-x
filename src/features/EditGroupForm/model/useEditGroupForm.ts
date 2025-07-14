@@ -3,7 +3,6 @@ import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
 import { useState, useEffect } from 'react';
 import type { Genre } from 'entities/Group';
 import { editGroup } from 'entities/Group/model/api/editGroup';
-import { useNavigate } from 'react-router-dom';
 
 export interface EditGroupFormValues {
     name: string;
@@ -15,7 +14,6 @@ export interface EditGroupFormValues {
 export const useEditGroupForm = () => {
     const currentGroup = useGroupStore((s) => s.currentGroup);
     const [preview, setPreview] = useState<string | null>(null);
-    const navigate = useNavigate();
 
     const {
         control,
@@ -48,18 +46,19 @@ export const useEditGroupForm = () => {
     };
 
     const onSubmit = handleSubmit(async (data) => {
-        if (!currentGroup) return;
+        if (!currentGroup) return false;
         try {
             await editGroup(currentGroup.id, {
                 name: data.name,
                 description: data.description ?? null,
                 genre: data.genre,
                 cover: currentGroup.cover,
-                newIconFile: data.icon ?? undefined,
+                newIconFile: data.icon ?? null,
             });
-            navigate('/my_group'); // переход после успешного обновления
+            return true;
         } catch (error) {
             console.error('Ошибка обновления группы', error);
+            return false;
         }
     });
 

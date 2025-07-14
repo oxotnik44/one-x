@@ -5,12 +5,15 @@ import { Button } from 'shared/ui/Button/Button';
 import { Input } from 'shared/ui/Input/Input';
 import type { RegistrationSchema } from '../../../../entities/User/model/types/registrationSchema';
 import { registrationUser } from 'entities/User/model/api/Registration/registrationUser';
+import { useTranslation } from 'react-i18next';
 
 interface RegistrationFormProps {
     onSuccess: () => void;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
+    const { t } = useTranslation('registration');
+
     const {
         register,
         handleSubmit,
@@ -30,26 +33,28 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         }
     };
 
-    // обёртка, чтобы onSubmit не возвращал Promise напрямую
     const onFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         void handleSubmit(onSubmit)(e);
     };
 
     return (
         <form onSubmit={onFormSubmit} className="" autoComplete="off" noValidate>
-            <Text title="Регистрация" />
+            <Text title={t('title')} />
 
             {/* Email */}
             <div className="mb-6">
-                <Text className="block mb-2 font-semibold text-black text-lg" text="Email" />
+                <Text
+                    className="block mb-2 font-semibold text-black text-lg"
+                    text={t('email.label')}
+                />
                 <Input
                     id="email"
                     type="email"
                     {...register('email', {
-                        required: 'Введите email',
+                        required: t('email.required'),
                         pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: 'Некорректный email',
+                            message: t('email.invalid'),
                         },
                     })}
                     disabled={isSubmitting}
@@ -66,15 +71,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 )}
             </div>
 
-            {/* Пароль */}
+            {/* Password */}
             <div className="mb-6">
-                <Text className="block mb-2 font-semibold text-black text-lg" text="Пароль" />
+                <Text
+                    className="block mb-2 font-semibold text-black text-lg"
+                    text={t('password.label')}
+                />
                 <Input
                     id="password"
                     type="password"
                     {...register('password', {
-                        required: 'Введите пароль',
-                        minLength: { value: 6, message: 'Минимум 6 символов' },
+                        required: t('password.required'),
+                        minLength: { value: 6, message: t('password.minLength') },
                     })}
                     disabled={isSubmitting}
                     placeholder="••••••"
@@ -91,18 +99,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
                 )}
             </div>
 
-            {/* Подтверждение пароля */}
+            {/* Confirm Password */}
             <div className="mb-8">
                 <Text
                     className="block mb-2 font-semibold text-black text-lg"
-                    text="Повторите пароль"
+                    text={t('confirmPassword.label')}
                 />
                 <Input
                     id="confirmPassword"
                     type="password"
                     {...register('confirmPassword', {
-                        required: 'Подтвердите пароль',
-                        validate: (value) => value === passwordValue || 'Пароли не совпадают',
+                        required: t('confirmPassword.required'),
+                        validate: (value) => value === passwordValue || t('confirmPassword.match'),
                     })}
                     disabled={isSubmitting}
                     placeholder="••••••"
@@ -119,7 +127,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
             </div>
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
-                Зарегистрироваться
+                {t('submit')}
             </Button>
         </form>
     );

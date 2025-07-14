@@ -8,6 +8,7 @@ import React, {
     type CSSProperties,
 } from 'react';
 import { useThemeStore } from 'shared/config/theme/themeStore';
+import { useTranslation } from 'react-i18next';
 
 interface FilePickerProps {
     accept?: string;
@@ -33,6 +34,7 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
     const theme = useThemeStore((state) => state.theme);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [isHover, setIsHover] = useState(false);
+    const { t } = useTranslation('filePicker'); // namespace filePicker
 
     const handleClick = useCallback(() => {
         inputRef.current?.click();
@@ -59,7 +61,7 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
                     backgroundColor: isActive ? theme['--primary-color'] : 'transparent',
                     ...style,
                 }}
-                title={title}
+                title={title ?? t('title')}
                 onClick={handleClick}
                 onMouseEnter={() => setIsHover(true)}
                 onMouseLeave={() => setIsHover(false)}
@@ -67,7 +69,7 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
                 {previewUrl ? (
                     <img
                         src={previewUrl}
-                        alt={title || 'Превью файла'}
+                        alt={title ?? t('previewAlt')}
                         className="rounded-md object-contain"
                         style={{ maxWidth: '100%', maxHeight: '100%' }}
                     />

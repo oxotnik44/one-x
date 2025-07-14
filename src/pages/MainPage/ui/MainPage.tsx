@@ -1,12 +1,15 @@
 // src/pages/MainPage.tsx
 import type { FC } from 'react';
-import Logo from 'shared/assets/Logo.png';
+import { useTranslation } from 'react-i18next';
+import Logo from '/assets/Logo.webp';
 import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
 
 export const MainPage: FC = () => {
+    const { t } = useTranslation('mainPage'); // namespace 'main', создай его в переводах
+
     return (
         <PageWrapper>
-            <img src={Logo} alt="Логотип" className="w-full h-full object-contain" />
+            <img src={Logo} alt={t('logoAlt')} className="w-full h-full object-contain" />
         </PageWrapper>
     );
 };

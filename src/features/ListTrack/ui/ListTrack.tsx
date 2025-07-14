@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTrackStore } from 'entities/Track/slice/useTrackStore';
 import { fetchTracksByGroupName } from 'entities/Track/api/fetchTrackByGroupName';
 import { TrackItem } from './TrackItem';
+import { useTranslation } from 'react-i18next';
 
 export const ListTrack: React.FC = () => {
+    const { t } = useTranslation('listTrack');
     const currentGroup = useGroupStore((state) => state.currentGroup);
     const tracks = useTrackStore((state) => state.tracks);
     const setTracks = useTrackStore((state) => state.setTracks);
@@ -19,11 +21,7 @@ export const ListTrack: React.FC = () => {
     }, [currentGroup?.id, setTracks, currentGroup?.name]);
 
     if (!currentGroup) {
-        return <div>Группа не выбрана</div>;
-    }
-
-    if (tracks.length === 0) {
-        return <div>Синглы отсутствуют</div>;
+        return <div>{t('noGroup')}</div>;
     }
 
     const onAddTrackClick = () => {
@@ -32,20 +30,19 @@ export const ListTrack: React.FC = () => {
 
     return (
         <div className="flex flex-col max-h-[318px]">
-            {/* Контейнер с вертикальными отступами и прокруткой */}
             <div className="overflow-y-auto flex-grow pr-2 space-y-4">
                 {tracks.map((track) => (
                     <TrackItem key={track.id} track={track} groupName={currentGroup.name} />
                 ))}
             </div>
-
+            {tracks.length === 0 && <div>{t('noTracks')}</div>}
             <Button
                 theme={ButtonTheme.OUTLINE}
                 size={ButtonSize.L}
                 className="self-center mt-4"
                 onClick={onAddTrackClick}
             >
-                Добавить трек
+                {t('addTrack')}
             </Button>
         </div>
     );

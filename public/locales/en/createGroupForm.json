@@ -1,0 +1,26 @@
+{
+    "title": "Create a Group",
+    "name": {
+        "label": "Group Name",
+        "placeholder": "Enter group name"
+    },
+    "description": {
+        "label": "Short Description",
+        "placeholder": "Enter a description (optional)"
+    },
+    "genre": {
+        "label": "Select a genre"
+    },
+    "icon": {
+        "title": "Add group icon",
+        "alt": "Group icon"
+    },
+    "submit": "Create Group",
+    "validation": {
+        "iconRequired": "Icon is required",
+        "nameRequired": "Name is required",
+        "nameMax": "Maximum 50 characters allowed",
+        "descriptionMax": "Maximum 200 characters allowed",
+        "genreRequired": "Genre is required"
+    }
+}

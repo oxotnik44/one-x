@@ -7,6 +7,7 @@ const MainPage = React.lazy(() => import('pages/MainPage'));
 const MyGroupPage = React.lazy(() => import('pages/MyGroupPage'));
 const GroupSettingsPage = React.lazy(() => import('pages/GroupSettingsPage'));
 const NotFoundPage = React.lazy(() => import('pages/NotFoundPage'));
+const SettingsUserPage = React.lazy(() => import('pages/SettingsUserPage'));
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -18,6 +19,7 @@ export enum AppRoutes {
     MY_GROUP = 'my_group',
     ADD_TRACK = 'add_track',
     GROUP_SETTINGS = 'group_settings',
+    SETTINGS = 'settings',
     NOT_FOUND = 'not_found',
 }
 
@@ -27,6 +29,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MY_GROUP]: '/my_group',
     [AppRoutes.ADD_TRACK]: '/my_group/add_track',
     [AppRoutes.GROUP_SETTINGS]: '/my_group/settings',
+    [AppRoutes.SETTINGS]: '/settings',
     [AppRoutes.NOT_FOUND]: '*',
 };
 
@@ -66,6 +69,15 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         element: (
             <React.Suspense fallback={<div>Загрузка...</div>}>
                 <GroupSettingsPage />
+            </React.Suspense>
+        ),
+        authOnly: true,
+    },
+    [AppRoutes.SETTINGS]: {
+        path: RoutePath[AppRoutes.SETTINGS],
+        element: (
+            <React.Suspense fallback={<div>Загрузка...</div>}>
+                <SettingsUserPage />
             </React.Suspense>
         ),
         authOnly: true,

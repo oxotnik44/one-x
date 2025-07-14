@@ -29,15 +29,19 @@ describe('fetchGroup', () => {
         updatedAt: '',
     };
 
+    // Подавляем логи ошибок в тестах
+    let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+    let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
     beforeEach(() => {
         vi.clearAllMocks();
+        consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+        consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
-        // Очистка URL.createObjectURL, чтобы избежать утечек памяти
-        if (typeof URL.revokeObjectURL === 'function') {
-            URL.revokeObjectURL(fakeGroup.cover);
-        }
+        consoleLogSpy.mockRestore();
+        consoleErrorSpy.mockRestore();
     });
 
     it('возвращает null если групп нет', async () => {

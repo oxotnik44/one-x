@@ -1,0 +1,9 @@
+{
+    "addCover": "Add cover",
+    "coverRequired": "Cover is required",
+    "addAudio": "Add audio file",
+    "audioRequired": "Audio file is required",
+    "trackTitle": "Track title",
+    "titleFromFile": "Track title is empty, will be taken from file:",
+    "addButton": "Add"
+}

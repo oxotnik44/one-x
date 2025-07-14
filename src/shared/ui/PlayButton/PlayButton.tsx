@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonSize, ButtonTheme } from 'shared/ui/Button/Button';
 import { FaPlay, FaPause } from 'react-icons/fa';
 
@@ -20,6 +21,8 @@ export const PlayButton = React.memo(
         theme,
         showOnHover = false,
     }: PlayButtonProps) => {
+        const { t } = useTranslation('playButton'); // namespace player
+
         return (
             <Button
                 size={ButtonSize.L}
@@ -27,10 +30,10 @@ export const PlayButton = React.memo(
                 onClick={onClick}
                 theme={theme}
                 className={`
-                ${showOnHover ? 'opacity-0 hover:opacity-100' : 'opacity-100'}
-                transition-opacity ${className}
-            `}
-                aria-label={isCurrent && isPlaying ? 'Пауза' : 'Воспроизвести'}
+                    ${showOnHover ? 'opacity-0 hover:opacity-100' : 'opacity-100'}
+                    transition-opacity ${className}
+                `}
+                aria-label={isCurrent && isPlaying ? t('pause') : t('play')}
             >
                 {isCurrent && isPlaying ? (
                     <FaPause className="h-6 w-6 text-white" />
@@ -41,4 +44,5 @@ export const PlayButton = React.memo(
         );
     },
 );
+
 PlayButton.displayName = 'PlayButton';

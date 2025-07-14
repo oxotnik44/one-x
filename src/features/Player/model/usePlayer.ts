@@ -1,6 +1,7 @@
 // src/entities/Player/model/usePlayer.ts
 import { usePlayerStore } from 'entities/Player/model';
 import { useCallback, useMemo } from 'react';
+import { formatTime } from 'shared/lib/formatTime';
 
 export interface UsePlayerProps {
     onPrevTrack?: () => void;
@@ -8,25 +9,25 @@ export interface UsePlayerProps {
 }
 
 export const usePlayer = ({ onPrevTrack, onNextTrack }: UsePlayerProps = {}) => {
-    // Селектим только то, что нужно
-    const progress = usePlayerStore((state) => state.progress);
-    const isPlaying = usePlayerStore((state) => state.isPlaying);
-    const duration = usePlayerStore((state) => state.duration);
-    const volume = usePlayerStore((state) => state.volume);
-    const isMuted = usePlayerStore((state) => state.isMuted);
-    const audio = usePlayerStore((state) => state.audio);
+    const progress = usePlayerStore((s) => s.progress);
+    const currentTime = usePlayerStore((s) => s.currentTime);
+    const duration = usePlayerStore((s) => s.duration);
+    const isPlaying = usePlayerStore((s) => s.isPlaying);
+    const volume = usePlayerStore((s) => s.volume);
+    const isMuted = usePlayerStore((s) => s.isMuted);
+    const audio = usePlayerStore((s) => s.audio);
 
-    const setProgress = usePlayerStore((state) => state.setProgress);
-    const setVolume = usePlayerStore((state) => state.setVolume);
-    const setIsMuted = usePlayerStore((state) => state.setIsMuted);
-    const togglePlay = usePlayerStore((state) => state.togglePlay);
+    const setProgress = usePlayerStore((s) => s.setProgress);
+    const setVolume = usePlayerStore((s) => s.setVolume);
+    const setIsMuted = usePlayerStore((s) => s.setIsMuted);
+    const togglePlay = usePlayerStore((s) => s.togglePlay);
 
     const onSeek = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (!audio) return;
-            const newProgress = Number(e.target.value);
-            setProgress(newProgress);
-            audio.currentTime = (newProgress / 100) * duration;
+            const prog = Number(e.target.value);
+            audio.currentTime = (prog / 100) * duration; // <-- здесь
+            setProgress(prog);
         },
         [audio, duration, setProgress],
     );
@@ -36,20 +37,17 @@ export const usePlayer = ({ onPrevTrack, onNextTrack }: UsePlayerProps = {}) => 
             const v = Number(e.target.value);
             setVolume(v);
             setIsMuted(v === 0);
-            if (audio) audio.volume = v;
         },
-        [audio, setVolume, setIsMuted],
+        [setVolume, setIsMuted],
     );
 
     const toggleMute = useCallback(() => {
         const next = !isMuted;
         setIsMuted(next);
-        if (audio) audio.volume = next ? 0 : volume;
-    }, [audio, isMuted, volume, setIsMuted]);
+    }, [isMuted, setIsMuted]);
 
     const onPrev = useCallback(() => {
-        if (!audio) return;
-        if (audio.currentTime > 5) {
+        if (audio && audio.currentTime > 5) {
             audio.currentTime = 0;
             setProgress(0);
         } else {
@@ -61,12 +59,14 @@ export const usePlayer = ({ onPrevTrack, onNextTrack }: UsePlayerProps = {}) => 
         onNextTrack?.();
     }, [onNextTrack]);
 
-    // Мемо для объекта
     return useMemo(
         () => ({
             progress,
-            isPlaying,
+            currentTime,
             duration,
+            formattedCurrentTime: formatTime(currentTime),
+            formattedDuration: formatTime(duration),
+            isPlaying,
             volume,
             isMuted,
             togglePlay,
@@ -78,8 +78,9 @@ export const usePlayer = ({ onPrevTrack, onNextTrack }: UsePlayerProps = {}) => 
         }),
         [
             progress,
-            isPlaying,
+            currentTime,
             duration,
+            isPlaying,
             volume,
             isMuted,
             togglePlay,

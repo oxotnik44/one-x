@@ -4,18 +4,18 @@ import { sidebarItems } from '../model/items';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useSidebarStore } from '../model/sidebarStore';
-import Logo from 'shared/assets/Logo.png';
+import Logo from '/assets/Logo.webp';
 import { Text } from 'shared/ui/Text/Text';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import Avatar from 'shared/assets/default-avatar.png';
+import { useTranslation } from 'react-i18next';
+import { ProfileMenu } from 'widgets/ProfileMenu/ui/ProfileMenu/ProfileMenu';
 
 export const Sidebar: FC = React.memo(() => {
+    const { t } = useTranslation('sidebar'); // namespace sidebar
     const theme = useThemeStore((state) => state.theme);
     const { isCollapsed, toggleCollapsed, setSelectedItem } = useSidebarStore();
     const location = useLocation();
     const navigate = useNavigate();
-    const coverGroup = useGroupStore((state) => state.currentGroup);
 
     const pathname = location.pathname.replace(/^\/+/, '');
 
@@ -46,7 +46,7 @@ export const Sidebar: FC = React.memo(() => {
                 <div className="flex justify-center mb-2">
                     <img
                         src={Logo}
-                        alt="Логотип"
+                        alt={t('logoAlt')}
                         className={classNames(
                             'rounded-3xl object-contain transition-all duration-300',
                             isCollapsed ? 'w-10 h-10' : 'w-full max-w-xs h-auto',
@@ -75,7 +75,7 @@ export const Sidebar: FC = React.memo(() => {
                                 <Icon size={isCollapsed ? 20 : 24} />
                                 {!isCollapsed && (
                                     <Text
-                                        text={label}
+                                        text={t(label)}
                                         size="default"
                                         isActive={isActive}
                                         isLink={false}
@@ -89,28 +89,12 @@ export const Sidebar: FC = React.memo(() => {
 
             {/* Аватар и кнопка сворачивания */}
             <div className="flex items-center justify-between gap-3 mt-8">
-                <div className="flex items-center justify-center gap-3">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-pink-600 bg-white">
-                        <img
-                            src={coverGroup?.cover || Avatar}
-                            alt="Аватар пользователя"
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    {!isCollapsed && (
-                        <Text
-                            text={coverGroup?.name || 'User'}
-                            size="small"
-                            className="font-semibold"
-                            isLink={false}
-                        />
-                    )}
-                </div>
+                <ProfileMenu />
                 <div className="group relative">
                     <div
                         onClick={onToggleCollapsed}
                         className="cursor-pointer p-1 rounded hover:bg-gray-600 transition"
-                        aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
+                        aria-label={isCollapsed ? t('expand') : t('collapse')}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

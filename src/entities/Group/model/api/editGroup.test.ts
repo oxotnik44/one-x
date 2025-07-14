@@ -65,7 +65,7 @@ describe('editGroup', () => {
             name: groupData.name,
             description: groupData.description,
             genre: groupData.genre,
-            cover: `http://localhost:4001${baseCover}`,
+            cover: newCoverUrl,
             updatedAt: now,
         };
 
@@ -77,7 +77,7 @@ describe('editGroup', () => {
             name: groupData.name,
             description: groupData.description,
             genre: groupData.genre,
-            cover: `http://localhost:4001${baseCover}`,
+            cover: baseCover,
             updatedAt: now,
         });
 
@@ -94,6 +94,10 @@ describe('editGroup', () => {
             item: (index: number) => (index === 0 ? file : null),
         } as unknown as FileList;
 
+        // Эмуляция того, что возвращает сервер:
+        const uploadedUrl = 'http://localhost:4001/static/groups/group-123/cover.png';
+        mockedAxios.post.mockResolvedValue({ data: { url: uploadedUrl } });
+
         const groupData: EditGroupData = {
             name: 'New Name',
             description: 'desc',
@@ -102,21 +106,19 @@ describe('editGroup', () => {
             newIconFile: fileList,
         };
 
-        mockedAxios.post.mockResolvedValue({ data: { url: newCoverUrl } });
-
         const updatedGroup = {
             id: groupId,
             name: groupData.name,
             description: groupData.description,
             genre: groupData.genre,
-            cover: `http://localhost:4001${newCoverUrl}`,
+            cover: uploadedUrl,
             updatedAt: now,
         };
-
         mockedApi.patch.mockResolvedValue({ data: updatedGroup });
 
         const result = await editGroup(groupId, groupData);
 
+        // Проверяем, что загрузили файл на правильный эндпоинт:
         expect(mockedAxios.post).toHaveBeenCalledWith(
             expect.stringContaining('/uploadGroupCover'),
             expect.any(FormData),
@@ -125,11 +127,12 @@ describe('editGroup', () => {
             }),
         );
 
+        // И что в patch ушёл именно полный URL, как дал сервер:
         expect(mockedApi.patch).toHaveBeenCalledWith(`/groups/${groupId}`, {
             name: groupData.name,
             description: groupData.description,
             genre: groupData.genre,
-            cover: `http://localhost:4001${newCoverUrl}`,
+            cover: uploadedUrl,
             updatedAt: now,
         });
 

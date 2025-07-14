@@ -32,3 +32,4 @@ coverageUnit
 .screenshots/current
 .screenshots/reg.json
 .screenshots/report.html
+.VSCodeCounter

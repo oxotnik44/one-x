@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TrackItem } from './TrackItem';
 import { MemoryRouter } from 'react-router-dom';
 import type { Track } from 'entities/Track';
-import Logo from 'shared/assets/Logo.png';
+import Logo from '/assets/Logo.webp';
 
 // Простой мок трека
 const mockTrack: Track = {

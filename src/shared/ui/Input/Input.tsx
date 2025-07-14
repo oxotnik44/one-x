@@ -52,7 +52,7 @@ export const Input = memo((props: InputProps) => {
                     'rounded',
                     'transition',
                     'text-[16px]',
-                    'placeholder:text-[color:var(--text-color)]', // <== placeholder яркий
+                    'placeholder:text-[color:var(--text-color)]',
                     'focus:outline-none',
                     readonly ? 'cursor-not-allowed' : '',
                     className,

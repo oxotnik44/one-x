@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { GroupCover } from './GroupCover';
-import Logo from 'shared/assets/Logo.png';
+import Logo from '/assets/Logo.webp';
 
 const meta: Meta<typeof GroupCover> = {
     title: 'shared/GroupCover',

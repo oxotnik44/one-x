@@ -14,7 +14,7 @@ export interface EditGroupData {
     description?: string | null;
     genre: Genre;
     cover: string;
-    newIconFile?: FileList;
+    newIconFile?: FileList | null;
 }
 
 export const editGroup = async (
@@ -48,7 +48,7 @@ export const editGroup = async (
                 name: groupData.name,
                 description: groupData.description ?? null,
                 genre: groupData.genre,
-                cover: `${SERVER_BASE_URL}${coverUrl}`,
+                cover: coverUrl,
                 updatedAt: new Date().toISOString(),
             };
 

@@ -1,0 +1,19 @@
+{
+    "title": "Регистрация",
+    "email": {
+        "label": "Email",
+        "required": "Введите email",
+        "invalid": "Некорректный email"
+    },
+    "password": {
+        "label": "Пароль",
+        "required": "Введите пароль",
+        "minLength": "Минимум 6 символов"
+    },
+    "confirmPassword": {
+        "label": "Повторите пароль",
+        "required": "Подтвердите пароль",
+        "match": "Пароли не совпадают"
+    },
+    "submit": "Зарегистрироваться"
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { Button, ButtonSize, ButtonTheme } from 'shared/ui/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 interface LikeProps {
     liked: boolean;
@@ -17,6 +18,7 @@ const LikeComponent: React.FC<LikeProps> = ({
     size = ButtonSize.M,
     className,
 }) => {
+    const { t } = useTranslation('like'); // namespace like
     const color = liked ? PRIMARY_COLOR : 'white';
 
     return (
@@ -27,7 +29,7 @@ const LikeComponent: React.FC<LikeProps> = ({
             onClick={onToggle}
             className={className}
             aria-pressed={liked}
-            aria-label={liked ? 'Убрать из избранного' : 'Добавить в избранное'}
+            aria-label={liked ? t('removeFromFavorites') : t('addToFavorites')}
         >
             <FaHeart className="h-5 w-5 transition-colors duration-300" style={{ color }} />
         </Button>
