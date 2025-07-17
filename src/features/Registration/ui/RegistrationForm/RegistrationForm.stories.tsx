@@ -1,6 +1,5 @@
-// src/features/Registration/ui/RegistrationForm.stories.tsx
-
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { MemoryRouter } from 'react-router-dom';
 import { RegistrationForm } from './RegistrationForm';
 
 const meta: Meta<typeof RegistrationForm> = {
@@ -9,6 +8,13 @@ const meta: Meta<typeof RegistrationForm> = {
     parameters: {
         layout: 'centered',
     },
+    decorators: [
+        (Story) => (
+            <MemoryRouter>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 };
 
 export default meta;

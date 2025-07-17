@@ -1,7 +1,7 @@
 import { EditGroupForm } from 'features/EditGroupForm';
 import React from 'react';
-import { ButtonNavigation } from 'shared/ui/ButtonNavigation/ButtonNavigation';
-import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
+import { ButtonNavigation, PageWrapper } from 'shared/ui';
+
 export const GroupSettingsPage: React.FC = () => {
     return (
         <PageWrapper>

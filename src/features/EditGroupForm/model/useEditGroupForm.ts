@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
 import { useState, useEffect } from 'react';
 import type { Genre } from 'entities/Group';
-import { editGroup } from 'entities/Group/model/api/editGroup';
+import { editGroup } from 'entities/Group/model/api/editGroup/editGroup';
 
 export interface EditGroupFormValues {
     name: string;
@@ -20,6 +20,7 @@ export const useEditGroupForm = () => {
         register,
         setValue,
         handleSubmit,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<EditGroupFormValues>({
         defaultValues: { name: '', description: '', genre: 'Рок', icon: null },
@@ -62,5 +63,15 @@ export const useEditGroupForm = () => {
         }
     });
 
-    return { control, register, errors, isSubmitting, preview, handleIconChange, onSubmit };
+    return {
+        control,
+        register,
+        errors,
+        isSubmitting,
+        preview,
+        handleIconChange,
+        onSubmit,
+        setValue,
+        watch,
+    };
 };

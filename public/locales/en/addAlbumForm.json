@@ -1,0 +1,10 @@
+{
+    "coverPreviewAlt": "Cover preview",
+    "selectFolder": "Select folder",
+    "folderRequired": "Folder is required",
+    "noCoverFound": "No cover found in selected folder",
+    "noTracksFound": "No tracks found in selected folder",
+    "albumTitle": "Album title",
+    "titleFromFolder": "Will use folder name:",
+    "addAlbum": "Add album"
+}

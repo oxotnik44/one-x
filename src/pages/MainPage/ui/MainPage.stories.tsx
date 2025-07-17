@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MainPage } from './MainPage';
 import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
-import { ThemeProviders } from 'app/providers/ThemeProviders/ThemeProviders';
 
 const meta: Meta<typeof MainPage> = {
     title: 'pages/MainPage',
@@ -12,11 +11,9 @@ const meta: Meta<typeof MainPage> = {
             useSidebarStore.setState({ isCollapsed: false });
 
             return (
-                <ThemeProviders>
-                    <div style={{ height: '100vh', backgroundColor: '#141414', padding: '1rem' }}>
-                        <Story />
-                    </div>
-                </ThemeProviders>
+                <div style={{ height: '100vh', backgroundColor: '#141414', padding: '1rem' }}>
+                    <Story />
+                </div>
             );
         },
     ],

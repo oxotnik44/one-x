@@ -1,7 +1,7 @@
-import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { CreateGroupForm } from 'features/CreateGroup';
+import { useGroupStore } from 'entities/Group';
+import { CreateGroupForm } from 'features/CreateGroupForm';
 import type { FC } from 'react';
-import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
+import { PageWrapper } from 'shared/ui';
 import { Group } from 'widgets/Group';
 
 export const MyGroupPage: FC = () => {

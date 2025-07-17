@@ -1,18 +1,13 @@
 import React, { useCallback, type FC } from 'react';
-import { sidebarSize, playerSize } from 'shared/config/theme/global/variables';
 import { useThemeStore } from 'shared/config/theme/themeStore';
-import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
-import { ButtonTheme } from 'shared/ui/Button/Button';
 import { usePlayer } from '../model/usePlayer';
-import { Text } from 'shared/ui/Text/Text';
-import { usePlayerStore } from 'entities/Player/model';
-import { Like } from 'shared/ui/Like/Like';
-import { PlayButton } from 'shared/ui/PlayButton/PlayButton';
-import { TrackControlButton } from 'shared/ui/TrackControlButton/TrackControlButton';
 import { VolumeControl } from './VolumeControl';
-import { useUserStore } from 'entities/User/model/slice/useUserStore';
-import { likeTrack } from 'entities/User';
+import { likeTrack, useUserStore } from 'entities/User';
 import { useTranslation } from 'react-i18next';
+import { usePlayerStore } from 'entities/Player/model';
+import { useSidebarStore } from 'widgets/Sidebar';
+import { playerSize, sidebarSize } from 'shared/config/theme/global/variables';
+import { ButtonTheme, Like, PlayButton, TrackControlButton, Text } from 'shared/ui';
 
 export const Player: FC = React.memo(() => {
     const { t } = useTranslation('player');
@@ -64,15 +59,16 @@ export const Player: FC = React.memo(() => {
                 max={100}
                 value={Number.isFinite(progress) ? progress : 0}
                 onChange={onSeek}
-                className="w-full h-1 rounded-t-3xl appearance-none cursor-pointer bg-gray-700"
+                className="w-full h-1 rounded-t-3xl appearance-none bg-gray-700 range-hover-thumb"
                 style={{
-                    background: `linear-gradient(
-                        to right,
-                        ${buttonColor} 0%,
-                        ${buttonColor} ${Math.min(progress, 100)}%,
-                        #4b5563 ${Math.min(progress, 100)}%,
-                        #4b5563 100%
-                    )`,
+                    backgroundColor: '#4b5563',
+                    backgroundImage: `linear-gradient(
+      to right,
+      ${buttonColor},
+      ${buttonColor}
+    )`,
+                    backgroundSize: `${Math.max(progress)}% 100%`,
+                    backgroundRepeat: 'no-repeat',
                     accentColor: buttonColor,
                 }}
                 aria-label={t('seek')}

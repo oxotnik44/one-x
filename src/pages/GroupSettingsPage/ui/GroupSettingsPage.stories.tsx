@@ -1,4 +1,3 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom'; // легковесный роутер для тестов и сторибука
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { GroupSettingsPage } from './GroupSettingsPage';

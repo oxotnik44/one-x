@@ -1,7 +1,6 @@
-import { AddTrackForm } from 'features/AddTrackForm/ui/AddTrackForm';
+import { AddTrackForm } from 'features/AddTrackForm';
 import { type FC } from 'react';
-import { ButtonNavigation } from 'shared/ui/ButtonNavigation/ButtonNavigation';
-import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
+import { ButtonNavigation, PageWrapper } from 'shared/ui';
 export const AddTrackPage: FC = () => {
     return (
         <PageWrapper>

@@ -22,36 +22,46 @@ export const GroupCover: React.FC<GroupCoverProps> = React.memo(
             }
         };
 
+        const image = (
+            <img
+                src={preview ?? cover ?? ''}
+                alt={name ?? t('noGroupSelected')}
+                width={512}
+                height={512}
+                className={`object-contain bg-gray-100 rounded-xl ${
+                    !preview && !cover ? 'hidden' : ''
+                }`}
+            />
+        );
+
+        const fallback = !preview && !cover && (
+            <div className="w-48 h-48 sm:w-64 sm:h-64 bg-gray-200 rounded-3xl flex items-center justify-center text-gray-400 text-lg sm:text-xl">
+                {t('noCover')}
+            </div>
+        );
+
+        const imageWrapperClass = `relative ${edit ? 'cursor-pointer hover:opacity-80' : ''}`;
+
         return (
             <div className="flex flex-col items-center w-full md:w-1/3">
                 <Text className="font-bold mb-6 text-center" title={name ?? t('noGroupSelected')} />
                 <div
-                    className={`relative cursor-pointer ${edit ? 'hover:opacity-80' : ''}`}
-                    onClick={handleClick}
-                    title={edit ? t('clickToChangeIcon') : undefined}
+                    className={imageWrapperClass}
+                    {...(edit && {
+                        onClick: handleClick,
+                        title: t('clickToChangeIcon'),
+                    })}
                 >
-                    <img
-                        src={preview ?? cover ?? ''}
-                        alt={name ?? t('noGroupSelected')}
-                        className={`w-full h-full object-contain bg-gray-100 rounded-xl ${
-                            !preview && !cover ? 'hidden' : ''
-                        }`}
-                    />
-                    {!preview && !cover && (
-                        <div className="w-48 h-48 sm:w-64 sm:h-64 bg-gray-200 rounded-3xl flex items-center justify-center text-gray-400 text-lg sm:text-xl">
-                            {t('noCover')}
-                        </div>
-                    )}
+                    {image}
+                    {fallback}
                     {edit && (
-                        <>
-                            <input
-                                ref={inputRef}
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={(e) => onIconChange?.(e.target.files)}
-                            />
-                        </>
+                        <input
+                            ref={inputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => onIconChange?.(e.target.files)}
+                        />
                     )}
                 </div>
             </div>

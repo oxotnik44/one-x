@@ -1,45 +1,73 @@
 {
   "users": [
     {
-      "id": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
-      "email": "s@gmail.com",
-      "password": "$2b$10$jKR8QPC68LKPUQao1GgP1OyVyc722kWSu1yUeIcphyW8kV5iQna0C",
+      "id": "3d114e7b-c3c6-4949-a3e1-7811f228a340",
+      "email": "a@gmail.com",
+      "password": "$2b$10$6Zi4Qd9qHBDOlhDlsbm4WuWDu95ZKuaJz3/z0HlCcKQS0tcPPWNRK",
+      "avatar": "",
+      "username": "",
+      "createdAt": "2025-07-16T17:37:27.903Z",
       "likedTracks": [
-        "4dacc5d0-9a7c-4547-a055-ab03445abfe1",
-        "580de053-72a7-4c77-a04c-fdaff80be131"
+        "62a3f845-2967-40cb-8648-ef520b5fc15f"
+      ]
+    }
+  ],
+  "albums": [
+    {
+      "id": "efc00988-2fac-4605-a995-a3b10c3e83d5",
+      "name": "Life Starts Now",
+      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
+      "createdAt": "2025-07-17T15:04:12.200Z",
+      "trackIds": [
+        "771c4b15-d8d9-468a-bce0-2aba4ee2994e",
+        "6393d5c6-b0ed-44db-b48b-980eca6e65bc"
       ]
     }
   ],
   "groups": [
     {
-      "id": "cb073a79-63e9-4478-9eb2-7baa8024e617",
-      "description": "фывфывфыв",
+      "id": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
       "name": "Three Days Grace",
-      "userId": "6f8df36a-914f-45f7-8fa8-a70adb745f3e",
+      "description": "фывфывфыв",
+      "userId": "3d114e7b-c3c6-4949-a3e1-7811f228a340",
       "genre": "Рок",
-      "cover": "http://localhost:4001/groupCover/Three%20Days%20Grace",
-      "createdAt": "2025-07-12T04:59:56.768Z",
-      "updatedAt": "2025-07-14T07:01:17.067Z"
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/cover.webp",
+      "createdAt": "2025-07-17T15:01:29.937Z",
+      "updatedAt": ""
     }
   ],
   "tracks": [
     {
-      "id": "059c2026-d43d-4b5b-ac50-5ed6c7480772",
-      "title": "Its All Over",
-      "duration": 249,
-      "cover": "/static/groups/Three Days Grace/Tracks/Its All Over/cover.png",
-      "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
-      "audioUrl": "/static/groups/Three Days Grace/Tracks/Its All Over/Its All Over.mp3",
-      "createdAt": "2025-07-14T13:05:52.262Z"
-    },
-    {
-      "id": "580de053-72a7-4c77-a04c-fdaff80be131",
+      "id": "4db2b599-079d-4ac4-a17e-e1dacb2ed068",
       "title": "On My Own",
       "duration": 186,
-      "cover": "/static/groups/Three Days Grace/Tracks/On My Own/cover.png",
-      "groupId": "cb073a79-63e9-4478-9eb2-7baa8024e617",
-      "audioUrl": "/static/groups/Three Days Grace/Tracks/On My Own/On My Own.mp3",
-      "createdAt": "2025-07-14T13:06:00.332Z"
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/Tracks/On My Own/cover.webp",
+      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
+      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Tracks/On My Own/On My Own.mp3",
+      "createdAt": "2025-07-17T15:01:51.165Z"
+    },
+    {
+      "id": "771c4b15-d8d9-468a-bce0-2aba4ee2994e",
+      "title": "Life Starts Now",
+      "duration": 188,
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
+      "groupName": "Three Days Grace",
+      "albumId": "efc00988-2fac-4605-a995-a3b10c3e83d5",
+      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
+      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/Life%20Starts%20Now.mp3",
+      "createdAt": "2025-07-17T15:04:12.206Z"
+    },
+    {
+      "id": "6393d5c6-b0ed-44db-b48b-980eca6e65bc",
+      "title": "The Good Life",
+      "duration": 173,
+      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
+      "groupName": "Three Days Grace",
+      "albumId": "efc00988-2fac-4605-a995-a3b10c3e83d5",
+      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
+      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/The%20Good%20Life.mp3",
+      "createdAt": "2025-07-17T15:04:12.206Z"
     }
   ]
 }

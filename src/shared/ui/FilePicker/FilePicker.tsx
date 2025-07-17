@@ -1,3 +1,4 @@
+// src/shared/ui/FilePicker/FilePicker.tsx
 import React, {
     useRef,
     useState,
@@ -13,28 +14,30 @@ import { useTranslation } from 'react-i18next';
 interface FilePickerProps {
     accept?: string;
     onChange: (files: FileList | null) => void;
-    previewUrl?: string | null;
     placeholder?: ReactNode;
+    previewUrl?: string | null;
     title?: string;
     className?: string;
     style?: CSSProperties;
     active?: boolean;
+    directory?: boolean;
 }
 
 const FilePickerComponent: React.FC<FilePickerProps> = ({
     accept,
     onChange,
-    previewUrl = null,
     placeholder,
+    previewUrl = null,
     title,
     className,
     style,
     active = false,
+    directory = false,
 }) => {
     const theme = useThemeStore((state) => state.theme);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [isHover, setIsHover] = useState(false);
-    const { t } = useTranslation('filePicker'); // namespace filePicker
+    const { t } = useTranslation('filePicker');
 
     const handleClick = useCallback(() => {
         inputRef.current?.click();
@@ -56,8 +59,8 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
                 style={{
                     borderColor: theme['--primary-color'] || '#880015',
                     color: isActive ? '#fff' : theme['--primary-color'] || '#880015',
-                    width: previewUrl ? 'auto' : '6rem',
-                    height: previewUrl ? 'auto' : '6rem',
+                    width: '6rem',
+                    height: '6rem',
                     backgroundColor: isActive ? theme['--primary-color'] : 'transparent',
                     ...style,
                 }}
@@ -69,9 +72,8 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
                 {previewUrl ? (
                     <img
                         src={previewUrl}
-                        alt={title ?? t('previewAlt')}
-                        className="rounded-md object-contain"
-                        style={{ maxWidth: '100%', maxHeight: '100%' }}
+                        alt="preview"
+                        className="object-cover rounded-md w-full h-full"
                     />
                 ) : (
                     placeholder
@@ -80,10 +82,11 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
 
             <input
                 type="file"
-                accept={accept}
                 ref={inputRef}
+                accept={accept}
                 onChange={handleChange}
                 className="hidden"
+                {...(directory ? { webkitdirectory: 'true' } : {})}
             />
         </>
     );

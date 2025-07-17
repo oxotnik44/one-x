@@ -3,7 +3,6 @@ import type { Group, GroupSchema } from '../types/group';
 
 interface GroupStore extends GroupSchema {
     setCurrentGroup: (group: Group) => void;
-    clearCurrentGroup: () => void;
 }
 
 export const useGroupStore = create<GroupStore>()((set) => ({
@@ -11,9 +10,5 @@ export const useGroupStore = create<GroupStore>()((set) => ({
 
     setCurrentGroup: (group) => {
         set({ currentGroup: group });
-    },
-
-    clearCurrentGroup: () => {
-        set({ currentGroup: null });
     },
 }));

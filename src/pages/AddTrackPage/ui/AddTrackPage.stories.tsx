@@ -8,7 +8,7 @@ const meta: Meta<typeof AddTrackPage> = {
     decorators: [
         (Story) => (
             <MemoryRouter>
-                <div className="p-6 bg-gray-100 min-h-screen flex items-center justify-center">
+                <div style={{ minHeight: '100vh', padding: '2rem', backgroundColor: '#f0f0f0' }}>
                     <Story />
                 </div>
             </MemoryRouter>

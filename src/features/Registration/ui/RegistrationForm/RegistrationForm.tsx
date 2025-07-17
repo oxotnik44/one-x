@@ -1,11 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Text } from 'shared/ui/Text/Text';
-import { Button } from 'shared/ui/Button/Button';
-import { Input } from 'shared/ui/Input/Input';
-import type { RegistrationSchema } from '../../../../entities/User/model/types/registrationSchema';
-import { registrationUser } from 'entities/User/model/api/Registration/registrationUser';
 import { useTranslation } from 'react-i18next';
+import { registrationUser, type RegistrationSchema } from 'entities/User';
+import { Button, Input, Text } from 'shared/ui';
+import { useNavigate } from 'react-router-dom';
 
 interface RegistrationFormProps {
     onSuccess: () => void;
@@ -13,7 +11,7 @@ interface RegistrationFormProps {
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
     const { t } = useTranslation('registration');
-
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -30,6 +28,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess })
         const user = await registrationUser({ email, password });
         if (user) {
             onSuccess();
+            navigate('/main');
         }
     };
 

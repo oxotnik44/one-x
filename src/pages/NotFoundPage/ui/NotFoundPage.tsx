@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'shared/ui/Text/Text';
-import { Button, ButtonTheme, ButtonSize } from 'shared/ui/Button/Button';
-import { PageWrapper } from 'shared/ui/PageWrapper/PageWrapper';
+import { Button, ButtonSize, ButtonTheme, PageWrapper, Text } from 'shared/ui';
 
 export const NotFoundPage = () => {
     const navigate = useNavigate();

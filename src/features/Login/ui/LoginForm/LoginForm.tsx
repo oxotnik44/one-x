@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text } from 'shared/ui/Text/Text';
-import { Button } from 'shared/ui/Button/Button';
-import { Input } from 'shared/ui/Input/Input';
-import type { LoginSchema } from 'entities/User/model/types/loginSchema';
-import { loginUser } from 'entities/User/model/api/Login/loginUser';
 import { useTranslation } from 'react-i18next';
+import { loginUser, type LoginSchema } from 'entities/User';
+import { Button, Input, Text } from 'shared/ui';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
     onSuccess: () => void;
@@ -13,6 +11,7 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     const { t } = useTranslation('loginForm');
+    const navigate = useNavigate();
 
     const {
         register,
@@ -40,6 +39,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         const user = await loginUser({ email, password });
         if (user) {
             onSuccess();
+            navigate('/main');
         }
     };
 

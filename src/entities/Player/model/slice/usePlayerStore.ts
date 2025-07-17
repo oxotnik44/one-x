@@ -1,6 +1,6 @@
 // src/entities/Player/model/slice/usePlayerStore.ts
+import type { Track } from 'entities/Track';
 import { create } from 'zustand';
-import type { Track } from 'entities/Track/model/types/track';
 
 export interface PlayerState {
     currentTrack: Track | null;

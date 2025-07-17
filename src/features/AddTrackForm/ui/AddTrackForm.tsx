@@ -1,12 +1,9 @@
 import React from 'react';
 import { RxAvatar, RxSpeakerLoud } from 'react-icons/rx';
 import { IoMdMusicalNote } from 'react-icons/io';
-import { Input } from 'shared/ui/Input/Input';
-import { Button, ButtonSize, ButtonTheme } from 'shared/ui/Button/Button';
-import { FilePicker } from 'shared/ui/FilePicker/FilePicker';
-import { Text } from 'shared/ui/Text/Text';
 import { useAddTrackForm } from '../model/useAddTrackForm';
 import { useTranslation } from 'react-i18next';
+import { Button, ButtonSize, ButtonTheme, FilePicker, Input, Text } from 'shared/ui';
 
 export const AddTrackForm: React.FC = () => {
     const {

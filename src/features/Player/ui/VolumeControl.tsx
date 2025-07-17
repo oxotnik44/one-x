@@ -1,9 +1,9 @@
 import React, { useRef, useState, memo, useCallback } from 'react';
-import { Button, ButtonSize } from 'shared/ui/Button/Button';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-import { usePlayerStore } from 'entities/Player/model/slice/usePlayerStore';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useTranslation } from 'react-i18next';
+import { usePlayerStore } from 'entities/Player/model';
+import { Button, ButtonSize } from 'shared/ui';
 
 export const VolumeControl = memo(() => {
     const { t } = useTranslation('volumeControl');

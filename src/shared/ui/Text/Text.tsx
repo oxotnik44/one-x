@@ -20,7 +20,7 @@ export const Text = memo(
         title,
         text,
         children,
-        className,
+        className = '',
         size = 'default',
         isLink = false,
         isActive = false,
@@ -35,7 +35,13 @@ export const Text = memo(
             default: 'text-lg',
         };
 
-        // Если error, то используем primary-color
+        // Если в className есть текстовый класс text-4xl, используем его напрямую
+        const hasText4xl = className.includes('text-4xl');
+
+        // Выбираем размер: либо text-4xl из className, либо из sizeClassMap
+        const fontSizeClass = hasText4xl ? 'text-4xl' : sizeClassMap[size];
+
+        // Цвет текста (priority: error > isActive > isLink > default)
         const textColor = error
             ? theme['--primary-color']
             : isActive
@@ -46,10 +52,11 @@ export const Text = memo(
 
         const textClass = clsx(
             'font-semibold',
-            sizeClassMap[size],
+            fontSizeClass,
             {
                 'underline cursor-pointer transition-colors duration-200 ease-in-out': isLink,
             },
+            // В className может уже быть text-4xl — добавляем его, чтобы остальные стили сохранились
             className,
         );
 

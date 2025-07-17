@@ -1,14 +1,12 @@
 import type { FC } from 'react';
 import { Controller } from 'react-hook-form';
-import { Button, ButtonTheme, ButtonSize } from 'shared/ui/Button/Button';
-import { Input } from 'shared/ui/Input/Input';
-import { useThemeStore } from 'shared/config/theme/themeStore';
-import { Text } from 'shared/ui/Text/Text';
 import { useEditGroupForm } from '../model/useEditGroupForm';
-import { genresList } from 'entities/Group/model/types/group';
 import { GroupCover } from 'shared/ui/GroupCover/GroupCover';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { genresList } from 'entities/Group';
+import { useThemeStore } from 'shared/config/theme/themeStore';
+import { Button, ButtonSize, ButtonTheme, Input, Text } from 'shared/ui';
 
 export const EditGroupForm: FC = () => {
     const theme = useThemeStore((s) => s.theme);

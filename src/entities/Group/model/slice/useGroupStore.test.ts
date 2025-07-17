@@ -2,14 +2,17 @@
 
 import { describe, test, expect, beforeEach } from 'vitest';
 import { useGroupStore } from './useGroupStore';
+import type { Group } from '../types/group';
 
-const mockGroup = {
-    groupId: '1',
+const mockGroup: Group = {
     userId: '2',
     name: 'Test Group',
-    genre: 'Rock',
+    genre: 'Рок',
     cover: 'cover.png',
     createdAt: new Date().toISOString(),
+    id: '123',
+    description: 'qwe',
+    updatedAt: '123',
 };
 
 describe('useGroupStore', () => {
@@ -21,11 +24,5 @@ describe('useGroupStore', () => {
     test('устанавливает текущую группу', () => {
         useGroupStore.getState().setCurrentGroup(mockGroup);
         expect(useGroupStore.getState().currentGroup).toEqual(mockGroup);
-    });
-
-    test('очищает текущую группу', () => {
-        useGroupStore.getState().setCurrentGroup(mockGroup);
-        useGroupStore.getState().clearCurrentGroup();
-        expect(useGroupStore.getState().currentGroup).toBeNull();
     });
 });

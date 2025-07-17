@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Sidebar } from './Sidebar';
-import { ThemeProviders } from 'app/providers/ThemeProviders/ThemeProviders';
 import { MemoryRouter } from 'react-router-dom';
 
 const meta: Meta<typeof Sidebar> = {
@@ -9,11 +8,9 @@ const meta: Meta<typeof Sidebar> = {
     decorators: [
         (Story) => (
             <MemoryRouter initialEntries={['/my_group']}>
-                <ThemeProviders>
-                    <div style={{ height: '100vh', backgroundColor: '#141414' }}>
-                        <Story />
-                    </div>
-                </ThemeProviders>
+                <div style={{ height: '100vh', backgroundColor: '#141414' }}>
+                    <Story />
+                </div>
             </MemoryRouter>
         ),
     ],

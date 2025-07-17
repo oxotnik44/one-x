@@ -1,64 +1,42 @@
-import { useState } from 'react';
+// src/shared/ui/FilePicker/FilePicker.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import React, { useState } from 'react';
 import { FilePicker } from './FilePicker';
-import { RxSpeakerLoud } from 'react-icons/rx';
-import { IoMdMusicalNote } from 'react-icons/io';
 
 const meta: Meta<typeof FilePicker> = {
-    title: 'Shared/FilePicker/Interactive',
+    title: 'shared/FilePicker',
     component: FilePicker,
+    parameters: {
+        layout: 'centered',
+    },
 };
-export default meta;
 
+export default meta;
 type Story = StoryObj<typeof FilePicker>;
 
-// 🎨 Для изображений
-const ImagePicker = () => {
-    const [preview, setPreview] = useState<string | null>(null);
+export const Default: Story = {
+    render: () => {
+        const [preview, setPreview] = useState<string | null>(null);
 
-    return (
-        <FilePicker
-            accept="image/*"
-            previewUrl={preview}
-            placeholder={<span>Upload image</span>}
-            onChange={(files) => {
-                if (files && files[0]) {
-                    const url = URL.createObjectURL(files[0]);
-                    setPreview(url);
-                }
-            }}
-        />
-    );
-};
-
-// 🎵 Для аудио
-const AudioPicker = () => {
-    const [audioSelected, setAudioSelected] = useState(false);
-
-    return (
-        <FilePicker
-            key={audioSelected ? 'selected' : 'default'} // 🔁 форсируем пересоздание
-            accept="audio/mpeg"
-            placeholder={
-                audioSelected ? <IoMdMusicalNote size={48} /> : <RxSpeakerLoud size={48} />
+        const handleChange = (files: FileList | null) => {
+            if (!files || files.length === 0) {
+                setPreview(null);
+                return;
             }
-            active={audioSelected}
-            onChange={(files) => {
-                if (files && files.length > 0) {
-                    setAudioSelected(true);
-                    console.log('Audio selected:', files[0]);
-                }
-            }}
-        />
-    );
-};
 
-export const ImageUpload: Story = {
-    name: '🖼️ Upload Image with Preview',
-    render: () => <ImagePicker />,
-};
+            const file = files[0];
+            const url = URL.createObjectURL(file);
+            setPreview(url);
+        };
 
-export const AudioUpload: Story = {
-    name: '🎵 Upload Audio with Icon Switch',
-    render: () => <AudioPicker />,
+        return (
+            <FilePicker
+                accept="image/*"
+                onChange={handleChange}
+                placeholder={<div className="text-center text-gray-400">Выберите файл</div>}
+                previewUrl={preview}
+                title="Выберите изображение"
+            />
+        );
+    },
 };

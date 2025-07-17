@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
+import { Loader } from 'shared/ui';
 import { Modal } from 'shared/ui/Modal/Modal';
-import { Loader } from 'shared/ui/Loader/Loader';
 import { RegistrationForm } from '../RegistrationForm/RegistrationForm';
 
 interface RegistrationModalProps {

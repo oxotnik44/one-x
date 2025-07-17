@@ -1,7 +1,7 @@
 // src/entities/Player/model/usePlayer.ts
 import { usePlayerStore } from 'entities/Player/model';
 import { useCallback, useMemo } from 'react';
-import { formatTime } from 'shared/lib/formatTime';
+import { formatTime } from 'shared/lib/formatTime/formatTime';
 
 export interface UsePlayerProps {
     onPrevTrack?: () => void;

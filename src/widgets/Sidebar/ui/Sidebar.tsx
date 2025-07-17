@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import type { FC } from 'react';
 import { sidebarItems } from '../model/items';
-import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useSidebarStore } from '../model/sidebarStore';
-import Logo from '/assets/Logo.webp';
-import { Text } from 'shared/ui/Text/Text';
+import { Text } from 'shared/ui';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ProfileMenu } from 'widgets/ProfileMenu/ui/ProfileMenu/ProfileMenu';
+import { classNames } from 'shared/lib';
+import { ProfileMenu } from 'widgets/ProfileMenu';
 
 export const Sidebar: FC = React.memo(() => {
     const { t } = useTranslation('sidebar'); // namespace sidebar
@@ -45,11 +44,11 @@ export const Sidebar: FC = React.memo(() => {
                 {/* Логотип */}
                 <div className="flex justify-center mb-2">
                     <img
-                        src={Logo}
+                        src="/assets/Logo.webp"
                         alt={t('logoAlt')}
                         className={classNames(
-                            'rounded-3xl object-contain transition-all duration-300',
-                            isCollapsed ? 'w-10 h-10' : 'w-full max-w-xs h-auto',
+                            'object-contain transition-all duration-300 rounded-xl',
+                            isCollapsed ? 'w-10 h-10' : 'w-40 h-40',
                         )}
                     />
                 </div>

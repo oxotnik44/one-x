@@ -2,10 +2,9 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGroupContentSwitcherStore, type ContentType } from '../model/useGroup';
 import { useThemeStore } from 'shared/config/theme/themeStore';
-import { ListTrack } from 'features/ListTrack/ui/ListTrack';
-import { Button } from 'shared/ui/Button/Button';
-import { GroupCover } from 'shared/ui/GroupCover/GroupCover';
-import { ButtonNavigation } from 'shared/ui/ButtonNavigation/ButtonNavigation';
+import { ListAlbum } from 'entities/Album';
+import { ListTrack } from 'entities/Track';
+import { Button, ButtonNavigation, GroupCover } from 'shared/ui';
 
 export const Group: React.FC = React.memo(() => {
     const { t } = useTranslation('group');
@@ -63,7 +62,7 @@ export const Group: React.FC = React.memo(() => {
                 </nav>
 
                 <section className="text-center text-gray-600 text-base sm:text-lg w-full min-h-[300px]">
-                    {selected === 'albums' ? <div>{t('albumsPlaceholder')}</div> : <ListTrack />}
+                    {selected === 'albums' ? <ListAlbum /> : <ListTrack />}
                 </section>
             </div>
             <ButtonNavigation settings />

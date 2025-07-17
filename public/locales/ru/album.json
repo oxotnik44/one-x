@@ -1,0 +1,6 @@
+{
+    "notSelected": "Альбом не выбран",
+    "created": "Создан {{date}}",
+    "updated": "Обновлён {{date}}",
+    "uploadTrack": "Загрузить трек"
+}

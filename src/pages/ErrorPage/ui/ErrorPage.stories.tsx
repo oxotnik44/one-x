@@ -5,6 +5,13 @@ const meta: Meta<typeof ErrorPage> = {
     title: 'pages/ErrorPage',
     component: ErrorPage,
     tags: ['autodocs'],
+    decorators: [
+        (Story) => (
+            <div style={{ height: '100vh', width: '100vw' }}>
+                <Story />
+            </div>
+        ),
+    ],
 };
 
 export default meta;

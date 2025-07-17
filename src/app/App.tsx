@@ -1,12 +1,10 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
-import { classNames } from 'shared/lib/classNames/classNames';
 import { AppRouter } from './providers/routes';
-import { useUserStore } from 'entities/User/model/slice/useUserStore';
 import { Sidebar } from 'widgets/Sidebar';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { Player } from 'features/Player';
-import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { fetchGroup } from 'entities/Group/model/api/fetchGroup';
+import { loginUser, registrationUser, useUserStore } from 'entities/User';
+import { fetchGroup, useGroupStore } from 'entities/Group';
 
 const AuthModal = lazy(() => import('widgets/AuthModal'));
 
@@ -20,22 +18,19 @@ function App() {
 
     useEffect(() => {
         if (!user) {
-            useGroupStore.getState().clearCurrentGroup();
             return;
         }
 
         (async () => {
             setLoadingGroup(true);
-            const group = await fetchGroup(user.id);
-            if (group) {
-                setCurrentGroup(group);
-            } else {
-                useGroupStore.getState().clearCurrentGroup();
+            const groups = await fetchGroup(user.id);
+            if (groups) {
+                setCurrentGroup(groups);
             }
 
             setLoadingGroup(false);
         })();
-    }, [setCurrentGroup]);
+    }, [loginUser, registrationUser]);
 
     if (!user)
         return (
@@ -53,7 +48,6 @@ function App() {
 
     return (
         <div
-            className={classNames('app')}
             style={{
                 backgroundColor: theme['--bg-color'],
                 minHeight: '100vh',

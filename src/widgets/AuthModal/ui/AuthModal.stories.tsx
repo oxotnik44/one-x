@@ -1,6 +1,8 @@
+// src/widgets/AuthModal/ui/AuthModal.stories.tsx
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AuthModal } from './AuthModal';
+import { MemoryRouter } from 'react-router-dom';
 
 const meta: Meta<typeof AuthModal> = {
     title: 'widgets/AuthModal',
@@ -8,6 +10,13 @@ const meta: Meta<typeof AuthModal> = {
     parameters: {
         layout: 'centered',
     },
+    decorators: [
+        (Story) => (
+            <MemoryRouter>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 };
 
 export default meta;

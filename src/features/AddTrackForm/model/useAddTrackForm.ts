@@ -1,7 +1,10 @@
+// src/entities/Track/model/useAddTrackForm.ts
 import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { addTrack } from 'entities/Track/api/addTrack';
+import { addTrack } from 'entities/Track/model/api/addTrack/addTrack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { getAudioDuration } from 'shared/lib/getAudioDuration/getAudioDuration';
 
 export interface FormData {
     title: string;
@@ -22,7 +25,7 @@ export function useAddTrackForm() {
     const [coverPreview, setCoverPreview] = useState<string | null>(null);
     const [audioFileName, setAudioFileName] = useState<string | null>(null);
     const [audioDuration, setAudioDuration] = useState<number | null>(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         register('cover', { required: true });
         register('audio', { required: true });
@@ -40,14 +43,10 @@ export function useAddTrackForm() {
             const file = files[0];
             setAudioFileName(file.name);
 
-            // Получаем длительность аудиофайла
-            const audio = document.createElement('audio');
-            audio.preload = 'metadata';
-            audio.src = URL.createObjectURL(file);
-            audio.onloadedmetadata = () => {
-                URL.revokeObjectURL(audio.src);
-                setAudioDuration(audio.duration); // в секундах (float)
-            };
+            // Получаем длительность через shared утилиту
+            getAudioDuration(file).then((duration) => {
+                setAudioDuration(duration);
+            });
         }
     };
 
@@ -67,11 +66,12 @@ export function useAddTrackForm() {
                 title: finalTitle,
                 cover: coverFile,
                 audio: audioFile,
-                duration: Math.round(audioDuration), // округляем до целых секунд
+                duration: Math.round(audioDuration),
                 groupName,
             });
 
             onSuccess?.();
+            navigate(-1);
         });
 
     return {

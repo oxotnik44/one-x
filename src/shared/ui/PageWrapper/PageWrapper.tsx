@@ -5,20 +5,22 @@ import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
 
 interface PageWrapperProps {
     children: ReactNode;
+    notCenter?: boolean;
 }
 
-export const PageWrapper: React.FC<PageWrapperProps> = memo(({ children }) => {
+export const PageWrapper: React.FC<PageWrapperProps> = memo(({ children, notCenter }) => {
     const theme = useThemeStore((state) => state.theme);
     const isCollapsed = useSidebarStore((state) => state.isCollapsed);
 
+    // Формируем класс динамически
+    const baseClasses = 'rounded-3xl transition-all duration-300 ease-in-out';
+    const conditionalClasses = notCenter ? '' : 'p-5 flex items-center justify-center';
+
+    const className = [baseClasses, conditionalClasses].filter(Boolean).join(' ');
+
     return (
         <div
-            className="
-                rounded-3xl
-                transition-all duration-300 ease-in-out
-                p-5
-                flex items-center justify-center
-            "
+            className={className}
             style={{
                 ...sidebarSize,
                 ...playerSize,

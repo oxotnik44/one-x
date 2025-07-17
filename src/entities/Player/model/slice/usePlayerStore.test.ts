@@ -2,7 +2,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { usePlayerStore, type PlayerState } from './usePlayerStore';
-import type { Track } from 'entities/Track/model/types/track';
+import type { Track } from 'entities/Track';
 
 describe('usePlayerStore', () => {
     const trackMock: Track = {
