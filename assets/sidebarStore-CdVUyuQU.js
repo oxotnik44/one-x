@@ -1,0 +1,1 @@
+import{c as a}from"./iframe-U8ya4lKj.js";const t={"--sidebar-width":"16rem","--sidebar-width-collapsed":"5rem"},d={"--player-height":"5rem"},r=a(s=>({isCollapsed:!1,selectedItem:"Главная",toggleCollapsed:()=>s(e=>({isCollapsed:!e.isCollapsed})),setSelectedItem:e=>s({selectedItem:e})}));export{d as p,t as s,r as u};

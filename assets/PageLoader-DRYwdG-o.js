@@ -1,0 +1,1 @@
+import{r as s,j as e}from"./iframe-U8ya4lKj.js";import{L as a}from"./Loader-DiHYOjMw.js";const o=({className:r})=>e.jsx("div",{className:`flex items-center justify-center h-screen w-full ${r??""}`,children:e.jsx(a,{})}),t=s.memo(o);t.displayName="PageLoader";export{t as P};

@@ -1,0 +1,16 @@
+{
+    "title": "Авторизация",
+    "email": {
+        "label": "Email",
+        "placeholder": "you@example.com",
+        "required": "Введите email",
+        "invalid": "Некорректный email"
+    },
+    "password": {
+        "label": "Пароль",
+        "placeholder": "••••••",
+        "required": "Введите пароль",
+        "minLength": "Минимум 6 символов"
+    },
+    "submit": "Войти"
+}

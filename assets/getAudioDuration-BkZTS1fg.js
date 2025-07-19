@@ -1,0 +1,1 @@
+async function r(a){return new Promise(e=>{const t=document.createElement("audio");t.preload="metadata",t.src=URL.createObjectURL(a),t.onloadedmetadata=()=>{const o=Math.round(t.duration);URL.revokeObjectURL(t.src),e(o)},t.onerror=()=>{e(0)}})}export{r as g};
