@@ -1,4 +1,3 @@
-// src/widgets/AddAlbumForm/ui/AddAlbumForm.tsx
 import React from 'react';
 import { IoFolderOpen } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +14,7 @@ export const AddAlbumForm: React.FC = () => {
         coverPreview,
         trackCount,
         submitHandler,
+        register, // Добавляем register для привязки инпутов
     } = useAddAlbumForm();
 
     const { t } = useTranslation('addAlbumForm');
@@ -60,7 +60,18 @@ export const AddAlbumForm: React.FC = () => {
                 <p className="text-red-600 text-sm mt-1">{t('noTracksFound')}</p>
             )}
 
-            <Input placeholder={t('albumTitle')} className={errors.title ? 'border-red-600' : ''} />
+            <Input
+                placeholder={t('albumTitle')}
+                className={errors.title ? 'border-red-600' : ''}
+                {...register('title')}
+            />
+
+            {/* Новый инпут для описания */}
+            <Input
+                placeholder={t('albumDescription')}
+                className="resize-none"
+                {...register('description')}
+            />
 
             {!albumTitle && folderSelected && (
                 <p className="text-yellow-600 text-sm mt-1">

@@ -11,5 +11,5 @@ export const normalTheme: ThemeVars = {
     '--heart-color': '#880015',
     '--inverted-heart-color': '#ffffff',
     '--primary-color': '#880015',
-    '--inverted-primary-color': '#FF7F27',
+    '--second-color': '#FF7F27',
 };

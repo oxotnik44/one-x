@@ -1,7 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type ReactNode,
+    type MouseEvent,
+} from 'react';
 import { Portal } from 'shared/ui/Portal/Portal';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
+import { FiX } from 'react-icons/fi';
 
 interface ModalProps {
     className?: string;
@@ -9,7 +17,7 @@ interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     lazy?: boolean;
-    overlay?: boolean;
+    closable?: boolean;
 }
 
 const ANIMATION_DELAY = 300;
@@ -20,7 +28,7 @@ export const Modal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
     lazy = true,
-    overlay = true,
+    closable = false,
 }) => {
     const [isHiding, setIsHiding] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -29,6 +37,8 @@ export const Modal: React.FC<ModalProps> = ({
 
     useEffect(() => {
         if (isOpen) {
+            // При открытии сразу сбрасываем флаг «скрытия»
+            setIsHiding(false);
             setMounted(true);
         } else {
             setIsHiding(true);
@@ -50,12 +60,18 @@ export const Modal: React.FC<ModalProps> = ({
 
     const handleKey = useCallback(
         (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && closable) {
                 handleClose();
             }
         },
-        [handleClose],
+        [handleClose, closable],
     );
+
+    const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
+        if (closable && e.target === e.currentTarget) {
+            handleClose();
+        }
+    };
 
     useEffect(() => {
         if (isOpen) {
@@ -74,8 +90,9 @@ export const Modal: React.FC<ModalProps> = ({
     return (
         <Portal>
             <div
+                onClick={onClickOverlay}
                 className={classNames(
-                    'fixed inset-0 flex items-center justify-center transition-opacity duration-300',
+                    'fixed inset-0 flex items-center justify-center transition-opacity duration-300 bg-black/60',
                     {
                         'opacity-100 pointer-events-auto z-50': isOpen && !isHiding,
                         'opacity-0 pointer-events-none -z-10': !isOpen || isHiding,
@@ -83,8 +100,6 @@ export const Modal: React.FC<ModalProps> = ({
                     [className],
                 )}
             >
-                {overlay && <div className="absolute inset-0 bg-black/60" />}
-
                 <div
                     className={classNames(
                         'relative rounded-2xl p-5 transition-transform duration-300',
@@ -100,6 +115,15 @@ export const Modal: React.FC<ModalProps> = ({
                         maxWidth: '100%',
                     }}
                 >
+                    {closable && (
+                        <button
+                            onClick={handleClose}
+                            aria-label="Закрыть"
+                            className="absolute top-1 right-2 text-gray-400 hover:text-white transition-colors"
+                        >
+                            <FiX size={22} />
+                        </button>
+                    )}
                     {children}
                 </div>
             </div>

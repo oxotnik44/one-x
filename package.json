@@ -32,7 +32,7 @@
         "screen:current": "npx storycap http://localhost:6006 --outDir .screenshots/current --delay 400",
         "screen:compare": "pnpm screen:current && reg-cli .screenshots/reference .screenshots/current .screenshots/diff --threshold 0.1 --includeAA --report .screenshots/report.html --json .screenshots/reg.json",
         "screen:open": "node scripts/openReportIfDiffExists.js",
-        "screen:ok": "pnpm screen:reference && git add . && cz"
+        "screen:ok": "pnpm screen:reference && git add . && cz && git push"
     },
     "dependencies": {
         "@storybook/react": "^9.0.15",

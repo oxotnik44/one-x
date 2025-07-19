@@ -9,7 +9,7 @@ export type CSSVarName =
     | '--heart-color'
     | '--inverted-heart-color'
     | '--primary-color'
-    | '--inverted-primary-color';
+    | '--second-color';
 
 export type ThemeVars = Record<CSSVarName, string>;
 

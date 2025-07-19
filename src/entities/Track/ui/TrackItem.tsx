@@ -1,92 +1,109 @@
-import React, { useCallback } from 'react';
-import { likeTrack, useUserStore } from 'entities/User';
+// src/entities/Track/ui/TrackItem.tsx
+import React from 'react';
+import { HiOutlineDotsVertical } from 'react-icons/hi';
+import { ButtonTheme, ConfirmDeleteModal, Dropdown, Like, PlayButton, Text } from 'shared/ui';
+import { formatTime } from 'shared/lib';
 import type { Track } from '../model/types/track';
-import { usePlayerStore } from 'entities/Player/model';
-import { ButtonTheme, Like, PlayButton, Text } from 'shared/ui';
+import { useTrackItemLogic } from '../model/useTrackActions';
+import { useTranslation } from 'react-i18next';
 
 interface TrackItemProps {
     track: Track;
     groupName: string;
+    onConfirmDelete?: (track: Track) => void;
 }
 
-export const TrackItem: React.FC<TrackItemProps> = React.memo(({ track, groupName }) => {
-    const currentTrackId = usePlayerStore((s) => s.currentTrack?.id);
-    const isPlayingGlobal = usePlayerStore((s) => s.isPlaying);
-    const togglePlay = usePlayerStore((s) => s.togglePlay);
-    const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack);
+export const TrackItem: React.FC<TrackItemProps> = ({ track, groupName, onConfirmDelete }) => {
+    const {
+        isDropdownOpen,
+        isConfirmOpen,
+        modalRef,
+        theme,
+        liked,
+        isPlaying,
+        isCurrent,
+        onPlayClick,
+        toggleLike,
+        toggleDropdown,
+        onDeleteClick,
+        setDropdownOpen,
+        onConfirmDeleteClick,
+        setConfirmOpen,
+    } = useTrackItemLogic({ track, groupName, onConfirmDelete });
 
-    const authData = useUserStore((s) => s.authData);
-
-    const isCurrent = currentTrackId === track.id;
-    const isPlaying = isCurrent && isPlayingGlobal;
-
-    const onPlayClick = useCallback(() => {
-        if (!isCurrent) {
-            setCurrentTrack(track);
-        } else {
-            togglePlay();
-        }
-    }, [isCurrent, setCurrentTrack, track, togglePlay]);
-
-    const formatDuration = useCallback((sec: number) => {
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60)
-            .toString()
-            .padStart(2, '0');
-        return `${m}:${s}`;
-    }, []);
-
-    // Лайкнут ли текущий трек
-    const liked = Boolean(authData?.likedTracks?.includes(track.id));
-
-    // Обработчик переключения лайка
-    const toggleLike = useCallback(() => {
-        likeTrack(track.id);
-        // Здесь можно добавить обновление стора или другой эффект
-    }, [track.id]);
+    const { t } = useTranslation('trackItem');
 
     return (
-        <div
-            className="flex w-full max-w-full items-center border rounded overflow-hidden"
-            style={{ backgroundColor: 'var(--bg-container)' }}
-        >
-            <div className="relative w-20 h-20 flex-shrink-0">
-                <img
-                    loading="lazy"
-                    width={80}
-                    height={80}
-                    src={track.cover}
-                    alt={track.title}
-                    className=" object-cover rounded-tr-lg rounded-br-lg"
-                />
-                <div className="absolute inset-0 bg-black/0 hover:bg-black/50 transition-colors flex items-center justify-center rounded-tr-lg rounded-br-lg">
-                    <PlayButton
-                        isPlaying={isPlaying}
-                        isCurrent={isCurrent}
-                        onClick={onPlayClick}
-                        theme={ButtonTheme.CLEAR}
-                        showOnHover
+        <>
+            <div
+                className="flex w-full max-w-full items-center border rounded overflow-hidden"
+                style={{ backgroundColor: 'var(--bg-container)' }}
+            >
+                <div className="relative w-20 h-20 flex-shrink-0">
+                    <img
+                        loading="lazy"
+                        width={80}
+                        height={80}
+                        src={track.cover}
+                        alt={track.title}
+                        className="object-cover rounded-tr-lg rounded-br-lg"
                     />
+                    <div className="absolute inset-0 bg-black/0 hover:bg-black/50 transition-colors flex items-center justify-center rounded-tr-lg rounded-br-lg">
+                        <PlayButton
+                            isPlaying={isPlaying}
+                            isCurrent={isCurrent}
+                            onClick={onPlayClick}
+                            theme={ButtonTheme.CLEAR}
+                            showOnHover
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col justify-center flex-grow px-4 overflow-hidden">
+                    <Text size="medium" className="truncate">
+                        {groupName}
+                    </Text>
+                    <Text size="medium" className="truncate font-semibold">
+                        {track.title}
+                    </Text>
+                </div>
+
+                <div className="flex gap-5 items-center px-4 min-w-[60px] relative">
+                    <Like liked={liked} onToggle={toggleLike} />
+                    <Text size="small">{formatTime(track.duration)}</Text>
+                    <button
+                        className="p-1 rounded-full border border-white hover:border-gray-300 hover:text-black text-gray-500 transition-colors cursor-pointer"
+                        onClick={toggleDropdown}
+                    >
+                        <HiOutlineDotsVertical size={20} color={theme['--primary-color']} />
+                    </button>
+
+                    <Dropdown
+                        isOpen={isDropdownOpen}
+                        onClose={() => setDropdownOpen(false)}
+                        className="ml-30 mb-35 min-w-[120px]"
+                        ref={modalRef}
+                    >
+                        <div
+                            className="text-sm cursor-pointer hover:bg-gray-100 rounded p-2"
+                            onClick={onDeleteClick}
+                        >
+                            {t('delete')}
+                        </div>
+                        <div className="text-sm cursor-pointer hover:bg-gray-100 rounded p-2">
+                            {t('option2')}
+                        </div>
+                    </Dropdown>
                 </div>
             </div>
 
-            <div className="flex flex-col justify-center flex-grow px-4 overflow-hidden">
-                <Text size="medium" className="truncate">
-                    {groupName}
-                </Text>
-                <Text size="medium" className="truncate font-semibold">
-                    {track.title}
-                </Text>
-            </div>
-
-            <div className="flex flex-col items-center justify-center px-4 space-y-1 min-w-[60px]">
-                <Like liked={liked} onToggle={toggleLike} />
-                <span className="text-xs text-gray-500 select-none">
-                    {formatDuration(track.duration)}
-                </span>
-            </div>
-        </div>
+            <ConfirmDeleteModal
+                isOpen={isConfirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={onConfirmDeleteClick}
+            />
+        </>
     );
-});
+};
 
 TrackItem.displayName = 'TrackItem';

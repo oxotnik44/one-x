@@ -1,73 +1,62 @@
 {
   "users": [
     {
-      "id": "3d114e7b-c3c6-4949-a3e1-7811f228a340",
+      "id": "71ef2da7-dbce-4776-b12f-500745d0493b",
       "email": "a@gmail.com",
-      "password": "$2b$10$6Zi4Qd9qHBDOlhDlsbm4WuWDu95ZKuaJz3/z0HlCcKQS0tcPPWNRK",
+      "password": "$2b$10$DhyH3s1AbbI1OA8ieV5wl.dVusn0l6B/i1Luw6.eI9T7kQOPd7S2u",
       "avatar": "",
       "username": "",
-      "createdAt": "2025-07-16T17:37:27.903Z",
-      "likedTracks": [
-        "62a3f845-2967-40cb-8648-ef520b5fc15f"
-      ]
+      "createdAt": "2025-07-19T06:25:40.579Z",
+      "likedTracks": []
     }
   ],
   "albums": [
     {
-      "id": "efc00988-2fac-4605-a995-a3b10c3e83d5",
-      "name": "Life Starts Now",
-      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
-      "createdAt": "2025-07-17T15:04:12.200Z",
+      "id": "808d8bb5-5be6-46fd-a652-42f74c491457",
+      "name": "One-X",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1752914504679",
+      "description": "фывфыв",
+      "createdAt": "2025-07-19T08:41:44.681Z",
       "trackIds": [
-        "771c4b15-d8d9-468a-bce0-2aba4ee2994e",
-        "6393d5c6-b0ed-44db-b48b-980eca6e65bc"
+        "ae7ff099-c346-4c0f-95e8-627ccc806cc2",
+        "3237ca3f-7115-43fa-990a-59ed3458c0dd",
+        "119c8fc9-c84f-4582-aff4-4410da0008ea"
       ]
     }
   ],
   "groups": [
     {
-      "id": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
+      "id": "236d217d-c205-4f15-a131-ff1e0cd58590",
       "name": "Three Days Grace",
       "description": "фывфывфыв",
-      "userId": "3d114e7b-c3c6-4949-a3e1-7811f228a340",
+      "userId": "71ef2da7-dbce-4776-b12f-500745d0493b",
       "genre": "Рок",
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/cover.webp",
-      "createdAt": "2025-07-17T15:01:29.937Z",
-      "updatedAt": ""
+      "cover": "http://localhost:4001/groups/Three Days Grace/cover.webp?v=1752908269676",
+      "createdAt": "2025-07-19T06:32:17.916Z",
+      "updatedAt": "2025-07-19T06:57:49.679Z"
     }
   ],
   "tracks": [
     {
-      "id": "4db2b599-079d-4ac4-a17e-e1dacb2ed068",
-      "title": "On My Own",
-      "duration": 186,
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/Tracks/On My Own/cover.webp",
-      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
-      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Tracks/On My Own/On My Own.mp3",
-      "createdAt": "2025-07-17T15:01:51.165Z"
-    },
-    {
-      "id": "771c4b15-d8d9-468a-bce0-2aba4ee2994e",
+      "id": "c1b0cf99-c287-4f58-91b1-4b62d8f797c2",
       "title": "Life Starts Now",
       "duration": 188,
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
-      "groupName": "Three Days Grace",
-      "albumId": "efc00988-2fac-4605-a995-a3b10c3e83d5",
-      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
-      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/Life%20Starts%20Now.mp3",
-      "createdAt": "2025-07-17T15:04:12.206Z"
+      "cover": "http://localhost:4001/groups/Three Days Grace/Tracks/Life Starts Now/cover.webp?v=1752924079741",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Tracks/Life Starts Now/Life Starts Now.mp3?v=1752924079741",
+      "createdAt": "2025-07-19T11:21:19.743Z"
     },
     {
-      "id": "6393d5c6-b0ed-44db-b48b-980eca6e65bc",
-      "title": "The Good Life",
-      "duration": 173,
-      "cover": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/cover.webp",
+      "id": "119c8fc9-c84f-4582-aff4-4410da0008ea",
+      "title": "Its All Over",
+      "duration": 249,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1752914504679",
       "groupName": "Three Days Grace",
-      "albumId": "efc00988-2fac-4605-a995-a3b10c3e83d5",
-      "groupId": "8103b75d-8254-4b3f-bcbd-d27dfecdb84a",
-      "audioUrl": "http://localhost:4001/static/groups/Three Days Grace/Album/Life%20Starts%20Now/The%20Good%20Life.mp3",
-      "createdAt": "2025-07-17T15:04:12.206Z"
+      "albumId": "808d8bb5-5be6-46fd-a652-42f74c491457",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/Its All Over.mp3?v=1752924586162",
+      "createdAt": "2025-07-19T11:29:46.167Z"
     }
   ]
 }

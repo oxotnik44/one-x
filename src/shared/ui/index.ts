@@ -14,3 +14,4 @@ export * from './Portal/Portal';
 export * from './Text/Text';
 export * from './TrackControlButton/TrackControlButton';
 export * from './UserAvatar/UserAvatar';
+export * from './ConfirmDeleteModal/ConfirmDeleteModal';

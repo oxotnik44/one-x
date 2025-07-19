@@ -48,26 +48,26 @@ export const Sidebar: FC = React.memo(() => {
                         alt={t('logoAlt')}
                         className={classNames(
                             'object-contain transition-all duration-300 rounded-xl',
-                            isCollapsed ? 'w-10 h-10' : 'w-40 h-40',
+                            isCollapsed ? 'w-15 h-15' : 'w-40 h-40',
                         )}
                     />
                 </div>
 
                 {/* Навигация */}
-                <nav className="flex flex-col gap-3">
+                <nav className="flex flex-col gap-5 mt-10">
                     {sidebarItems.map(({ icon: Icon, label, href }) => {
                         const isActive = pathname.startsWith(href);
                         const iconColor = isActive
                             ? theme['--primary-color']
-                            : theme['--inverted-primary-color'];
+                            : theme['--second-color'];
 
                         return (
                             <div
                                 key={label}
                                 onClick={() => onNavItemClick(label, href)}
                                 className={classNames(
-                                    'flex items-center cursor-pointer px-2 py-1 rounded hover:text-white transition',
-                                    isCollapsed ? 'justify-center' : 'gap-3',
+                                    'flex items-center cursor-pointer px-2 py-1 rounded hover:text-white transition gap-3',
+                                    isCollapsed && 'justify-center',
                                 )}
                                 style={{ color: iconColor }}
                             >

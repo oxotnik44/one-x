@@ -37,7 +37,6 @@ export const editGroup = async (
 
                 coverUrl = data.url;
             }
-
             const payload: Partial<Group> = {
                 name: groupData.name,
                 description: groupData.description ?? null,

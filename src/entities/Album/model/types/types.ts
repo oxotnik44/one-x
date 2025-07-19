@@ -1,12 +1,11 @@
-import type { Track } from 'entities/Track';
-
 // src/entities/Album/model/types.ts
 export interface Album {
     id: string;
     name: string;
     groupId: string;
+    description: string | null;
     cover?: string;
-    trackIds: Track[];
+    trackIds: string[];
     createdAt: string;
     updatedAt?: string;
 }

@@ -23,15 +23,15 @@ export const ListAlbum: React.FC = () => {
         navigate('/my_group/add_album');
     };
 
-    const onAlbumClick = (albumName: string) => {
+    const onAlbumClick = (id: string) => {
         // Находим альбом по имени
-        const album = albums.find((a) => a.name === albumName);
+        const album = albums.find((a) => a.id === id);
         if (album) {
             setCurrentAlbum(album);
         }
         // Кодируем название для URL
-        const encodedName = encodeURIComponent(albumName);
-        navigate(`/my_group/album/${encodedName}`);
+        const encodedId = encodeURIComponent(id);
+        navigate(`/my_group/album/${encodedId}`);
     };
 
     if (!currentGroup) {
@@ -48,7 +48,7 @@ export const ListAlbum: React.FC = () => {
                         <button
                             key={album.id}
                             type="button"
-                            onClick={() => onAlbumClick(album.name)}
+                            onClick={() => onAlbumClick(album.id)}
                             className="flex flex-col items-center focus:outline-none transition-opacity duration-200 hover:opacity-70 cursor-pointer"
                         >
                             <img

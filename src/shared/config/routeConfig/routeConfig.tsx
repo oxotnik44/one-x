@@ -37,7 +37,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.GROUP_SETTINGS]: '/my_group/settings',
     [AppRoutes.SETTINGS]: '/settings',
     [AppRoutes.ADD_ALBUM]: '/my_group/add_album',
-    [AppRoutes.ALBUM_PAGE]: '/my_group/album/:albumName',
+    [AppRoutes.ALBUM_PAGE]: '/my_group/album/:albumId',
     [AppRoutes.NOT_FOUND]: '*',
 };
 

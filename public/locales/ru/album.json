@@ -1,6 +1,11 @@
 {
     "notSelected": "Альбом не выбран",
-    "created": "Создан {{date}}",
-    "updated": "Обновлён {{date}}",
+    "created": "Создано: {{date}}",
+    "updated": "Обновлено: {{date}}",
+    "noDescription": "Описание отсутствует",
+    "editDescription": "Редактировать описание",
+    "save": "Сохранить",
+    "saving": "Сохраняем...",
+    "saveError": "Ошибка при сохранении описания",
     "uploadTrack": "Загрузить трек"
 }

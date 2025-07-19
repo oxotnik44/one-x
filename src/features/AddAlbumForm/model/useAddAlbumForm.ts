@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 export interface FolderFields extends FieldValues {
     title: string;
     folder: FileList;
+    description?: string;
 }
 
 export function useAddAlbumForm() {
@@ -34,10 +35,11 @@ export function useAddAlbumForm() {
         return file?.webkitRelativePath?.split('/')[0] ?? '';
     }, [folder]);
     const navigate = useNavigate();
+
     useEffect(() => {
         register('folder', { required: 'folderRequired' });
-        // убираем регистрацию title с обязательной валидацией
         register('title');
+        register('description'); // регистрируем description
     }, [register]);
 
     const onFolderChange = (files: FileList | null) => {
@@ -62,7 +64,8 @@ export function useAddAlbumForm() {
     };
 
     const submitHandler = (onSuccess?: () => void) =>
-        handleSubmit(async ({ title }) => {
+        handleSubmit(async ({ title, description }) => {
+            // добавляем description сюда
             const finalTitle = title?.trim() || folderName;
             if (!finalTitle || !coverFile || trackFiles.length === 0) return;
 
@@ -77,6 +80,7 @@ export function useAddAlbumForm() {
             await addAlbum({
                 title: finalTitle,
                 groupName,
+                description, // передаем description
                 cover: coverFile,
                 tracks: preparedTracks,
             });

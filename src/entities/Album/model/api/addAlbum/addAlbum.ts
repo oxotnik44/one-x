@@ -13,6 +13,7 @@ export interface AddAlbumData {
     title: string;
     groupName: string;
     cover: File;
+    description?: string; // добавлено необязательное поле description
     tracks: {
         file: File;
         title: string;
@@ -42,6 +43,9 @@ export async function addAlbum(data: AddAlbumData): Promise<UploadAlbumResponse>
             const formData = new FormData();
             formData.append('groupName', data.groupName);
             formData.append('title', data.title);
+            if (data.description) {
+                formData.append('description', data.description);
+            }
             formData.append('cover', data.cover);
             data.tracks.forEach(({ file }) => {
                 formData.append('tracks', file, file.name);
@@ -68,6 +72,7 @@ export async function addAlbum(data: AddAlbumData): Promise<UploadAlbumResponse>
                 name: data.title,
                 groupId,
                 cover: upload.coverUrl,
+                description: data.description ?? '', // передаем description в объект альбома
                 createdAt: new Date().toISOString(),
                 trackIds: [],
             };
