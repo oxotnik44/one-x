@@ -1,82 +1,99 @@
-import { Album as AlbumComponent } from './Album';
-import { PageWrapper } from 'shared/ui';
-import { MemoryRouter } from 'react-router-dom';
-import { I18nextProvider } from 'react-i18next';
-import { useAlbumStore } from 'entities/Album';
-import { useTrackStore, type Track } from 'entities/Track';
-import { useEffect } from 'react';
+// src/pages/Album/ui/Album.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Album } from './Album';
+import { useAlbumStore, type Album as AlbumType } from 'entities/Album';
+import { useGroupStore, type Group } from 'entities/Group';
+import { useUserStore, type User } from 'entities/User';
+
+import { PageWrapper } from 'shared/ui';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
 import i18n from 'shared/config/i18n/i18n';
-
+import { useTrackStore, type Track } from 'entities/Track';
 import Logo from '/assets/Logo.webp';
-
-// Тип альбома с треками
-export interface Album {
-    id: string;
-    name: string;
-    cover: string;
-    createdAt: string;
-    updatedAt: string;
-    groupId: string;
-    trackIds: Track[];
-}
-
-// Моки треков
-const mockTracks: Track[] = [
-    {
-        id: 'track-1',
-        title: 'Track One',
-        duration: 185,
-        albumId: '1',
-        audioUrl: 'https://example.com/audio1.mp3',
-        cover: Logo,
-        createdAt: '123',
-        groupId: '123',
-        groupName: 'Group',
-        updatedAt: '123',
-    },
-    {
-        id: 'track-1',
-        title: 'Track One',
-        duration: 185,
-        albumId: '1',
-        audioUrl: 'https://example.com/audio1.mp3',
-        cover: Logo,
-        createdAt: '123',
-        groupId: '123',
-        groupName: 'Group',
-        updatedAt: '123',
-    },
-];
-
-// Мок объекта альбома
-const mockAlbum: Album = {
+const mockGroup: Group = {
     id: '1',
+    name: 'Mock Group',
+    userId: 'user-1',
+    genre: 'Рок',
+    cover: 'https://via.placeholder.com/150',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+};
+
+const mockAlbum: AlbumType = {
+    id: '123',
     name: 'Mock Album',
+    description: 'Описание альбома',
     cover: Logo,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    groupId: 'mock-group-id',
-    trackIds: mockTracks,
+    groupId: '1',
+    trackIds: ['track-1', 'track-2'],
 };
 
-const meta: Meta<typeof AlbumComponent> = {
+const mockUser: User = {
+    id: 'user-1',
+    username: 'test_user',
+    likedAlbums: ['123'],
+    password: '',
+    avatar: '',
+    createdAt: '',
+};
+const mockTracks: Track[] = [
+    {
+        id: 'track-1',
+        title: 'Первый трек',
+        groupName: 'User',
+        cover: Logo,
+        duration: 180,
+        groupId: 'group-1',
+        audioUrl: '/audio/track-1.mp3',
+        createdAt: new Date().toISOString(),
+    },
+    {
+        id: 'track-2',
+        title: 'Второй трек',
+        groupName: 'User',
+        cover: Logo,
+        duration: 210,
+        groupId: 'group-1',
+        audioUrl: '/audio/track-2.mp3',
+        createdAt: new Date().toISOString(),
+    },
+];
+
+// Предварительно устанавливаем состояние в сторы до рендера компонента
+function setupStores() {
+    useAlbumStore.setState({ currentAlbum: mockAlbum });
+    useGroupStore.setState({ currentGroup: mockGroup });
+    useUserStore.setState({ authData: mockUser }); // Если authData - объект пользователя
+    useTrackStore.setState({
+        tracks: mockTracks,
+        setTracks: () => {},
+    });
+}
+
+const meta: Meta<typeof Album> = {
     title: 'widgets/Album',
-    component: AlbumComponent,
+    component: Album,
     decorators: [
         (Story) => {
-            useEffect(() => {
-                useAlbumStore.setState({ currentAlbum: mockAlbum });
-                useTrackStore.setState({ tracks: mockTracks });
-            }, []);
-
+            setupStores(); // вызов до рендера компонента, чтобы сторы уже имели данные
             return (
-                <MemoryRouter>
-                    <I18nextProvider i18n={i18n}>
-                        <PageWrapper notCenter>
-                            <Story />
-                        </PageWrapper>
-                    </I18nextProvider>
+                <MemoryRouter initialEntries={['/group/1/album/123']}>
+                    <Routes>
+                        <Route
+                            path="/group/:groupId/album/:albumId"
+                            element={
+                                <I18nextProvider i18n={i18n}>
+                                    <PageWrapper>
+                                        <Story />
+                                    </PageWrapper>
+                                </I18nextProvider>
+                            }
+                        />
+                    </Routes>
                 </MemoryRouter>
             );
         },
@@ -84,6 +101,7 @@ const meta: Meta<typeof AlbumComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof AlbumComponent>;
 
-export const Default: Story = {};
+export const Default: StoryObj<typeof Album> = {
+    render: () => <Album />,
+};

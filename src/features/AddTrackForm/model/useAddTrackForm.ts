@@ -1,12 +1,12 @@
 // src/entities/Track/model/useAddTrackForm.ts
-import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { addTrack } from 'entities/Track/model/api/addTrack/addTrack';
+import { useGroupStore } from 'entities/Group';
+import { addTrack } from 'entities/Track';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { getAudioDuration } from 'shared/lib/getAudioDuration/getAudioDuration';
+import { getAudioDuration } from 'shared/lib';
 
-export interface FormData {
+interface FormData {
     title: string;
     cover: FileList;
     audio: FileList;

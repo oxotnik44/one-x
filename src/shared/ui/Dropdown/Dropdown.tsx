@@ -2,7 +2,7 @@ import { memo, forwardRef, type ReactNode, type CSSProperties, type ForwardedRef
 import clsx from 'clsx';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 
-export interface DropdownProps {
+interface DropdownProps {
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;

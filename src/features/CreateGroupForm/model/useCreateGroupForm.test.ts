@@ -1,7 +1,7 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useCreateGroupForm } from './useCreateGroupForm';
-import { createGroup } from 'entities/Group/model/api/createGroup/createGroup';
+import { createGroup } from 'entities/Group';
 
 // Мокаем createGroup
 vi.mock('entities/Group/model/api/createGroup/createGroup', () => ({

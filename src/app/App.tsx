@@ -15,7 +15,6 @@ function App() {
     const [isOpen, setIsOpen] = useState(true);
     const [isLogin, setIsLogin] = useState(true);
     const [loadingGroup, setLoadingGroup] = useState(false);
-
     useEffect(() => {
         if (!user) {
             return;

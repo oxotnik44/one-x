@@ -1,15 +1,12 @@
 import { memo } from 'react';
-import { Loader } from 'shared/ui/Loader/Loader';
+import { PageWrapper } from '../PageWrapper/PageWrapper';
+import { Loader } from '../Loader/Loader';
 
-interface PageLoaderProps {
-    className?: string;
-}
-
-const PageLoaderComponent = ({ className }: PageLoaderProps) => {
+const PageLoaderComponent = () => {
     return (
-        <div className={`flex items-center justify-center h-screen w-full ${className ?? ''}`}>
+        <PageWrapper>
             <Loader />
-        </div>
+        </PageWrapper>
     );
 };
 

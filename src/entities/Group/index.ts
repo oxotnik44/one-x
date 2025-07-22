@@ -1,4 +1,4 @@
-export type { Genre, GroupSchema, Group } from './model/types/group';
+export type { Genre, Group } from './model/types/group';
 export { genresList } from './model/types/group';
 export { createGroup } from './model/api/createGroup/createGroup';
 export { editGroup } from './model/api/editGroup/editGroup';

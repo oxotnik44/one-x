@@ -1,3 +1,4 @@
+// src/pages/Album/model/useAlbum.ts
 import { useState, useEffect, useRef, useCallback, useMemo, type ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -11,10 +12,13 @@ import {
     addTrackInAlbum,
 } from 'entities/Album';
 import { useGroupStore } from 'entities/Group';
+import { likeAlbum } from 'entities/User/model/api/likeAlbum/likeAlbum';
+import { useUserStore } from 'entities/User';
 
 export function useAlbum() {
     const { t } = useTranslation('album');
     const { albumId } = useParams<{ albumId: string }>();
+    const likedAlbums = useUserStore((state) => state.authData?.likedAlbums ?? []);
     const currentGroup = useGroupStore((g) => g.currentGroup);
     const currentAlbum = useAlbumStore((s) => s.currentAlbum);
     const setCurrentAlbum = useAlbumStore((s) => s.setCurrentAlbum);
@@ -23,31 +27,32 @@ export function useAlbum() {
     const [saving, setSaving] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpenState] = useState(false);
     const [isEditing, setIsEditingState] = useState(false);
-    const [loadingTrack, setLoadingTrack] = useState(false);
-
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         if (!currentAlbum && albumId && currentGroup) {
             fetchAlbumById(currentGroup.id, albumId).catch(() => toast.error(t('loadAlbumError')));
         }
-    }, [albumId, currentAlbum, currentGroup, t]);
+    }, [albumId, currentAlbum, currentGroup]);
 
     useEffect(() => {
         setDescState(currentAlbum?.description ?? '');
     }, [currentAlbum]);
 
-    // мемоизированный сеттер для desc
     const setDesc = useCallback((value: string) => {
         setDescState(value);
     }, []);
 
-    const onSave = useCallback(async () => {
-        if (saving) return;
-        if (!currentAlbum) {
+    const toggleAlbum = useCallback(() => {
+        if (!currentAlbum?.id) {
             toast.error(t('albumNotSelected'));
             return;
         }
+        likeAlbum(currentAlbum.id);
+    }, [currentAlbum?.id, t]);
+
+    const onSave = useCallback(async () => {
+        if (saving || !currentAlbum) return;
         setSaving(true);
         try {
             await editDescription(currentAlbum.id, desc);
@@ -82,37 +87,32 @@ export function useAlbum() {
     const onFileChange = useCallback(
         async (e: ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
-            if (files && files.length > 0) {
-                const file = files[0];
+            if (!files?.length) return;
 
-                if (!currentGroup || !currentAlbum) {
-                    toast.error(t('albumOrGroupNotSelected'));
-                    e.target.value = '';
-                    return;
-                }
+            if (!currentGroup || !currentAlbum) {
+                toast.error(t('albumOrGroupNotSelected'));
+                e.target.value = '';
+                return;
+            }
 
-                setLoadingTrack(true);
-
-                try {
-                    await addTrackInAlbum(currentGroup, currentAlbum, file);
-                } catch (error) {
-                    toast.error(t('uploadTrackError'));
-                    console.error(error);
-                } finally {
-                    setLoadingTrack(false);
-                    e.target.value = '';
-                }
+            try {
+                await addTrackInAlbum(currentGroup, currentAlbum, files[0]);
+            } catch (error) {
+                toast.error(t('uploadTrackError'));
+                console.error(error);
+            } finally {
+                e.target.value = '';
             }
         },
         [currentGroup, currentAlbum, t],
     );
 
-    const setIsDeleteModalOpen = useCallback((value: boolean) => {
-        setIsDeleteModalOpenState(value);
+    const setIsDeleteModalOpen = useCallback((val: boolean) => {
+        setIsDeleteModalOpenState(val);
     }, []);
 
-    const setIsEditing = useCallback((value: boolean) => {
-        setIsEditingState(value);
+    const setIsEditing = useCallback((val: boolean) => {
+        setIsEditingState(val);
     }, []);
 
     return useMemo(
@@ -128,9 +128,10 @@ export function useAlbum() {
             onSave,
             onDelete,
             fileInputRef,
+            toggleAlbum,
             openFileDialog,
             onFileChange,
-            loadingTrack,
+            likedAlbums, // ← теперь включено
         }),
         [
             currentAlbum,
@@ -145,7 +146,7 @@ export function useAlbum() {
             onDelete,
             openFileDialog,
             onFileChange,
-            loadingTrack,
+            likedAlbums, // ← добавь сюда
         ],
     );
 }

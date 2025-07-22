@@ -1,11 +1,15 @@
-import { ButtonNavigation, PageWrapper } from 'shared/ui';
+// src/pages/Album/AlbumPage.tsx
+import { AutoHideScroll, ButtonNavigation, PageWrapper } from 'shared/ui';
 import { Album } from 'widgets/Album';
 
 export const AlbumPage = () => {
     return (
         <PageWrapper notCenter>
             <ButtonNavigation back />
-            <Album />
+
+            <AutoHideScroll className="px-4">
+                <Album />
+            </AutoHideScroll>
         </PageWrapper>
     );
 };

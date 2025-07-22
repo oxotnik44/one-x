@@ -1,5 +1,5 @@
-import { LoginForm } from 'features/Login/ui/LoginForm/LoginForm';
-import { RegistrationForm } from 'features/Registration/ui/RegistrationForm/RegistrationForm';
+import { LoginForm } from 'features/Login';
+import { RegistrationForm } from 'features/Registration';
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonTheme, Loader, Modal, Text } from 'shared/ui';

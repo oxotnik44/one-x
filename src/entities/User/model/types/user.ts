@@ -8,6 +8,8 @@ export interface User {
     createdAt: string;
     updatedAt?: string;
     likedTracks?: string[];
+    likedGroups?: string[];
+    likedAlbums?: string[];
 }
 
 export interface UserSchema {

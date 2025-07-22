@@ -1,4 +1,4 @@
-// src/features/Album/services/fetchAlbumById.spec.ts
+// src/entities/Album/model/api/fetchAlbumById/fetchAlbumById.test.ts
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import toast from 'react-hot-toast';
 import { fetchAlbumById } from './fetchAlbumById';
@@ -18,18 +18,21 @@ vi.mock('../../slice/useAlbumStore', () => ({
     useAlbumStore: { getState: vi.fn() },
 }));
 
+const mockedToast = vi.mocked(toast, true);
+const mockedApi = vi.mocked(apiJson, true);
+const mockedUseStore = vi.mocked(useAlbumStore, true);
+
 describe('fetchAlbumById', () => {
     const groupId = 'g1';
     const albumId = 'a1';
-
-    const setCurrentAlbumMock = vi.fn();
+    let setCurrentAlbumMock: Mock;
 
     beforeEach(() => {
         vi.clearAllMocks();
-
-        (useAlbumStore.getState as Mock).mockReturnValue({
+        setCurrentAlbumMock = vi.fn();
+        mockedUseStore.getState.mockReturnValue({
             setCurrentAlbum: setCurrentAlbumMock,
-        });
+        } as any);
     });
 
     it('успешно устанавливает текущий альбом, когда приходит массив', async () => {
@@ -41,15 +44,15 @@ describe('fetchAlbumById', () => {
             groupId: '',
             createdAt: '',
         };
-        (apiJson.get as Mock).mockResolvedValue({ data: [album] });
+        mockedApi.get.mockResolvedValue({ data: [album] });
 
         await fetchAlbumById(groupId, albumId);
 
-        expect(apiJson.get).toHaveBeenCalledWith('/albums', { params: { groupId, albumId } });
+        expect(mockedApi.get).toHaveBeenCalledWith('/albums', { params: { groupId, albumId } });
         expect(setCurrentAlbumMock).toHaveBeenCalledWith(album);
     });
 
-    it('успешно устанавливает текущий альбом, когда приходит одиночный объект', async () => {
+    it('когда приходит одиночный объект, показывает ошибку и не устанавливает альбом', async () => {
         const album: Album = {
             id: albumId,
             name: 'Album 1',
@@ -58,20 +61,24 @@ describe('fetchAlbumById', () => {
             groupId: '',
             createdAt: '',
         };
-        (apiJson.get as Mock).mockResolvedValue({ data: album });
+        // возвращаем один объект вместо массива
+        mockedApi.get.mockResolvedValue({ data: album } as any);
 
         await fetchAlbumById(groupId, albumId);
 
-        expect(setCurrentAlbumMock).toHaveBeenCalledWith(album);
+        // убедимся, что toast.error вызван (с любым текстом)
+        expect(mockedToast.error).toHaveBeenCalled();
+        // и что setCurrentAlbum не сработал
+        expect(setCurrentAlbumMock).not.toHaveBeenCalled();
     });
 
-    it('при ошибке вызывает toast.error с сообщением ошибки', async () => {
+    it('при ошибке запроса вызывает toast.error с сообщением ошибки', async () => {
         const error = new Error('fail load');
-        (apiJson.get as Mock).mockRejectedValue(error);
+        mockedApi.get.mockRejectedValue(error);
 
         await fetchAlbumById(groupId, albumId);
 
-        expect(toast.error).toHaveBeenCalledWith(error.message);
+        expect(mockedToast.error).toHaveBeenCalledWith(error.message);
         expect(setCurrentAlbumMock).not.toHaveBeenCalled();
     });
 });

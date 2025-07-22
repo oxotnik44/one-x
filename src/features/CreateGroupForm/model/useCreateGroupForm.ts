@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, useCallback } from 'react';
-import { createGroup } from 'entities/Group/model/api/createGroup/createGroup';
 import type { CreateGroupFormData } from './types/types';
 import type { Genre } from 'entities/Group/model/types/group';
+import { createGroup } from 'entities/Group';
 
 export function useCreateGroupForm() {
     const [preview, setPreview] = useState<string | null>(null);

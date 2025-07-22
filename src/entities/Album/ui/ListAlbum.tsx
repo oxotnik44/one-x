@@ -1,68 +1,81 @@
-import { useGroupStore } from 'entities/Group';
-import { useTranslation } from 'react-i18next';
-import { useAlbumStore } from '../model/slice/useAlbumStore';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { fetchAlbums } from '../model/api/fetchAlbums/fetchAlbums';
-import { Button, ButtonSize, ButtonTheme, Text } from 'shared/ui';
+// src/entities/Album/ui/ListAlbum.tsx
+import React from 'react';
+import { Button, ButtonSize, ButtonTheme, Text, Skeleton, Like, PlayButton } from 'shared/ui';
+import { likeAlbum } from 'entities/User/model/api/likeAlbum/likeAlbum';
+import { useListAlbum } from '../model/useListAlbum';
 
 export const ListAlbum: React.FC = () => {
-    const { t } = useTranslation('listAlbum');
-    const currentGroup = useGroupStore((state) => state.currentGroup);
-    const albums = useAlbumStore((state) => state.albums);
-    const setCurrentAlbum = useAlbumStore((state) => state.setCurrentAlbum);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (currentGroup && albums.length === 0) {
-            fetchAlbums(currentGroup.id, currentGroup.name).catch(console.error);
-        }
-    }, [currentGroup, albums.length]);
-
-    const onAddAlbumClick = () => {
-        navigate('/my_group/add_album');
-    };
-
-    const onAlbumClick = (id: string) => {
-        // Находим альбом по имени
-        const album = albums.find((a) => a.id === id);
-        if (album) {
-            setCurrentAlbum(album);
-        }
-        // Кодируем название для URL
-        const encodedId = encodeURIComponent(id);
-        navigate(`/my_group/album/${encodedId}`);
-    };
+    const { t, currentGroup, albums, authData, loading, onAddAlbumClick, onAlbumClick } =
+        useListAlbum();
 
     if (!currentGroup) {
-        return <div>{t('noGroup')}</div>;
+        return <div className="text-center text-gray-500">{t('noGroup')}</div>;
     }
 
     return (
         <div className="flex flex-col">
-            {albums.length === 0 ? (
+            {loading ? (
+                <div className="grid grid-cols-2 gap-6">
+                    {Array.from({ length: 2 }).map((_, idx) => (
+                        <div key={idx} className="flex flex-col items-center">
+                            <Skeleton className="w-32 h-32 rounded-xl" />
+                            <Skeleton className="h-4 w-24 mt-2 rounded" />
+                        </div>
+                    ))}
+                </div>
+            ) : albums.length === 0 ? (
                 <div className="text-center text-gray-500">{t('noAlbums')}</div>
             ) : (
                 <div className="grid grid-cols-2 gap-6 overflow-y-auto max-h-[318px] pr-2">
-                    {albums.map((album) => (
-                        <button
-                            key={album.id}
-                            type="button"
-                            onClick={() => onAlbumClick(album.id)}
-                            className="flex flex-col items-center focus:outline-none transition-opacity duration-200 hover:opacity-70 cursor-pointer"
-                        >
-                            <img
-                                src={album.cover || '/assets/default-cover.png'}
-                                alt={album.name}
-                                className="w-32 h-32 object-cover rounded-xl shadow-md"
-                            />
-                            <Text
-                                text={album.name}
-                                size="small"
-                                className="mt-2 text-center break-words max-w-full"
-                            />
-                        </button>
-                    ))}
+                    {albums.map((album) => {
+                        const isLiked = authData?.likedAlbums?.includes(album.id) ?? false;
+                        return (
+                            <div
+                                key={album.id}
+                                onClick={() => onAlbumClick(album.id)}
+                                className="group relative flex flex-col items-center focus:outline-none cursor-pointer"
+                            >
+                                <div className="relative w-32 h-32 rounded-xl shadow-md overflow-hidden">
+                                    <img
+                                        src={album.cover || '/assets/default-cover.png'}
+                                        alt={album.name}
+                                        className="w-full h-full object-cover rounded-xl transition-opacity duration-200 ease-in-out"
+                                    />
+                                    {/* Затемнение поверх картинки */}
+                                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-60 rounded-xl transition-opacity" />
+                                </div>
+
+                                <Text
+                                    text={album.name}
+                                    size="small"
+                                    className="mt-2 text-center break-words max-w-full"
+                                />
+
+                                <div
+                                    className="absolute mt-21 mr-18 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                >
+                                    <PlayButton
+                                        theme={ButtonTheme.OUTLINE}
+                                        albumForPlay={album}
+                                        trackForPlay={null}
+                                    />
+                                </div>
+
+                                <div
+                                    className="absolute mt-23 ml-20 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        likeAlbum(album.id); // ✅ теперь лайк
+                                    }}
+                                >
+                                    <Like liked={isLiked} />
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
             <Button

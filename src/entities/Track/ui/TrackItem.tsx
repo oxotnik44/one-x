@@ -20,9 +20,6 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track, groupName, onConfir
         modalRef,
         theme,
         liked,
-        isPlaying,
-        isCurrent,
-        onPlayClick,
         toggleLike,
         toggleDropdown,
         onDeleteClick,
@@ -49,13 +46,7 @@ export const TrackItem: React.FC<TrackItemProps> = ({ track, groupName, onConfir
                         className="object-cover rounded-tr-lg rounded-br-lg"
                     />
                     <div className="absolute inset-0 bg-black/0 hover:bg-black/50 transition-colors flex items-center justify-center rounded-tr-lg rounded-br-lg">
-                        <PlayButton
-                            isPlaying={isPlaying}
-                            isCurrent={isCurrent}
-                            onClick={onPlayClick}
-                            theme={ButtonTheme.CLEAR}
-                            showOnHover
-                        />
+                        <PlayButton theme={ButtonTheme.CLEAR} showOnHover trackForPlay={track} />
                     </div>
                 </div>
 

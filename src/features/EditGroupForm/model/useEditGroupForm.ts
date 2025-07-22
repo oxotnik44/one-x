@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
 import { useState, useEffect } from 'react';
-import type { Genre } from 'entities/Group';
-import { editGroup } from 'entities/Group/model/api/editGroup/editGroup';
+import { editGroup, type Genre } from 'entities/Group';
 
-export interface EditGroupFormValues {
+interface EditGroupFormValues {
     name: string;
     description?: string;
     genre: Genre;

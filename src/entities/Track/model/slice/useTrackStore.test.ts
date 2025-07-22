@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { Track } from '../model/types/track';
 import { useTrackStore } from './useTrackStore';
+import type { Track } from '../types/track';
 
 describe('useTrackStore', () => {
     beforeEach(() => {

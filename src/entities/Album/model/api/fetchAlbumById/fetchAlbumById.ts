@@ -7,7 +7,10 @@ export async function fetchAlbumById(groupId: string, albumId: string): Promise<
     try {
         const { setCurrentAlbum } = useAlbumStore.getState();
         const { data } = await apiJson.get<Album[]>('/albums', { params: { groupId, albumId } });
-        setCurrentAlbum(Array.isArray(data) ? data[0] : data);
+        const album = data.find((a) => a.id === albumId);
+
+        if (album) setCurrentAlbum(album);
+        else toast.error('Альбом не найден');
     } catch (err) {
         toast.error(err instanceof Error ? err.message : 'Ошибка при загрузке альбома');
     }

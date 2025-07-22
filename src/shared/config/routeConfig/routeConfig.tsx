@@ -13,11 +13,11 @@ const NotFoundPage = React.lazy(() => import('pages/NotFoundPage'));
 const SettingsUserPage = React.lazy(() => import('pages/SettingsUserPage'));
 const AlbumPage = React.lazy(() => import('pages/AlbumPage'));
 
-export type AppRoutesProps = RouteProps & {
+type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
 };
 
-export enum AppRoutes {
+enum AppRoutes {
     ROOT = 'root',
     MAIN = 'main',
     MY_GROUP = 'my_group',
@@ -29,7 +29,7 @@ export enum AppRoutes {
     NOT_FOUND = 'not_found',
 }
 
-export const RoutePath: Record<AppRoutes, string> = {
+const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ROOT]: '/',
     [AppRoutes.MAIN]: '/main',
     [AppRoutes.MY_GROUP]: '/my_group',
@@ -57,11 +57,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     },
     [AppRoutes.MY_GROUP]: {
         path: RoutePath[AppRoutes.MY_GROUP],
-        element: (
-            <React.Suspense fallback={<PageLoader />}>
-                <MyGroupPage />
-            </React.Suspense>
-        ),
+        element: <MyGroupPage />,
         authOnly: true,
     },
     [AppRoutes.ADD_TRACK]: {
@@ -102,11 +98,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     },
     [AppRoutes.ALBUM_PAGE]: {
         path: RoutePath[AppRoutes.ALBUM_PAGE],
-        element: (
-            <React.Suspense fallback={<PageLoader />}>
-                <AlbumPage />
-            </React.Suspense>
-        ),
+        element: <AlbumPage />,
         authOnly: true,
     },
     [AppRoutes.NOT_FOUND]: {

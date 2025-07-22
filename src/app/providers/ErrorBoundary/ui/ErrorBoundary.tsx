@@ -1,48 +1,45 @@
-import React, { type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ErrorPage } from 'pages/ErrorPage';
+import React, { type ErrorInfo, type ReactNode, Suspense } from 'react';
 
 interface ErrorBoundaryProps {
     children: ReactNode;
-    navigate: (to: string) => void;
 }
 
 interface ErrorBoundaryState {
     hasError: boolean;
 }
 
-class ErrorBoundaryBase extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
     constructor(props: ErrorBoundaryProps) {
         super(props);
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(): ErrorBoundaryState {
+    static getDerivedStateFromError() {
+        // Update state so the next render will show the fallback UI.
         return { hasError: true };
     }
 
-    componentDidCatch() {
-        this.props.navigate('/error'); // <- навигация
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        // You can also log the error to an error reporting service
+        console.log(error, errorInfo);
     }
 
     render() {
-        if (this.state.hasError) {
-            return null; // UI не показываем — будет редирект
+        const { hasError } = this.state;
+        const { children } = this.props;
+
+        if (hasError) {
+            // You can render any custom fallback UI
+            return (
+                <Suspense fallback="">
+                    <ErrorPage />
+                </Suspense>
+            );
         }
 
-        return this.props.children;
+        return children;
     }
 }
 
-// HOC to inject `navigate`
-export function ErrorBoundaryWithRouter({ children }: { children: ReactNode }) {
-    const navigate = useNavigate();
-    return (
-        <ErrorBoundaryBase
-            navigate={(to) => {
-                void navigate(to);
-            }}
-        >
-            {children}
-        </ErrorBoundaryBase>
-    );
-}
+export default ErrorBoundary;

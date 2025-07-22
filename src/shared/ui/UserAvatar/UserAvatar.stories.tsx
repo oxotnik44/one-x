@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { UserAvatar } from './UserAvatar';
-
+import Logo from '/assets/Logo.webp';
 const meta: Meta<typeof UserAvatar> = {
     title: 'shared/UserAvatar',
     component: UserAvatar,
@@ -12,7 +12,7 @@ type Story = StoryObj<typeof UserAvatar>;
 
 export const Default: Story = {
     args: {
-        src: undefined,
+        src: Logo,
         alt: 'Default User Avatar',
         size: 40,
     },
@@ -20,7 +20,7 @@ export const Default: Story = {
 
 export const CustomSrc: Story = {
     args: {
-        src: 'https://randomuser.me/api/portraits/men/75.jpg',
+        src: Logo,
         alt: 'Custom Avatar',
         size: 50,
     },
@@ -28,7 +28,7 @@ export const CustomSrc: Story = {
 
 export const SmallSize: Story = {
     args: {
-        src: 'https://randomuser.me/api/portraits/women/65.jpg',
+        src: Logo,
         alt: 'Small Avatar',
         size: 24,
     },

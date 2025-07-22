@@ -1,7 +1,7 @@
 import { FaSearch, FaHome, FaHeart } from 'react-icons/fa';
 import type { IconType } from 'react-icons/lib';
 
-export interface SidebarItem {
+interface SidebarItem {
     icon: IconType;
     label: string; // здесь будут ключи перевода
     href: string;

@@ -20,8 +20,8 @@ interface AlbumTracksResponse {
 export async function fetchTrack(
     groupId: string,
     groupName: string,
-    albumId?: string,
-    albumName?: string,
+    albumId: string,
+    albumName: string,
 ): Promise<Track[]> {
     try {
         const [mainResp, mediaResp] = await Promise.all([

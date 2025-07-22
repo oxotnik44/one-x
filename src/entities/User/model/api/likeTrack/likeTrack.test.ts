@@ -1,3 +1,4 @@
+// src/entities/User/model/api/likeTrack/likeTrack.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { apiJson } from 'shared/api/api';
 import { useUserStore } from 'entities/User/model/slice/useUserStore';
@@ -18,15 +19,27 @@ describe('likeTrack', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        // общий “скелет” UserStore
+        const baseStore = {
+            authData: undefined,
+            toggleLikeTrack: vi.fn(),
+            toggleLikeGroup: vi.fn(),
+            toggleLikeAlbum: vi.fn(),
+            setAuthData: vi.fn(),
+            logout: vi.fn(),
+        };
+        mockedUserStore.getState.mockReturnValue(baseStore as any);
     });
 
     it('показывает ошибку, если пользователь не авторизован', async () => {
         mockedUserStore.getState.mockReturnValue({
-            authData: undefined, // <-- тут исправлено
+            authData: undefined,
             toggleLikeTrack: vi.fn(),
+            toggleLikeGroup: vi.fn(),
+            toggleLikeAlbum: vi.fn(),
             setAuthData: vi.fn(),
             logout: vi.fn(),
-        });
+        } as any);
 
         await likeTrack(trackId);
 
@@ -48,9 +61,11 @@ describe('likeTrack', () => {
         mockedUserStore.getState.mockReturnValue({
             authData,
             toggleLikeTrack,
+            toggleLikeGroup: vi.fn(),
+            toggleLikeAlbum: vi.fn(),
             setAuthData: vi.fn(),
             logout: vi.fn(),
-        });
+        } as any);
 
         const patchedLikedTracks = [trackId];
         mockedApi.patch.mockResolvedValue({ data: { likedTracks: patchedLikedTracks } });
@@ -60,8 +75,8 @@ describe('likeTrack', () => {
         expect(mockedApi.patch).toHaveBeenCalledWith(`/users/${authData.id}`, {
             likedTracks: patchedLikedTracks,
         });
-
-        expect(toggleLikeTrack).toHaveBeenCalledWith(patchedLikedTracks);
+        // теперь ожидаем вызов именно с trackId
+        expect(toggleLikeTrack).toHaveBeenCalledWith(trackId);
         expect(mockedToast.success).toHaveBeenCalledWith('❤️ Добавлено в избранное');
     });
 
@@ -79,9 +94,11 @@ describe('likeTrack', () => {
         mockedUserStore.getState.mockReturnValue({
             authData,
             toggleLikeTrack,
+            toggleLikeGroup: vi.fn(),
+            toggleLikeAlbum: vi.fn(),
             setAuthData: vi.fn(),
             logout: vi.fn(),
-        });
+        } as any);
 
         const patchedLikedTracks: string[] = [];
         mockedApi.patch.mockResolvedValue({ data: { likedTracks: patchedLikedTracks } });
@@ -91,8 +108,8 @@ describe('likeTrack', () => {
         expect(mockedApi.patch).toHaveBeenCalledWith(`/users/${authData.id}`, {
             likedTracks: patchedLikedTracks,
         });
-
-        expect(toggleLikeTrack).toHaveBeenCalledWith(patchedLikedTracks);
+        // ожидаем trackId, а не массив
+        expect(toggleLikeTrack).toHaveBeenCalledWith(trackId);
         expect(mockedToast.success).toHaveBeenCalledWith('💔 Убрано из избранного');
     });
 
@@ -110,9 +127,11 @@ describe('likeTrack', () => {
         mockedUserStore.getState.mockReturnValue({
             authData,
             toggleLikeTrack,
+            toggleLikeGroup: vi.fn(),
+            toggleLikeAlbum: vi.fn(),
             setAuthData: vi.fn(),
             logout: vi.fn(),
-        });
+        } as any);
 
         mockedApi.patch.mockRejectedValue(new Error('fail'));
 

@@ -41,13 +41,11 @@ const withMockStores = (Story: React.FC) => {
         audio: null,
         setCurrentTrack: () => {},
         setProgress: () => {},
-        setCurrentTime: () => {},
         setIsPlaying: () => {},
         setDuration: () => {},
         setVolume: () => {},
         setIsMuted: () => {},
         togglePlay: () => {},
-        resetPlayer: () => {},
     });
 
     // Устанавливаем пользователя

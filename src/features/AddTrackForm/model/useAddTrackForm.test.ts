@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useAddTrackForm } from './useAddTrackForm';
 import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { addTrack } from 'entities/Track/model/api/addTrack/addTrack';
+import { addTrack } from 'entities/Track';
 
 // Мокаем useNavigate из react-router-dom
 vi.mock('react-router-dom', () => ({

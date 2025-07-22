@@ -29,6 +29,7 @@ const mockAlbums: Album[] = [
         cover: '/assets/Logo.webp',
         trackIds: [],
         createdAt: new Date().toISOString(),
+        description: null,
     },
     {
         id: '2',
@@ -37,6 +38,7 @@ const mockAlbums: Album[] = [
         cover: '/assets/Logo.webp',
         trackIds: [],
         createdAt: new Date().toISOString(),
+        description: null,
     },
 ];
 

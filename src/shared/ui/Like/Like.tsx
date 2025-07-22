@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 interface LikeProps {
     liked: boolean;
-    onToggle: () => void;
+    onToggle?: () => void;
     size?: ButtonSize;
     className?: string;
 }

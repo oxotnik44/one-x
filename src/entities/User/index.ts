@@ -1,4 +1,4 @@
-export type { UserSchema, User } from './model/types/user';
+export type { User } from './model/types/user';
 export type { LoginSchema } from './model/types/loginSchema';
 export type { RegistrationSchema } from './model/types/registrationSchema';
 export { likeTrack } from './model/api/likeTrack/likeTrack';

@@ -33,3 +33,4 @@ coverageUnit
 .screenshots/reg.json
 .screenshots/report.html
 .VSCodeCounter
+storybook-static

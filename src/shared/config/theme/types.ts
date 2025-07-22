@@ -1,4 +1,4 @@
-export type CSSVarName =
+type CSSVarName =
     | '--bg-color'
     | '--text-color'
     | '--button-color'

@@ -15,3 +15,5 @@ export * from './Text/Text';
 export * from './TrackControlButton/TrackControlButton';
 export * from './UserAvatar/UserAvatar';
 export * from './ConfirmDeleteModal/ConfirmDeleteModal';
+export * from './Skeleton/Skeleton';
+export * from './AutoHideScroll/AutoHideScroll';

@@ -7,21 +7,61 @@
       "avatar": "",
       "username": "",
       "createdAt": "2025-07-19T06:25:40.579Z",
-      "likedTracks": []
+      "likedTracks": [
+        "119c8fc9-c84f-4582-aff4-4410da0008ea"
+      ],
+      "likedAlbums": [
+        "808d8bb5-5be6-46fd-a652-42f74c491457",
+        "f3f16d54-25ca-489f-99ee-951396de5911",
+        "92fe925d-44bc-4789-8c1e-0ce34e1777a4"
+      ]
     }
   ],
   "albums": [
     {
-      "id": "808d8bb5-5be6-46fd-a652-42f74c491457",
+      "id": "f3f16d54-25ca-489f-99ee-951396de5911",
+      "name": "Life Starts Now",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Life Starts Now/cover.webp?v=1753103862309",
+      "description": "",
+      "createdAt": "2025-07-21T13:17:42.312Z",
+      "trackIds": [
+        "f789d22c-1efb-487a-bf60-50f220e66584",
+        "46cbde52-1baf-4651-b369-f26de4f1d1a3"
+      ]
+    },
+    {
+      "id": "92fe925d-44bc-4789-8c1e-0ce34e1777a4",
       "name": "One-X",
       "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1752914504679",
-      "description": "фывфыв",
-      "createdAt": "2025-07-19T08:41:44.681Z",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1753103944318",
+      "description": "",
+      "createdAt": "2025-07-21T13:19:04.320Z",
       "trackIds": [
-        "ae7ff099-c346-4c0f-95e8-627ccc806cc2",
-        "3237ca3f-7115-43fa-990a-59ed3458c0dd",
-        "119c8fc9-c84f-4582-aff4-4410da0008ea"
+        "c86431e4-fa45-4d70-9894-e8b8962af9f1",
+        "22ac754d-1031-4692-8300-da9796ee44a0"
+      ]
+    },
+    {
+      "id": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "name": "Human",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "description": "Human",
+      "createdAt": "2025-07-21T18:23:51.828Z",
+      "trackIds": [
+        "8f51bc5c-45e9-4e19-9d6b-77d9e228c8be",
+        "2be31d5c-2e4c-40b2-9c75-e049da381f60",
+        "f33b1dcf-1138-4f10-aca9-6aae363300dc",
+        "dfb6ca46-cfe9-4610-be1d-499fa58fbafd",
+        "84e445f8-6db0-4448-8683-b1a0e8e7d1a7",
+        "7057bba3-1d12-4a3f-a472-048d76afe4c3",
+        "332fdf71-3116-4fd0-9535-67b31477a90b",
+        "9c8e6867-8303-47bd-bda4-a345b44b2ac5",
+        "6775a2f5-9b0c-49aa-8eb5-434198b89129",
+        "fb4dffbb-1dee-4c4e-95ac-b5a9436e0e80",
+        "df994b14-3516-4f9c-8e1b-0e57cf6171e6",
+        "668da35b-62b2-4267-a932-9559be344c3a"
       ]
     }
   ],
@@ -39,24 +79,180 @@
   ],
   "tracks": [
     {
-      "id": "c1b0cf99-c287-4f58-91b1-4b62d8f797c2",
+      "id": "f789d22c-1efb-487a-bf60-50f220e66584",
       "title": "Life Starts Now",
       "duration": 188,
-      "cover": "http://localhost:4001/groups/Three Days Grace/Tracks/Life Starts Now/cover.webp?v=1752924079741",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Life Starts Now/cover.webp?v=1753103862309",
+      "groupName": "Three Days Grace",
+      "albumId": "f3f16d54-25ca-489f-99ee-951396de5911",
       "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Tracks/Life Starts Now/Life Starts Now.mp3?v=1752924079741",
-      "createdAt": "2025-07-19T11:21:19.743Z"
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Life Starts Now/Life Starts Now.mp3?v=1753103862309",
+      "createdAt": "2025-07-21T13:17:42.317Z"
     },
     {
-      "id": "119c8fc9-c84f-4582-aff4-4410da0008ea",
+      "id": "46cbde52-1baf-4651-b369-f26de4f1d1a3",
+      "title": "The Good Life",
+      "duration": 173,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Life Starts Now/cover.webp?v=1753103862309",
+      "groupName": "Three Days Grace",
+      "albumId": "f3f16d54-25ca-489f-99ee-951396de5911",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Life Starts Now/The Good Life.mp3?v=1753103862309",
+      "createdAt": "2025-07-21T13:17:42.317Z"
+    },
+    {
+      "id": "c86431e4-fa45-4d70-9894-e8b8962af9f1",
       "title": "Its All Over",
       "duration": 249,
-      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1752914504679",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1753103944318",
       "groupName": "Three Days Grace",
-      "albumId": "808d8bb5-5be6-46fd-a652-42f74c491457",
+      "albumId": "92fe925d-44bc-4789-8c1e-0ce34e1777a4",
       "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/Its All Over.mp3?v=1752924586162",
-      "createdAt": "2025-07-19T11:29:46.167Z"
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/Its All Over.mp3?v=1753103944318",
+      "createdAt": "2025-07-21T13:19:04.325Z"
+    },
+    {
+      "id": "22ac754d-1031-4692-8300-da9796ee44a0",
+      "title": "On My Own",
+      "duration": 186,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/cover.webp?v=1753103944318",
+      "groupName": "Three Days Grace",
+      "albumId": "92fe925d-44bc-4789-8c1e-0ce34e1777a4",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/One-X/On My Own.mp3?v=1753103944318",
+      "createdAt": "2025-07-21T13:19:04.326Z"
+    },
+    {
+      "id": "8f51bc5c-45e9-4e19-9d6b-77d9e228c8be",
+      "title": "Three Days Grace - Car Crash",
+      "duration": 171,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Car Crash.mp3?v=1753122231819",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "dfb6ca46-cfe9-4610-be1d-499fa58fbafd",
+      "title": "Three Days Grace - I Am Machine",
+      "duration": 200,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - I Am Machine.mp3?v=1753122231821",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "84e445f8-6db0-4448-8683-b1a0e8e7d1a7",
+      "title": "Three Days Grace - Landmine",
+      "duration": 205,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Landmine.mp3?v=1753122231821",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "7057bba3-1d12-4a3f-a472-048d76afe4c3",
+      "title": "Three Days Grace - Nothing's Fair In Love And War",
+      "duration": 225,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Nothing's Fair In Love And War.mp3?v=1753122231822",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "332fdf71-3116-4fd0-9535-67b31477a90b",
+      "title": "Three Days Grace - One Too Many",
+      "duration": 161,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - One Too Many.mp3?v=1753122231823",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "9c8e6867-8303-47bd-bda4-a345b44b2ac5",
+      "title": "Three Days Grace - Painkiller",
+      "duration": 179,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Painkiller.mp3?v=1753122231824",
+      "createdAt": "2025-07-21T18:23:51.836Z"
+    },
+    {
+      "id": "f33b1dcf-1138-4f10-aca9-6aae363300dc",
+      "title": "Three Days Grace - Human Race",
+      "duration": 249,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Human Race.mp3?v=1753122231820",
+      "createdAt": "2025-07-21T18:23:51.835Z"
+    },
+    {
+      "id": "6775a2f5-9b0c-49aa-8eb5-434198b89129",
+      "title": "Three Days Grace - So What",
+      "duration": 178,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - So What.mp3?v=1753122231824",
+      "createdAt": "2025-07-21T18:23:51.836Z"
+    },
+    {
+      "id": "fb4dffbb-1dee-4c4e-95ac-b5a9436e0e80",
+      "title": "Three Days Grace - Tell Me Why",
+      "duration": 211,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Tell Me Why.mp3?v=1753122231825",
+      "createdAt": "2025-07-21T18:23:51.836Z"
+    },
+    {
+      "id": "df994b14-3516-4f9c-8e1b-0e57cf6171e6",
+      "title": "Three Days Grace - The End Is Not The Answer",
+      "duration": 173,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The End Is Not The Answer.mp3?v=1753122231825",
+      "createdAt": "2025-07-21T18:23:51.836Z"
+    },
+    {
+      "id": "668da35b-62b2-4267-a932-9559be344c3a",
+      "title": "Three Days Grace - The Real You",
+      "duration": 236,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The Real You.mp3?v=1753122231826",
+      "createdAt": "2025-07-21T18:23:51.836Z"
+    },
+    {
+      "id": "2be31d5c-2e4c-40b2-9c75-e049da381f60",
+      "title": "Three Days Grace - Fallen Angel",
+      "duration": 186,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753122231826",
+      "groupName": "Three Days Grace",
+      "albumId": "c7acdf44-50ce-41ba-9889-62d474cbeffe",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Fallen Angel.mp3?v=1753122231820",
+      "createdAt": "2025-07-21T18:23:51.835Z"
     }
   ]
 }

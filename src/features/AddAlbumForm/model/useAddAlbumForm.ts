@@ -1,13 +1,12 @@
 // src/widgets/AddAlbumForm/model/useAddAlbumForm.ts
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type FieldValues } from 'react-hook-form';
-import { useGroupStore } from 'entities/Group/model/slice/useGroupStore';
-import { getAudioDuration } from 'shared/lib/getAudioDuration/getAudioDuration';
-import { extractTitleFromFile } from 'shared/lib/extractTitleFromFile/extractTitleFromFile';
 import { addAlbum } from 'entities/Album';
 import { useNavigate } from 'react-router-dom';
+import { useGroupStore } from 'entities/Group';
+import { extractTitleFromFile, getAudioDuration } from 'shared/lib';
 
-export interface FolderFields extends FieldValues {
+interface FolderFields extends FieldValues {
     title: string;
     folder: FileList;
     description?: string;
@@ -30,10 +29,8 @@ export function useAddAlbumForm() {
 
     const folder = watch('folder');
     const folderSelected = Boolean(folder?.length);
-    const folderName = useMemo(() => {
-        const file = folder?.[0] as File & { webkitRelativePath?: string };
-        return file?.webkitRelativePath?.split('/')[0] ?? '';
-    }, [folder]);
+    const [folderName, setFolderName] = useState('');
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,15 +39,17 @@ export function useAddAlbumForm() {
         register('description'); // регистрируем description
     }, [register]);
 
-    const onFolderChange = (files: FileList | null) => {
+    const onFolderChange = (files: FileList | null, name?: string) => {
         if (!files?.length) return;
 
         clearErrors(['folder', 'title']);
         setValue('folder', files, { shouldValidate: true });
 
+        setFolderName(name ?? '');
+
         const arr = Array.from(files);
 
-        // Выбираем обложку
+        // Обложка
         const cover =
             arr.find((f) => /cover\.(jpe?g|png|gif|webp)$/i.test(f.name)) ??
             arr.find((f) => /\.(jpe?g|png|gif|webp)$/i.test(f.name)) ??
@@ -59,7 +58,7 @@ export function useAddAlbumForm() {
         setCoverFile(cover);
         setCoverPreview(cover ? URL.createObjectURL(cover) : null);
 
-        // Аудиофайлы
+        // Треки
         setTrackFiles(arr.filter((f) => /\.(mp3|wav|flac)$/i.test(f.name)));
     };
 

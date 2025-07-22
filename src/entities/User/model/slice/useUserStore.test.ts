@@ -1,3 +1,4 @@
+// src/entities/User/model/slice/useUserStore.test.ts
 import { act, renderHook } from '@testing-library/react';
 import { useUserStore } from './useUserStore'; // поправь путь при необходимости
 import toast from 'react-hot-toast';
@@ -8,7 +9,7 @@ vi.mock('react-hot-toast');
 
 describe('useUserStore', () => {
     beforeEach(() => {
-        // Сброс стора перед каждым тестом
+        // Сброс стора перед каждым тестом:
         const { result } = renderHook(() => useUserStore());
         act(() => {
             result.current.logout();
@@ -16,9 +17,9 @@ describe('useUserStore', () => {
         vi.clearAllMocks();
     });
 
-    it('изначально authData undefined', () => {
+    it('изначально authData === null', () => {
         const { result } = renderHook(() => useUserStore());
-        expect(result.current.authData).toBeUndefined();
+        expect(result.current.authData).toBeNull();
     });
 
     it('setAuthData устанавливает пользователя', () => {
@@ -51,16 +52,15 @@ describe('useUserStore', () => {
         act(() => {
             result.current.setAuthData(fakeUser);
         });
-
         act(() => {
             result.current.logout();
         });
 
-        expect(result.current.authData).toBeUndefined();
+        expect(result.current.authData).toBeNull();
         expect(toast).toHaveBeenCalledWith('Вы вышли из системы', { icon: '👋' });
     });
 
-    it('toggleLikeTrack обновляет likedTracks пользователя', () => {
+    it('toggleLikeTrack добавляет новый трек к likedTracks', () => {
         const { result } = renderHook(() => useUserStore());
         const fakeUser: User = {
             id: '1qwe',
@@ -75,22 +75,45 @@ describe('useUserStore', () => {
             result.current.setAuthData(fakeUser);
         });
 
-        const newLikedTracks = ['track1', 'track2'];
-
+        // добавляем новую "track2"
         act(() => {
-            result.current.toggleLikeTrack(newLikedTracks);
+            result.current.toggleLikeTrack('track2');
         });
 
-        expect(result.current.authData?.likedTracks).toEqual(newLikedTracks);
+        expect(result.current.authData?.likedTracks).toEqual(['track1', 'track2']);
     });
 
-    it('toggleLikeTrack ничего не делает, если authData нет', () => {
+    it('toggleLikeTrack убирает трек из likedTracks, если он уже там был', () => {
+        const { result } = renderHook(() => useUserStore());
+        const fakeUser: User = {
+            id: '1qwe',
+            username: 'user123',
+            password: 'hashed-password',
+            avatar: 'https://example.com/avatar.png',
+            createdAt: new Date().toISOString(),
+            likedTracks: ['track1', 'track2'],
+        };
+
+        act(() => {
+            result.current.setAuthData(fakeUser);
+        });
+
+        // удаляем "track1"
+        act(() => {
+            result.current.toggleLikeTrack('track1');
+        });
+
+        expect(result.current.authData?.likedTracks).toEqual(['track2']);
+    });
+
+    it('toggleLikeTrack ничего не делает, если authData === null', () => {
         const { result } = renderHook(() => useUserStore());
 
         act(() => {
-            result.current.toggleLikeTrack(['track1']);
+            result.current.toggleLikeTrack('track1');
         });
 
-        expect(result.current.authData).toBeUndefined();
+        // authData изначально null и не меняется
+        expect(result.current.authData).toBeNull();
     });
 });

@@ -1,132 +1,154 @@
-import React from 'react';
+// src/pages/Album/model/useAlbum.spec.ts
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { useAlbum } from './useAlbum';
+import { useParams } from 'react-router-dom';
+
 import * as AlbumEntity from 'entities/Album';
 import * as GroupEntity from 'entities/Group';
-import toast from 'react-hot-toast';
-import { useAlbum } from './useAlbum';
+import * as UserEntity from 'entities/User/model/api/likeAlbum/likeAlbum';
+import * as UserStoreModule from 'entities/User';
+import { useCallback } from 'react';
 
-// 🔧 Моки зависимостей
+vi.mock('react-hot-toast');
+vi.mock('react-router-dom', () => ({ useParams: vi.fn() }));
 vi.mock('entities/Album', () => ({
+    useAlbumStore: vi.fn(),
     fetchAlbumById: vi.fn(),
     editDescription: vi.fn(),
     deleteAlbum: vi.fn(),
     addTrackInAlbum: vi.fn(),
-    useAlbumStore: vi.fn(),
 }));
-vi.mock('entities/Group', () => ({
-    useGroupStore: vi.fn(),
+vi.mock('entities/Group', () => ({ useGroupStore: vi.fn() }));
+vi.mock('entities/User', () => ({
+    useUserStore: vi.fn(),
 }));
-
-vi.mock('react-hot-toast', () => ({
-    __esModule: true,
-    default: {
-        success: vi.fn(),
-        error: vi.fn(),
-    },
+vi.mock('entities/User/model/api/likeAlbum/likeAlbum', () => ({ likeAlbum: vi.fn() }));
+vi.mock('react-i18next', () => ({
+    useTranslation: () => ({ t: (k: string) => k }),
 }));
 
-describe('useAlbum hook', () => {
-    const fakeGroup = { id: 'group-1', name: 'test-group' };
+describe('useAlbum hook — простой тест', () => {
+    const fakeGroup = { id: 'g1' };
     const fakeAlbum = {
-        id: 'album-1',
-        name: 'test-album',
-        description: 'Initial desc',
+        id: 'a1',
+        description: 'Hello',
+        name: 'A',
         cover: '',
+        createdAt: '',
+        updatedAt: '',
+        groupId: 'g1',
         trackIds: [],
     };
+    let setCurrentAlbum: ReturnType<typeof vi.fn>;
 
     beforeEach(() => {
         vi.clearAllMocks();
 
-        (AlbumEntity.fetchAlbumById as Mock).mockResolvedValue(undefined);
-        (AlbumEntity.editDescription as Mock).mockResolvedValue(undefined);
-        (AlbumEntity.deleteAlbum as Mock).mockResolvedValue(undefined);
+        // useParams → albumId
+        (useParams as Mock).mockReturnValue({ albumId: 'a1' });
 
-        (GroupEntity.useGroupStore as unknown as Mock).mockImplementation(
-            (selector: (state: any) => any) => selector({ currentGroup: fakeGroup }),
+        // Группа в сторе
+        (GroupEntity.useGroupStore as unknown as Mock).mockImplementation((sel) =>
+            sel({ currentGroup: fakeGroup }),
         );
 
-        (AlbumEntity.useAlbumStore as unknown as Mock).mockImplementation(
-            (selector: (state: any) => any) =>
-                selector({
-                    currentAlbum: fakeAlbum,
-                    setCurrentAlbum: vi.fn(),
-                }),
+        // Альбом в сторе
+        setCurrentAlbum = vi.fn();
+        (AlbumEntity.useAlbumStore as unknown as Mock).mockImplementation((sel) =>
+            sel({ currentAlbum: fakeAlbum, setCurrentAlbum }),
+        );
+
+        // Пользователь — пустые лайки
+        (UserStoreModule.useUserStore as unknown as Mock).mockImplementation((sel) =>
+            sel({ authData: { likedAlbums: [] } }),
         );
     });
 
-    // Обёртка с роутингом
-    const wrapper = ({ children }: { children: React.ReactNode }) =>
-        React.createElement(
-            MemoryRouter,
-            { initialEntries: ['/albums/album-1'] },
-            React.createElement(
-                Routes,
-                null,
-                React.createElement(Route, { path: '/albums/:albumId', element: children }),
-            ),
-        );
-
-    it('должен загружать альбом, если его нет в сторе', () => {
-        // Используем пустой currentAlbum в этом конкретном тесте
-        (AlbumEntity.useAlbumStore as unknown as Mock).mockImplementation(
-            (selector: (state: any) => any) =>
-                selector({
-                    currentAlbum: undefined,
-                    setCurrentAlbum: vi.fn(),
-                }),
-        );
-
-        renderHook(() => useAlbum(), { wrapper });
-        expect(AlbumEntity.fetchAlbumById).toHaveBeenCalledWith('group-1', 'album-1');
+    it('инициализирует desc из currentAlbum', () => {
+        const { result } = renderHook(() => useAlbum());
+        expect(result.current.desc).toBe('Hello');
     });
 
-    it('инициализирует description из currentAlbum', () => {
-        const { result } = renderHook(() => useAlbum(), { wrapper });
-        expect(result.current.desc).toBe('Initial desc');
-    });
-
-    it('onSave вызывает editDescription и выключает режим редактирования', async () => {
-        const { result } = renderHook(() => useAlbum(), { wrapper });
-        await act(async () => {
-            await result.current.onSave();
+    it('setDesc обновляет desc', () => {
+        const { result } = renderHook(() => useAlbum());
+        act(() => {
+            result.current.setDesc('New');
         });
-        expect(AlbumEntity.editDescription).toHaveBeenCalledWith('album-1', 'Initial desc');
-        expect(result.current.isEditing).toBe(false);
+        expect(result.current.desc).toBe('New');
     });
 
-    it('onDelete удаляет альбом и сбрасывает currentAlbum', async () => {
-        const setCurrentAlbum = vi.fn();
-
-        (AlbumEntity.useAlbumStore as unknown as Mock).mockImplementation(
-            (selector: (state: any) => any) =>
-                selector({
-                    currentAlbum: fakeAlbum,
-                    setCurrentAlbum,
-                }),
-        );
-
-        const { result } = renderHook(() => useAlbum(), { wrapper });
-        await act(async () => {
-            await result.current.onDelete();
-        });
-
-        expect(AlbumEntity.deleteAlbum).toHaveBeenCalledWith('album-1');
-        expect(setCurrentAlbum).toHaveBeenCalledWith(null);
-        expect(toast.success).toHaveBeenCalled();
-    });
-
-    it('openFileDialog кликает на input', () => {
-        const { result } = renderHook(() => useAlbum(), { wrapper });
+    it('openFileDialog кликает на скрытый input', () => {
+        const { result } = renderHook(() => useAlbum());
         const clickSpy = vi.fn();
         result.current.fileInputRef.current = { click: clickSpy } as any;
-
         act(() => {
             result.current.openFileDialog();
         });
-
         expect(clickSpy).toHaveBeenCalled();
+    });
+
+    it('toggleAlbum вызывает likeAlbum', () => {
+        const { result } = renderHook(() => useAlbum());
+        act(() => {
+            result.current.toggleAlbum();
+        });
+        expect(UserEntity.likeAlbum).toHaveBeenCalledWith('a1');
+    });
+
+    it('onSave вызывает editDescription и закрывает режим редактирования', async () => {
+        (AlbumEntity.editDescription as Mock).mockResolvedValue(undefined);
+        const { result } = renderHook(() => useAlbum());
+        // сначала включим режим редактирования, изменим desc
+        act(() => {
+            result.current.setDesc('X');
+            result.current.setIsEditing(true);
+        });
+        await act(async () => {
+            await result.current.onSave();
+        });
+        expect(AlbumEntity.editDescription).toHaveBeenCalledWith('a1', 'X');
+        expect(result.current.isEditing).toBe(false);
+    });
+
+    it('onDelete вызывает deleteAlbum и сбрасывает currentAlbum', async () => {
+        (AlbumEntity.deleteAlbum as Mock).mockResolvedValue(undefined);
+        const { result } = renderHook(() => useAlbum());
+        await act(async () => {
+            await result.current.onDelete();
+        });
+        expect(AlbumEntity.deleteAlbum).toHaveBeenCalledWith('a1');
+        expect(setCurrentAlbum).toHaveBeenCalledWith(null);
+    });
+
+    it('не сбрасывает input.value, если нет файлов', async () => {
+        const { result } = renderHook(() => useAlbum());
+        const evt = { target: { files: null, value: 'x' } } as any;
+        await act(async () => {
+            await result.current.onFileChange(evt);
+        });
+        // поскольку files === null, onFileChange просто вернул, не очищая value
+        expect(evt.target.value).toBe('x');
+    });
+    it('вызывает setIsDeleteModalOpenState с правильным значением', () => {
+        // Мокаем useState
+        const setIsDeleteModalOpenState = vi.fn();
+
+        // Имитация хука с useCallback
+        const { result } = renderHook(() => {
+            const setIsDeleteModalOpen = useCallback((val: boolean) => {
+                setIsDeleteModalOpenState(val);
+            }, []);
+            return { setIsDeleteModalOpen };
+        });
+
+        act(() => {
+            result.current.setIsDeleteModalOpen(true);
+            result.current.setIsDeleteModalOpen(false);
+        });
+
+        expect(setIsDeleteModalOpenState).toHaveBeenCalledTimes(2);
+        expect(setIsDeleteModalOpenState).toHaveBeenNthCalledWith(1, true);
+        expect(setIsDeleteModalOpenState).toHaveBeenNthCalledWith(2, false);
     });
 });

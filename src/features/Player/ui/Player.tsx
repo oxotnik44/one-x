@@ -17,15 +17,8 @@ export const Player: FC = React.memo(() => {
     const currentTrack = usePlayerStore((state) => state.currentTrack);
     const authData = useUserStore((state) => state.authData);
 
-    const {
-        progress,
-        isPlaying,
-        togglePlay,
-        onSeek,
-        onPrev,
-        formattedCurrentTime,
-        formattedDuration,
-    } = usePlayer({});
+    const { progress, onSeek, onPrev, onNext, formattedCurrentTime, formattedDuration } =
+        usePlayer();
 
     const buttonColor = theme['--button-color'] || '#ec4899';
     const sidebarLeft = isCollapsed
@@ -76,17 +69,17 @@ export const Player: FC = React.memo(() => {
 
             <div className="flex items-center flex-1 mt-2 relative">
                 {/* Обложка + информация */}
-                <div className="w-[192px] flex-shrink-0 flex items-center">
+                <div className="flex items-center space-x-4 w-[192px] flex-shrink-0">
                     {currentTrack && (
                         <>
-                            <div className="w-12 h-12 rounded-lg overflow-hidden mr-4">
+                            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                                 <img
                                     src={currentTrack.cover || '/assets/default-cover.png'}
                                     alt={currentTrack.title || t('coverAlt')}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <div className="flex flex-col justify-center">
+                            <div className="flex flex-col justify-center overflow-hidden min-w-0">
                                 <Text className="text-sm font-semibold truncate">
                                     {currentTrack.title}
                                 </Text>
@@ -102,13 +95,9 @@ export const Player: FC = React.memo(() => {
                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
                     {currentTrack && <Like liked={liked} onToggle={toggleLike} />}
                     <TrackControlButton direction="prev" onClick={onPrev} ariaLabel={t('prev')} />
-                    <PlayButton
-                        isPlaying={isPlaying}
-                        isCurrent
-                        onClick={togglePlay}
-                        theme={ButtonTheme.OUTLINE}
-                    />
-                    <TrackControlButton direction="next" ariaLabel={t('next')} />
+                    <PlayButton theme={ButtonTheme.OUTLINE} trackForPlay={currentTrack} />
+
+                    <TrackControlButton direction="next" onClick={onNext} ariaLabel={t('next')} />
                 </div>
 
                 {/* Громкость и время */}

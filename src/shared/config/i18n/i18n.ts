@@ -29,8 +29,6 @@ i18n.use(HttpBackend) // загрузка переводов из файлов
         interpolation: {
             escapeValue: false, // React экранирует
         },
-
-        debug: import.meta.env.DEV,
     });
 
 export default i18n;

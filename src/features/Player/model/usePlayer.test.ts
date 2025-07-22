@@ -1,183 +1,142 @@
-// src/features/Player/model/usePlayer.test.ts
-import { act, renderHook } from '@testing-library/react';
-import type { ChangeEvent } from 'react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+// src/entities/Player/model/usePlayer.test.ts
+import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { usePlayer } from './usePlayer';
-import { create } from 'zustand';
+import { usePlayerStore } from 'entities/Player/model';
+import { useTrackStore } from 'entities/Track';
 
-// Мокаем useTrackStore с фиктивным треком
-vi.mock('entities/Track/slice/useTrackStore', () => ({
-    useTrackStore: () => ({ id: '1', audioUrl: 'test.mp3' }),
+// моки zustand‑сторов
+vi.mock('entities/Player/model', () => ({
+    usePlayerStore: vi.fn(),
 }));
+vi.mock('entities/Track', () => ({
+    useTrackStore: vi.fn(),
+}));
+vi.mock('react-hot-toast');
 
-// Глобальный мок Audio
-const mockAudio = {
-    play: vi.fn().mockResolvedValue(undefined),
-    pause: vi.fn(),
-    duration: 100,
-    currentTime: 0,
-    volume: 1,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-};
+describe('usePlayer hook', () => {
+    const fakeAudio = {
+        play: vi.fn().mockResolvedValue(undefined),
+        pause: vi.fn(),
+        currentTime: 0,
+        duration: 120,
+        volume: 1,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+    };
 
-// Типизация состояния PlayerStore для Zustand
-interface PlayerState {
-    progress: number;
-    isPlaying: boolean;
-    duration: number;
-    volume: number;
-    isMuted: boolean;
-    audio: typeof mockAudio;
-    setProgress: (val: number) => void;
-    setVolume: (val: number) => void;
-    setIsMuted: (val: boolean) => void;
-    togglePlay: () => void;
-}
-
-// Создаём реальный Zustand стор для теста
-const createTestStore = () =>
-    create<PlayerState>((set, get) => ({
+    // базовый store
+    const baseStore = {
         progress: 0,
-        isPlaying: false,
-        duration: 100,
+        currentTime: 0,
+        duration: 120,
         volume: 1,
         isMuted: false,
-        audio: { ...mockAudio, currentTime: 0, volume: 1 },
-        setProgress: (val) => set({ progress: val }),
-        setVolume: (val) => set({ volume: val }),
-        setIsMuted: (val) => set({ isMuted: val }),
-        togglePlay: () => {
-            const { isPlaying, audio } = get();
-            if (!audio) return;
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
-            set({ isPlaying: !isPlaying });
-        },
-    }));
+        audio: fakeAudio,
+        currentTrack: { id: 't1' },
+        setProgress: vi.fn(),
+        setVolume: vi.fn(),
+        setIsMuted: vi.fn(),
+        setCurrentTrack: vi.fn(),
 
-let testStore = createTestStore();
-
-vi.mock('entities/Player/model', () => {
-    const originalModule = vi.importActual('entities/Player/model') as unknown as {
-        usePlayerStore: <T>(selector: (state: PlayerState) => T) => T;
+        // добавим заглушку для setIsPlaying
+        isPlaying: false,
+        setIsPlaying: vi.fn(),
+        set: vi.fn(),
+        get: () => baseStore,
     };
 
-    return {
-        ...originalModule,
-        usePlayerStore: <T>(selector: (state: PlayerState) => T): T => {
-            return testStore(selector);
-        },
-    };
-});
-
-describe('usePlayer', () => {
     beforeEach(() => {
-        // Перед каждым тестом пересоздаём стор, чтобы сбросить состояние
-        testStore = createTestStore();
         vi.clearAllMocks();
+        (useTrackStore as unknown as Mock).mockReturnValue([]);
+        (usePlayerStore as unknown as Mock).mockImplementation((sel) => sel(baseStore));
     });
 
-    it('инициализируется с правильными начальными значениями', () => {
+    it('инициализируется с корректными начальными значениями', () => {
         const { result } = renderHook(() => usePlayer());
 
         expect(result.current.progress).toBe(0);
-        expect(result.current.isPlaying).toBe(false);
+        expect(result.current.currentTime).toBe(0);
+        expect(result.current.duration).toBe(120);
+        expect(result.current.formattedCurrentTime).toMatch(/\d{1,2}:\d{2}/);
+        expect(result.current.formattedDuration).toMatch(/\d{1,2}:\d{2}/);
         expect(result.current.volume).toBe(1);
         expect(result.current.isMuted).toBe(false);
     });
-    it('onSeek обновляет прогресс и устанавливает текущее время аудио', () => {
+
+    it('onSeek обновляет прогресс и текущее время аудио', () => {
         const { result } = renderHook(() => usePlayer());
 
-        // Создаём мок-событие изменения input[type=range] со значением 50
-        const event = {
-            target: {
-                value: '50',
-            },
-        } as React.ChangeEvent<HTMLInputElement>;
-
+        const event = { target: { value: '50' } } as React.ChangeEvent<HTMLInputElement>;
         act(() => {
             result.current.onSeek(event);
         });
 
-        expect(result.current.progress).toBe(50);
-        expect(testStore.getState().audio.currentTime).toBeCloseTo(
-            (50 / 100) * testStore.getState().duration,
-        );
+        // прогресс устанавливается в сторе
+        expect(baseStore.setProgress).toHaveBeenCalledWith(50);
+        // аудио.currentTime = 50% от duration
+        expect(fakeAudio.currentTime).toBeCloseTo((50 / 100) * baseStore.duration);
     });
 
-    it('переключает проигрывание', () => {
+    it('onVolumeChange устанавливает громкость и мьют', () => {
         const { result } = renderHook(() => usePlayer());
 
         act(() => {
-            result.current.togglePlay();
+            result.current.onVolumeChange({ target: { value: '0.3' } } as any);
         });
-        expect(mockAudio.play).toHaveBeenCalled();
-        expect(result.current.isPlaying).toBe(true);
+        expect(baseStore.setVolume).toHaveBeenCalledWith(0.3);
+        expect(baseStore.setIsMuted).toHaveBeenCalledWith(false);
 
         act(() => {
-            result.current.togglePlay();
+            result.current.onVolumeChange({ target: { value: '0' } } as any);
         });
-        expect(mockAudio.pause).toHaveBeenCalled();
-        expect(result.current.isPlaying).toBe(false);
+        expect(baseStore.setVolume).toHaveBeenCalledWith(0);
+        expect(baseStore.setIsMuted).toHaveBeenCalledWith(true);
     });
 
-    it('изменяет громкость и мьют', () => {
+    it('toggleMute переключает состояние isMuted', () => {
+        // сначала isMuted=false
         const { result } = renderHook(() => usePlayer());
-
-        const createChangeEvent = (value: string): ChangeEvent<HTMLInputElement> =>
-            ({
-                target: { value },
-            }) as ChangeEvent<HTMLInputElement>;
-
-        act(() => {
-            result.current.onVolumeChange(createChangeEvent('0.5'));
-        });
-        expect(result.current.volume).toBe(0.5);
-        expect(result.current.isMuted).toBe(false);
-
-        act(() => {
-            result.current.onVolumeChange(createChangeEvent('0'));
-        });
-        expect(result.current.volume).toBe(0);
-        expect(result.current.isMuted).toBe(true);
-
         act(() => {
             result.current.toggleMute();
         });
-        expect(result.current.isMuted).toBe(false);
+        expect(baseStore.setIsMuted).toHaveBeenCalledWith(true);
     });
 
-    it('onPrev сбрасывает прогресс если время > 5', () => {
+    it('onPrev сбрасывает прогресс, если currentTime > 5', () => {
+        baseStore.audio.currentTime = 10;
         const { result } = renderHook(() => usePlayer());
 
         act(() => {
-            testStore.setState({ audio: { ...mockAudio, currentTime: 10 } });
-        });
-
-        act(() => {
             result.current.onPrev();
         });
-
-        expect(result.current.progress).toBe(0);
+        expect(baseStore.setProgress).toHaveBeenCalledWith(0);
+        expect(baseStore.audio.currentTime).toBe(0);
     });
 
-    it('onPrev вызывает onPrevTrack если время <= 5', () => {
-        const onPrevTrackMock = vi.fn();
+    it('onPrev переключает трек, если currentTime ≤ 5 и есть предыдущий', () => {
+        // готовим пару треков
+        const tracks = [{ id: 't0' }, { id: 't1' }, { id: 't2' }];
+        (useTrackStore as unknown as Mock).mockReturnValue(tracks);
+        baseStore.currentTrack = { id: 't1' };
+        baseStore.audio.currentTime = 2;
 
-        const { result } = renderHook(() => usePlayer({ onPrevTrack: onPrevTrackMock }));
-
-        act(() => {
-            testStore.setState({ audio: { ...mockAudio, currentTime: 3 } });
-        });
-
+        const { result } = renderHook(() => usePlayer());
         act(() => {
             result.current.onPrev();
         });
+        expect(baseStore.setCurrentTrack).toHaveBeenCalledWith(tracks[0]);
+    });
 
-        expect(onPrevTrackMock).toHaveBeenCalled();
+    it('onNext переключает на следующий трек, если он есть', () => {
+        const tracks = [{ id: 't0' }, { id: 't1' }, { id: 't2' }];
+        (useTrackStore as unknown as Mock).mockReturnValue(tracks);
+        baseStore.currentTrack = { id: 't1' };
+
+        const { result } = renderHook(() => usePlayer());
+        act(() => {
+            result.current.onNext();
+        });
+        expect(baseStore.setCurrentTrack).toHaveBeenCalledWith(tracks[2]);
     });
 });

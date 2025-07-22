@@ -17,10 +17,10 @@ export const likeTrack = async (trackId: string): Promise<void> => {
         : [...likedTracks, trackId];
 
     try {
-        const { data } = await apiJson.patch<Partial<User>>(`/users/${authData.id}`, {
+        await apiJson.patch<Partial<User>>(`/users/${authData.id}`, {
             likedTracks: updatedLikedTracks,
         });
-        toggleLikeTrack(data.likedTracks ?? updatedLikedTracks);
+        toggleLikeTrack(trackId);
         toast.success(
             likedTracks.includes(trackId) ? '💔 Убрано из избранного' : '❤️ Добавлено в избранное',
         );

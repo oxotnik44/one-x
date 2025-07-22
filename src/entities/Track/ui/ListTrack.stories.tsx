@@ -65,5 +65,5 @@ export default meta;
 type Story = StoryObj<typeof ListTrack>;
 
 export const Default: Story = {
-    render: () => <ListTrack />,
+    render: () => <ListTrack albumId={''} albumName={''} />,
 };

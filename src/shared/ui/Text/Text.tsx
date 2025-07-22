@@ -2,7 +2,7 @@ import { memo, type ReactNode } from 'react';
 import clsx from 'clsx';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 
-export type TextSize = 'small' | 'medium' | 'large' | 'default';
+type TextSize = 'small' | 'medium' | 'large' | 'default';
 
 interface TextProps {
     title?: string;

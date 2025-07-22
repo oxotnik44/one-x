@@ -1,13 +1,14 @@
+// src/pages/Album/ui/Album.tsx
 import React from 'react';
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { Button, Text, Input, ConfirmDeleteModal } from 'shared/ui';
+import { Button, Text, Input, ConfirmDeleteModal, PlayButton, ButtonTheme } from 'shared/ui';
 import { useTranslation } from 'react-i18next';
-
 import { ListTrack } from 'entities/Track';
 import { useAlbum } from '../model/useAlbum';
 import { formatDate } from 'shared/lib/formatDate/formatDate';
+import { Like } from 'shared/ui';
 
-const AlbumComponent = () => {
+const AlbumComponent: React.FC = () => {
     const { t } = useTranslation('album');
     const {
         currentAlbum,
@@ -21,13 +22,15 @@ const AlbumComponent = () => {
         onSave,
         onDelete,
         fileInputRef,
+        toggleAlbum,
         openFileDialog,
         onFileChange,
+        likedAlbums,
     } = useAlbum();
-
-    if (!currentAlbum)
+    if (!currentAlbum) {
         return <div className="p-4 text-center text-gray-500">{t('notSelected')}</div>;
-
+    }
+    const isLiked = likedAlbums.includes(currentAlbum.id);
     return (
         <div className="relative flex flex-col gap-1 py-6 px-20 text-white min-h-[400px]">
             <Button
@@ -35,7 +38,7 @@ const AlbumComponent = () => {
                 onClick={() => setIsDeleteModalOpen(true)}
                 aria-label={t('deleteAlbum')}
             >
-                <FiTrash size={22} style={{ color: 'var(--primary-color)' }} />
+                <FiTrash size={22} />
             </Button>
 
             <ConfirmDeleteModal
@@ -86,15 +89,20 @@ const AlbumComponent = () => {
                                         onChange={(e) => setDesc(e.target.value)}
                                         disabled={saving}
                                     />
-                                    <Button
-                                        onClick={onSave}
-                                        className="self-start"
-                                        disabled={saving}
-                                    >
+                                    <Button onClick={onSave} disabled={saving}>
                                         {saving ? t('saving') : t('save')}
                                     </Button>
                                 </>
                             )}
+                        </div>
+
+                        <div className="mt-4 flex items-center gap-2">
+                            <PlayButton
+                                theme={ButtonTheme.OUTLINE}
+                                albumForPlay={currentAlbum}
+                                trackForPlay={null}
+                            />
+                            <Like liked={isLiked} onToggle={toggleAlbum} />
                         </div>
                     </div>
                 </div>
@@ -103,7 +111,6 @@ const AlbumComponent = () => {
                     <Button type="button" onClick={openFileDialog}>
                         {t('uploadTrack')}
                     </Button>
-
                     <input
                         type="file"
                         accept="audio/*"

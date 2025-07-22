@@ -1,1 +1,1 @@
-export { RegistrationModal } from './ui/RegistrationModal/RegistrationModal';
+export { RegistrationForm } from './ui/RegistrationForm/RegistrationForm';

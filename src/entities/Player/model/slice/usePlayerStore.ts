@@ -1,26 +1,24 @@
-// src/entities/Player/model/slice/usePlayerStore.ts
-import type { Track } from 'entities/Track';
 import { create } from 'zustand';
+import type { Track } from 'entities/Track';
+import { useTrackStore } from 'entities/Track';
 
 export interface PlayerState {
     currentTrack: Track | null;
-    progress: number; // [%]
-    currentTime: number; // в секундах
+    progress: number;
+    currentTime: number;
     isPlaying: boolean;
-    duration: number; // в секундах
+    duration: number;
     volume: number;
     isMuted: boolean;
     audio: HTMLAudioElement | null;
 
     setCurrentTrack: (track: Track) => void;
     setProgress: (progress: number) => void;
-    setCurrentTime: (time: number) => void;
     setIsPlaying: (isPlaying: boolean) => void;
     setDuration: (duration: number) => void;
     setVolume: (volume: number) => void;
     setIsMuted: (isMuted: boolean) => void;
     togglePlay: () => void;
-    resetPlayer: () => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
@@ -35,18 +33,38 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
     setCurrentTrack: (track) => {
         const prev = get();
+
+        // Останавливаем прежнее аудио
         if (prev.audio) {
             prev.audio.pause();
             prev.audio.src = '';
         }
 
+        // Создаем новый аудиопоток
         const audio = new Audio(track.audioUrl);
         audio.volume = prev.isMuted ? 0 : prev.volume;
 
+        // При окончании дорожки запускаем следующую
+        audio.addEventListener('ended', () => {
+            const state = get();
+            const allTracks = useTrackStore.getState().tracks ?? [];
+            const idx = allTracks.findIndex((t) => t.id === state.currentTrack?.id);
+            if (idx !== -1 && idx < allTracks.length - 1) {
+                const next = allTracks[idx + 1];
+                state.setCurrentTrack(next);
+            } else {
+                // Конец плейлиста
+                audio.pause();
+                set({ isPlaying: false });
+            }
+        });
+
+        // Обновляем длительность при загрузке метаданных
         audio.addEventListener('loadedmetadata', () => {
             set({ duration: audio.duration });
         });
 
+        // Обновляем прогресс и текущее время
         audio.addEventListener('timeupdate', () => {
             set({
                 progress: (audio.currentTime / audio.duration) * 100,
@@ -54,18 +72,12 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
             });
         });
 
+        // Пытаемся запустить (автовоспроизведение может быть запрещено)
         audio.play().catch(() => {
             console.warn('Автовоспроизведение запрещено браузером');
         });
 
-        set({
-            currentTrack: track,
-            progress: 0,
-            currentTime: 0,
-            isPlaying: true,
-            duration: 0, // будет обновлено в loadedmetadata
-            audio,
-        });
+        set({ currentTrack: track, audio, isPlaying: true });
     },
 
     setProgress: (progress) => {
@@ -76,16 +88,11 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
         set({ progress });
     },
 
-    setCurrentTime: (time) => set({ currentTime: time }),
-
-    setIsPlaying: (isPlaying: boolean) => {
+    setIsPlaying: (isPlaying) => {
         const audio = get().audio;
         if (!audio) return;
-
         if (isPlaying) {
-            audio.play().catch((e) => {
-                console.warn('Ошибка воспроизведения аудио:', e);
-            });
+            audio.play().catch((e) => console.warn('Ошибка воспроизведения аудио:', e));
         } else {
             audio.pause();
         }
@@ -109,18 +116,5 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     togglePlay: () => {
         const { isPlaying, setIsPlaying } = get();
         setIsPlaying(!isPlaying);
-    },
-
-    resetPlayer: () => {
-        const audio = get().audio;
-        if (audio) audio.pause();
-        set({
-            currentTrack: null,
-            progress: 0,
-            currentTime: 0,
-            isPlaying: false,
-            duration: 0,
-            audio: null,
-        });
     },
 }));
