@@ -1,1 +1,0 @@
-import{r,j as a}from"./iframe-U8ya4lKj.js";import{u as e}from"./useTranslation-CSTQQmYg.js";const t=""+new URL("Loader-CFjJ4gNd.gif",import.meta.url).href,s=()=>{const{t:o}=e("loader");return a.jsx("img",{src:t,alt:o("loading"),draggable:!1})},m=r.memo(s);m.displayName="Loader";export{m as L};

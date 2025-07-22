@@ -1,8 +1,0 @@
-import{j as o}from"./iframe-U8ya4lKj.js";import{L as s}from"./Logo-BiOHOkjz.js";import"./Button-DE9W436l.js";import"./ButtonNavigation-COrRjsTF.js";import"./Dropdown-DwKt7Qhu.js";import"./FilePicker-CbYA0TGi.js";import"./GroupCover-BGBq_pSL.js";import"./Input-DaFUx77P.js";import"./Like-B3pHqG2f.js";import"./Loader-DiHYOjMw.js";import"./index-C84dbosL.js";import"./PageLoader-DRYwdG-o.js";import{P as i}from"./PageWrapper-CGXxUwgW.js";import"./PlayButton-DHaq6iyc.js";import"./Text-DVKAWUAM.js";import"./TrackControlButton-9SyhFgiT.js";import"./UserAvatar-QfRyJ_rf.js";import{u as m}from"./useTranslation-CSTQQmYg.js";import{u as a}from"./sidebarStore-CdVUyuQU.js";import"./classNames-DZENv8ZT.js";import"./clsx-B-dksMZM.js";import"./iconBase--zlYJr49.js";import"./index-Crfi9Vkz.js";import"./index-B1nOipFJ.js";const p=()=>{const{t:r}=m("mainPage");return o.jsx(i,{children:o.jsx("img",{src:s,alt:r("logoAlt"),className:"w-full h-full object-contain"})})},N={title:"pages/MainPage",component:p,decorators:[r=>(a.setState({isCollapsed:!1}),o.jsx("div",{style:{height:"100vh",backgroundColor:"#141414",padding:"1rem"},children:o.jsx(r,{})}))]},t={},e={decorators:[r=>(a.setState({isCollapsed:!0}),o.jsx(r,{}))]};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:"{}",...t.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  decorators: [Story => {
-    useSidebarStore.setState({
-      isCollapsed: true
-    });
-    return <Story />;
-  }]
-}`,...e.parameters?.docs?.source}}};const O=["Default","SidebarCollapsed"];export{t as Default,e as SidebarCollapsed,O as __namedExportsOrder,N as default};

@@ -1,5 +1,0 @@
-import{j as t,r as u}from"./iframe-U8ya4lKj.js";import{P as a}from"./PlayButton-DHaq6iyc.js";import{b as s}from"./Button-DE9W436l.js";import"./index-Crfi9Vkz.js";import"./iconBase--zlYJr49.js";import"./useTranslation-CSTQQmYg.js";import"./classNames-DZENv8ZT.js";import"./clsx-B-dksMZM.js";const j={title:"shared/PlayButton",component:a,tags:["autodocs"],args:{theme:s.OUTLINE,isCurrent:!0}},o=({initialPlaying:n=!1})=>{const[i,p]=u.useState(n),l=()=>p(m=>!m);return t.jsx(a,{isPlaying:i,isCurrent:!0,onClick:l,theme:s.OUTLINE})},r={render:()=>t.jsx(o,{initialPlaying:!0})},e={render:()=>t.jsx(o,{initialPlaying:!1})};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
-  render: () => <PlayButtonWrapper initialPlaying={true} />
-}`,...r.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  render: () => <PlayButtonWrapper initialPlaying={false} />
-}`,...e.parameters?.docs?.source}}};const E=["Playing","Paused"];export{e as Paused,r as Playing,E as __namedExportsOrder,j as default};

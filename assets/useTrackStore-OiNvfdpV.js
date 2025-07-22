@@ -1,1 +1,0 @@
-import{c as t}from"./iframe-U8ya4lKj.js";const e=t(c=>({currentTrack:null,tracks:[],setTracks:r=>c({tracks:r}),addTrack:r=>c(a=>({tracks:[...a.tracks,r]})),updateTrack:r=>c(a=>({tracks:a.tracks.map(k=>k.id===r.id?r:k)})),removeTrack:r=>c(a=>({tracks:a.tracks.filter(k=>k.id!==r)}))}));export{e as u};

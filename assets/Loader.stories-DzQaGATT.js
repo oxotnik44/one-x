@@ -1,0 +1,1 @@
+import{L as r}from"./Loader-ld3rHLDK.js";import"./iframe-Bt4UvEqW.js";import"./useTranslation-D6XLV_9q.js";const s={title:"shared/Loader",component:r,tags:["autodocs"]},e={};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:"{}",...e.parameters?.docs?.source}}};const c=["Default"];export{e as Default,c as __namedExportsOrder,s as default};
