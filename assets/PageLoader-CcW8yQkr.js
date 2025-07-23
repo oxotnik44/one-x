@@ -1,0 +1,1 @@
+import{r as o,j as r}from"./iframe-CCPG9B4X.js";import{P as a}from"./PageWrapper-B_RLjTmo.js";import{L as e}from"./Loader-C1jWAQqW.js";const s=()=>r.jsx(a,{children:r.jsx(e,{})}),t=o.memo(s);t.displayName="PageLoader";export{t as P};

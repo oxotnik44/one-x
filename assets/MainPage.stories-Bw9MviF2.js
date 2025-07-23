@@ -1,8 +1,0 @@
-import{j as o}from"./iframe-Bt4UvEqW.js";import{L as s}from"./Logo-BiOHOkjz.js";import"./Button-40eEdaHr.js";import"./ButtonNavigation-DuwpFPZD.js";import"./Dropdown-D_2yar06.js";import"./FilePicker-D62rdBOg.js";import"./index-BlSK3dwA.js";import"./Input-Bygz4nLz.js";import"./Like-DXxARhTn.js";import"./Loader-ld3rHLDK.js";import"./index-DfYkHRSD.js";import"./PageLoader-HUM1dPua.js";import{P as i}from"./PageWrapper-Nh9y5AVa.js";import"./ConfirmDeleteModal-BXHaXOST.js";import"./Text-IhfjRFJQ.js";import"./TrackControlButton-DKEqXBy9.js";import"./UserAvatar-B3tKy1se.js";import{u as m}from"./useTranslation-D6XLV_9q.js";import{u as a}from"./sidebarStore-irYbJWnv.js";import"./classNames-DZENv8ZT.js";import"./clsx-B-dksMZM.js";import"./iconBase-ou9WzbwP.js";import"./index-i_s2-YOI.js";import"./index-DNG7rF9Q.js";import"./Modal-B9i_GAWK.js";const p=()=>{const{t:r}=m("mainPage");return o.jsx(i,{children:o.jsx("img",{src:s,alt:r("logoAlt"),className:"w-full h-full object-contain"})})},O={title:"pages/MainPage",component:p,decorators:[r=>(a.setState({isCollapsed:!1}),o.jsx("div",{style:{height:"100vh",backgroundColor:"#141414",padding:"1rem"},children:o.jsx(r,{})}))]},t={},e={decorators:[r=>(a.setState({isCollapsed:!0}),o.jsx(r,{}))]};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:"{}",...t.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  decorators: [Story => {
-    useSidebarStore.setState({
-      isCollapsed: true
-    });
-    return <Story />;
-  }]
-}`,...e.parameters?.docs?.source}}};const R=["Default","SidebarCollapsed"];export{t as Default,e as SidebarCollapsed,R as __namedExportsOrder,O as default};
