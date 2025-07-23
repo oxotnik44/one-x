@@ -11,18 +11,24 @@ export const likeAlbum = async (albumId: string): Promise<void> => {
         return;
     }
 
-    const likedAlbums = authData.likedAlbums ?? [];
-    const updatedLikedAlbums = likedAlbums.includes(albumId)
-        ? likedAlbums.filter((id) => id !== albumId)
-        : [...likedAlbums, albumId];
+    // Формируем обновлённый likedAlbums локально, без вызова toggleLikeAlbum
+    const updatedLikedAlbums = authData.likedAlbums?.includes(albumId)
+        ? authData.likedAlbums.filter((id) => id !== albumId)
+        : [...(authData.likedAlbums || []), albumId];
 
     try {
         await apiJson.patch<Partial<User>>(`/users/${authData.id}`, {
             likedAlbums: updatedLikedAlbums,
+            recommendation: authData.recommendation,
         });
+
+        // Только после успешного запроса обновляем локальный стор
         toggleLikeAlbum(albumId);
+
         toast.success(
-            likedAlbums.includes(albumId) ? '💔 Убрано из избранного' : '❤️ Добавлено в избранное',
+            updatedLikedAlbums.includes(albumId)
+                ? '❤️ Добавлено в избранное'
+                : '💔 Убрано из избранного',
         );
     } catch {
         toast.error('Не удалось обновить лайк');

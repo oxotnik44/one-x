@@ -1,19 +1,4 @@
 // src/entities/Group/model/types/group.ts
-
-export interface Group {
-    id: string; // уникальный идентификатор группы
-    userId: string; // ID пользователя — владельца группы
-    name: string;
-    description?: string | null;
-    cover: string; // URL или base64 иконки группы
-    genre: Genre;
-    createdAt: string; // дата создания, ISO строка
-    updatedAt?: string; // дата обновления, ISO строка (опционально)
-}
-
-export interface GroupSchema {
-    currentGroup?: Group | null;
-}
 export const genresList = [
     'Рок',
     'Метал',
@@ -28,3 +13,19 @@ export const genresList = [
 ] as const;
 
 export type Genre = (typeof genresList)[number];
+
+export interface Group {
+    id: string;
+    userId: string;
+    name: string;
+    description?: string | null;
+    cover: string;
+    genre: Genre;
+    createdAt: string;
+    updatedAt?: string;
+}
+
+export interface GroupSchema {
+    groups: Group[];
+    currentGroup?: Group | null;
+}

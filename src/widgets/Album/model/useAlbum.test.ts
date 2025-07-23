@@ -11,7 +11,10 @@ import * as UserStoreModule from 'entities/User';
 import { useCallback } from 'react';
 
 vi.mock('react-hot-toast');
-vi.mock('react-router-dom', () => ({ useParams: vi.fn() }));
+vi.mock('react-router-dom', () => ({
+    useParams: vi.fn(),
+    useNavigate: () => vi.fn(), // мок навигации
+}));
 vi.mock('entities/Album', () => ({
     useAlbumStore: vi.fn(),
     fetchAlbumById: vi.fn(),
@@ -112,12 +115,30 @@ describe('useAlbum hook — простой тест', () => {
     });
 
     it('onDelete вызывает deleteAlbum и сбрасывает currentAlbum', async () => {
+        const fakeAlbum = {
+            id: 'a1',
+            description: 'Hello',
+            name: 'A',
+            cover: '',
+            createdAt: '',
+            updatedAt: '',
+            groupId: 'g1',
+            trackIds: [],
+        };
         (AlbumEntity.deleteAlbum as Mock).mockResolvedValue(undefined);
+        const setCurrentAlbum = vi.fn();
+
+        // Мок useAlbumStore с currentAlbum и setCurrentAlbum
+        (AlbumEntity.useAlbumStore as unknown as Mock).mockImplementation((sel) =>
+            sel({ currentAlbum: fakeAlbum, setCurrentAlbum }),
+        );
+
         const { result } = renderHook(() => useAlbum());
         await act(async () => {
             await result.current.onDelete();
         });
-        expect(AlbumEntity.deleteAlbum).toHaveBeenCalledWith('a1');
+
+        expect(AlbumEntity.deleteAlbum).toHaveBeenCalledWith(fakeAlbum);
         expect(setCurrentAlbum).toHaveBeenCalledWith(null);
     });
 

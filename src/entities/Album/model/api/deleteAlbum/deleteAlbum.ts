@@ -3,32 +3,48 @@ import { useAlbumStore } from '../../slice/useAlbumStore';
 import { useTrackStore } from 'entities/Track';
 import { apiBase, apiJson } from 'shared/api';
 import { useGroupStore } from 'entities/Group';
+import type { Album } from '../../types/types';
 
-export async function deleteAlbum(albumId: string): Promise<void> {
+export async function deleteAlbum(currentAlbum: Album): Promise<void> {
     try {
-        const { albums, setAlbums } = useAlbumStore.getState();
-        const { currentGroup } = useGroupStore.getState();
+        const albumId = currentAlbum.id;
+        const albumName = currentAlbum.name;
 
-        const album = albums.find((a) => a.id === albumId);
-        if (!album || !currentGroup?.name) {
-            toast.error('Ошибка: альбом или группа не найдены');
+        const albumStore = useAlbumStore.getState();
+        const trackStore = useTrackStore.getState();
+        const groupStore = useGroupStore.getState();
+
+        if (!groupStore.currentGroup?.name) {
+            toast.error('Ошибка: группа не найдена');
             return;
         }
 
-        // Удаляем с сервера
-        await Promise.all([
-            apiJson.delete(`/albums/${albumId}`),
-            apiBase.delete(
-                `/deleteAlbum/${encodeURIComponent(currentGroup.name)}/${encodeURIComponent(album.name)}`,
-            ),
-        ]);
+        const { tracks, setTracks } = trackStore;
+        const { albums, setAlbums } = albumStore;
 
-        // Обновляем Zustand — удаляем альбом и треки
+        // Фильтруем треки альбома
+        const albumTrackIds = tracks
+            .filter((track) => track.albumId === albumId)
+            .map((track) => track.id);
+
+        // Удаляем треки параллельно, если они есть
+        if (albumTrackIds.length > 0) {
+            await Promise.all(albumTrackIds.map((trackId) => apiJson.delete(`/tracks/${trackId}`)));
+        }
+
+        // Удаляем альбом
+        await apiJson.delete(`/albums/${albumId}`);
+
+        // Удаляем папку с сервера
+        await apiBase.delete(
+            `/deleteAlbum/${encodeURIComponent(groupStore.currentGroup.name)}/${encodeURIComponent(albumName)}`,
+        );
+
+        // Обновляем состояние
         setAlbums(albums.filter((a) => a.id !== albumId));
-
-        const { tracks, setTracks } = useTrackStore.getState();
         setTracks(tracks.filter((t) => t.albumId !== albumId));
 
+        // Вызов успеха
         toast.success('Альбом и все его треки успешно удалены');
     } catch (err) {
         toast.error(err instanceof Error ? err.message : 'Ошибка при удалении альбома');

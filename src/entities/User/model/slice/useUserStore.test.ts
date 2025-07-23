@@ -2,19 +2,34 @@
 import { act, renderHook } from '@testing-library/react';
 import { useUserStore } from './useUserStore'; // поправь путь при необходимости
 import toast from 'react-hot-toast';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, expect, it, vi, beforeEach, type Mock } from 'vitest';
 import type { User } from '../types/user';
+import { useTrackStore } from 'entities/Track';
 
 vi.mock('react-hot-toast');
+vi.mock('entities/Track', () => ({
+    useTrackStore: {
+        getState: vi.fn(),
+    },
+}));
 
 describe('useUserStore', () => {
     beforeEach(() => {
-        // Сброс стора перед каждым тестом:
+        vi.clearAllMocks();
+
+        // Мокаем useTrackStore с треками и жанрами для тестов toggleLikeTrack
+        (useTrackStore.getState as Mock).mockReturnValue({
+            tracks: [
+                { id: 'track1', genre: 'rock' },
+                { id: 'track2', genre: 'pop' },
+            ],
+        });
+
+        // Сбрасываем стор перед каждым тестом:
         const { result } = renderHook(() => useUserStore());
         act(() => {
             result.current.logout();
         });
-        vi.clearAllMocks();
     });
 
     it('изначально authData === null', () => {

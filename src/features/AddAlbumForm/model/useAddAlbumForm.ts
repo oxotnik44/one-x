@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useForm, type FieldValues } from 'react-hook-form';
 import { addAlbum } from 'entities/Album';
 import { useNavigate } from 'react-router-dom';
-import { useGroupStore } from 'entities/Group';
+import { useGroupStore, type Genre } from 'entities/Group';
 import { extractTitleFromFile, getAudioDuration } from 'shared/lib';
 
 interface FolderFields extends FieldValues {
@@ -23,6 +23,7 @@ export function useAddAlbumForm() {
     } = useForm<FolderFields>();
 
     const groupName = useGroupStore((s) => s.currentGroup?.name || '');
+    const genre = useGroupStore((s) => s.currentGroup?.genre || '') as Genre;
     const [coverFile, setCoverFile] = useState<File | null>(null);
     const [coverPreview, setCoverPreview] = useState<string | null>(null);
     const [trackFiles, setTrackFiles] = useState<File[]>([]);
@@ -82,6 +83,7 @@ export function useAddAlbumForm() {
                 description, // передаем description
                 cover: coverFile,
                 tracks: preparedTracks,
+                genre,
             });
 
             onSuccess?.();

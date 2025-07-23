@@ -5,26 +5,33 @@ import { apiJson } from 'shared/api';
 
 export const likeTrack = async (trackId: string): Promise<void> => {
     const { authData, toggleLikeTrack } = useUserStore.getState();
-
     if (!authData) {
         toast.error('Войдите, чтобы лайкать');
         return;
     }
 
-    const likedTracks = authData.likedTracks ?? [];
-    const updatedLikedTracks = likedTracks.includes(trackId)
-        ? likedTracks.filter((id) => id !== trackId)
-        : [...likedTracks, trackId];
-
     try {
+        // Формируем новый массив likedTracks (локальное обновление лучше сделать в toggleLikeTrack)
+        const updatedLikedTracks = authData.likedTracks?.includes(trackId)
+            ? authData.likedTracks.filter((id) => id !== trackId)
+            : [...(authData.likedTracks || []), trackId];
+
+        // Отправляем обновлённые данные на сервер
         await apiJson.patch<Partial<User>>(`/users/${authData.id}`, {
             likedTracks: updatedLikedTracks,
+            recommendation: authData.recommendation,
         });
+
+        // Только после успешного запроса обновляем локальный стейт
         toggleLikeTrack(trackId);
+
         toast.success(
-            likedTracks.includes(trackId) ? '💔 Убрано из избранного' : '❤️ Добавлено в избранное',
+            updatedLikedTracks.includes(trackId)
+                ? '❤️ Добавлено в избранное'
+                : '💔 Убрано из избранного',
         );
-    } catch {
+    } catch (error) {
         toast.error('Не удалось обновить лайк');
+        console.error(error);
     }
 };

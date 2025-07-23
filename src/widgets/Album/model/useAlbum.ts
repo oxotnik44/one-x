@@ -1,6 +1,6 @@
 // src/pages/Album/model/useAlbum.ts
 import { useState, useEffect, useRef, useCallback, useMemo, type ChangeEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ import { likeAlbum } from 'entities/User/model/api/likeAlbum/likeAlbum';
 import { useUserStore } from 'entities/User';
 
 export function useAlbum() {
+    const navigate = useNavigate(); // ← добавлено
     const { t } = useTranslation('album');
     const { albumId } = useParams<{ albumId: string }>();
     const likedAlbums = useUserStore((state) => state.authData?.likedAlbums ?? []);
@@ -70,7 +71,9 @@ export function useAlbum() {
             return;
         }
         try {
-            await deleteAlbum(currentAlbum.id);
+            await deleteAlbum(currentAlbum);
+            navigate('/my_group');
+
             setCurrentAlbum(null);
             toast.success(t('albumDeleted'));
         } catch {

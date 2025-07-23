@@ -22,27 +22,36 @@ vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (k: string) => k }
 describe('useListAlbum', () => {
     const navigateMock = vi.fn();
     const fakeGroup = { id: 'g1', name: 'Group1' };
-    const fakeAlbums = [{ id: 'a1' }, { id: 'a2' }];
-
+    const fakeAlbum = {
+        id: 'a1',
+        description: 'Hello',
+        name: 'A',
+        cover: '',
+        createdAt: '',
+        updatedAt: '',
+        groupId: 'g1',
+        trackIds: [],
+    };
     beforeEach(() => {
         vi.clearAllMocks();
         (useNavigate as Mock).mockReturnValue(navigateMock);
-        // по умолчанию в сторе группа
+
         (GroupStore.useGroupStore as unknown as Mock).mockImplementation((sel) =>
             sel({ currentGroup: fakeGroup }),
         );
-        // и в альбомном сторе пустой массив
+
+        // albums — массив, а не объект
         (AlbumStore.useAlbumStore as unknown as Mock).mockImplementation((sel) =>
             sel({ albums: [], setCurrentAlbum: vi.fn() }),
         );
-        // и пользователь
+
         (UserStore.useUserStore as unknown as Mock).mockImplementation((sel) =>
             sel({ authData: null }),
         );
     });
 
     it('при монтировании при пустом albums вызывает fetchAlbums и управляет loading', async () => {
-        const fetchMock = (API.fetchAlbums as Mock).mockResolvedValue(fakeAlbums);
+        const fetchMock = (API.fetchAlbums as Mock).mockResolvedValue(fakeAlbum);
         const { result } = renderHook(() => useListAlbum());
 
         // сразу после mount loading=true
@@ -57,7 +66,7 @@ describe('useListAlbum', () => {
 
     it('onAddAlbumClick ведёт на /my_group/add_album', () => {
         (AlbumStore.useAlbumStore as unknown as Mock).mockImplementation((sel) =>
-            sel({ albums: fakeAlbums, setCurrentAlbum: vi.fn() }),
+            sel({ albums: fakeAlbum, setCurrentAlbum: vi.fn() }),
         );
         const { result } = renderHook(() => useListAlbum());
         act(() => {
@@ -68,15 +77,19 @@ describe('useListAlbum', () => {
 
     it('onAlbumClick устанавливает текущий альбом и ведёт на страницу альбома', () => {
         const setCurrentAlbum = vi.fn();
+
         (AlbumStore.useAlbumStore as unknown as Mock).mockImplementation((sel) =>
-            sel({ albums: fakeAlbums, setCurrentAlbum }),
+            sel({ albums: [fakeAlbum], setCurrentAlbum }),
         );
+
         const { result } = renderHook(() => useListAlbum());
+
         act(() => {
-            result.current.onAlbumClick('a2');
+            result.current.onAlbumClick('a1');
         });
-        expect(setCurrentAlbum).toHaveBeenCalledWith({ id: 'a2' });
-        expect(navigateMock).toHaveBeenCalledWith('/my_group/album/a2');
+
+        expect(setCurrentAlbum).toHaveBeenCalledWith(fakeAlbum);
+        expect(navigateMock).toHaveBeenCalledWith('/my_group/album/a1');
     });
 
     it('не вызывает fetchAlbums если currentGroup отсутствует', () => {

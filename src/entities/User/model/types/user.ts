@@ -1,4 +1,10 @@
 // src/entities/User/model/types/user.ts
+
+export interface GenreRecommendation {
+    genre: string;
+    percent: number;
+}
+
 export interface User {
     id: string;
     email?: string;
@@ -10,6 +16,7 @@ export interface User {
     likedTracks?: string[];
     likedGroups?: string[];
     likedAlbums?: string[];
+    recommendation?: GenreRecommendation[];
 }
 
 export interface UserSchema {

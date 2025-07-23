@@ -10,7 +10,6 @@ export async function fetchAlbumById(groupId: string, albumId: string): Promise<
         const album = data.find((a) => a.id === albumId);
 
         if (album) setCurrentAlbum(album);
-        else toast.error('Альбом не найден');
     } catch (err) {
         toast.error(err instanceof Error ? err.message : 'Ошибка при загрузке альбома');
     }

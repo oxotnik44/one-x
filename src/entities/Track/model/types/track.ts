@@ -1,3 +1,5 @@
+import type { Genre } from 'entities/Group';
+
 export interface Track {
     id: string;
     title: string;
@@ -6,6 +8,7 @@ export interface Track {
     groupName?: string;
     albumId?: string;
     groupId: string;
+    genre: Genre;
     audioUrl: string;
     createdAt: string;
     updatedAt?: string;

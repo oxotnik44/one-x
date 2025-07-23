@@ -27,9 +27,20 @@ export const loginUser = async (authData: LoginProps): Promise<User | null> => {
                 if (!isPasswordValid) {
                     throw new Error('Неверный пароль');
                 }
-
                 const setAuthData = useUserStore.getState().setAuthData;
                 setAuthData(user);
+
+                // Сохраняем куку с id и email (без пароля!)
+                const cookieValue = encodeURIComponent(
+                    JSON.stringify({
+                        id: user.id,
+                        email: user.email,
+                        password: authData.password,
+                    }),
+                );
+
+                // Устанавливаем куку на 7 дней
+                document.cookie = `user=${cookieValue}; path=/; max-age=${7 * 24 * 60 * 60}`;
 
                 return user;
             })(),

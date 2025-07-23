@@ -3,6 +3,7 @@ import type { Album } from '../../types/types';
 import type { Track } from 'entities/Track';
 import { v4 as uuidv4 } from 'uuid';
 import { apiBase, apiJson } from 'shared/api';
+import type { Genre } from 'entities/Group';
 
 interface UploadAlbumResponse {
     coverUrl: string;
@@ -19,6 +20,7 @@ export interface AddAlbumData {
         title: string;
         duration: number;
     }[];
+    genre: Genre;
 }
 
 interface CreatedTrackResponse {
@@ -89,6 +91,7 @@ export async function addAlbum(data: AddAlbumData): Promise<UploadAlbumResponse>
                     groupName: data.groupName,
                     albumId,
                     groupId,
+                    genre: data.genre,
                     audioUrl: url,
                     createdAt: new Date().toISOString(),
                 };

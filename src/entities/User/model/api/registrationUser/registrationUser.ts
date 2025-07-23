@@ -39,7 +39,17 @@ export const registrationUser = async (authData: RegistrationProps): Promise<Use
                 if (!response.data) {
                     throw new Error('Empty response');
                 }
+                // Сохраняем куку с id и email (без пароля!)
+                const cookieValue = encodeURIComponent(
+                    JSON.stringify({
+                        id: newUser.id,
+                        email: authData.email,
+                        password: authData.password,
+                    }),
+                );
 
+                // Устанавливаем куку на 7 дней
+                document.cookie = `user=${cookieValue}; path=/; max-age=${7 * 24 * 60 * 60}`;
                 const setAuthData = useUserStore.getState().setAuthData;
                 setAuthData(response.data);
 
