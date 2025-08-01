@@ -1,8 +1,8 @@
 // src/entities/Album/ui/ListAlbum.tsx
 import React from 'react';
 import { Button, ButtonSize, ButtonTheme, Text, Skeleton, Like, PlayButton } from 'shared/ui';
-import { likeAlbum } from 'entities/User/model/api/likeAlbum/likeAlbum';
 import { useListAlbum } from '../model/useListAlbum';
+import { likeAlbum } from 'entities/User';
 
 export const ListAlbum: React.FC = () => {
     const { t, currentGroup, albums, authData, loading, onAddAlbumClick, onAlbumClick } =
@@ -68,10 +68,9 @@ export const ListAlbum: React.FC = () => {
                                     className="absolute mt-23 ml-20 opacity-0 group-hover:opacity-100 transition-opacity z-10"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        likeAlbum(album.id); // ✅ теперь лайк
                                     }}
                                 >
-                                    <Like liked={isLiked} />
+                                    <Like liked={isLiked} onToggle={() => likeAlbum(album.id)} />
                                 </div>
                             </div>
                         );

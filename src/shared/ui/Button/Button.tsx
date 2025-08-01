@@ -1,4 +1,5 @@
-import { type ButtonHTMLAttributes, memo, type ReactNode } from 'react';
+// src/shared/ui/Button.tsx
+import { memo, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 
@@ -22,61 +23,51 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
 }
 
-const baseStyle =
+const base =
     'inline-flex items-center justify-center cursor-pointer transition-colors hover:opacity-80 disabled:opacity-50 rounded-md';
-
-const sizeClasses: Record<ButtonSize, string> = {
-    [ButtonSize.M]: 'text-sm px-4 py-1.5',
-    [ButtonSize.L]: 'text-base px-5 py-2',
-    [ButtonSize.XL]: 'text-lg px-6 py-2.5',
+const sizeMap: Record<ButtonSize, string> = {
+    m: 'text-sm px-4 py-1.5',
+    l: 'text-base px-5 py-2',
+    xl: 'text-lg px-6 py-2.5',
+};
+const squareSizeMap: Record<ButtonSize, string> = {
+    m: 'w-8 h-8 text-sm',
+    l: 'w-10 h-10 text-base',
+    xl: 'w-12 h-12 text-lg',
 };
 
-const squareSizeClasses: Record<ButtonSize, string> = {
-    [ButtonSize.M]: 'w-8 h-8 text-sm',
-    [ButtonSize.L]: 'w-10 h-10 text-base',
-    [ButtonSize.XL]: 'w-12 h-12 text-lg',
-};
-
-export const Button = memo((props: ButtonProps) => {
-    const {
+export const Button = memo(
+    ({
         theme = ButtonTheme.OUTLINE,
         size = ButtonSize.L,
         square = false,
         className,
-        disabled = false,
+        disabled,
         children,
         ...otherProps
-    } = props;
+    }: ButtonProps) => {
+        const themeVars = useThemeStore((s) => s.theme);
 
-    const themeVars = useThemeStore((state) => state.theme);
+        const style =
+            theme === ButtonTheme.OUTLINE || theme === ButtonTheme.BACK
+                ? { backgroundColor: themeVars['--button-color'], color: '#fff' }
+                : { backgroundColor: 'transparent', color: themeVars['--text-color'] };
 
-    const inlineStyles =
-        theme === ButtonTheme.OUTLINE || theme === ButtonTheme.BACK
-            ? {
-                  backgroundColor: themeVars['--button-color'],
-                  color: '#fff',
-              }
-            : {
-                  backgroundColor: 'transparent',
-                  color: themeVars['--text-color'],
-              };
+        const sizeClass = square ? squareSizeMap[size] : sizeMap[size];
+        const shapeClass = square ? 'rounded-full p-0' : '';
+        const positionClass = theme === ButtonTheme.BACK ? 'absolute top-20 left-80' : '';
 
-    const themeClass = theme === ButtonTheme.BACK ? 'absolute top-20 left-80' : '';
-
-    const sizeClass = square ? squareSizeClasses[size] : sizeClasses[size];
-    const shapeClass = square ? 'rounded-full p-0' : '';
-    const btnClassName = classNames(baseStyle, sizeClass, shapeClass, themeClass, className);
-
-    return (
-        <button
-            type="button"
-            className={btnClassName}
-            style={inlineStyles}
-            disabled={disabled}
-            {...otherProps}
-        >
-            {children}
-        </button>
-    );
-});
+        return (
+            <button
+                type="button"
+                className={classNames(base, sizeClass, shapeClass, positionClass, className)}
+                style={style}
+                disabled={disabled}
+                {...otherProps}
+            >
+                {children}
+            </button>
+        );
+    },
+);
 Button.displayName = 'Button';

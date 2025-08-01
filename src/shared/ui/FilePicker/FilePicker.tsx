@@ -1,13 +1,13 @@
 // src/shared/ui/FilePicker/FilePicker.tsx
-import React, {
+import {
     useRef,
     useState,
     useCallback,
     type ChangeEvent,
     type DragEvent,
     type ReactNode,
-    memo,
     type CSSProperties,
+    memo,
 } from 'react';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useTranslation } from 'react-i18next';
@@ -24,133 +24,109 @@ interface FilePickerProps {
     directory?: boolean;
 }
 
-const FilePickerComponent: React.FC<FilePickerProps> = ({
+const FilePickerComponent = ({
     accept,
     onChange,
     placeholder,
     previewUrl = null,
     title,
-    className,
+    className = '',
     style,
     active = false,
     directory = false,
-}) => {
-    const theme = useThemeStore((state) => state.theme);
-    const inputRef = useRef<HTMLInputElement | null>(null);
+}: FilePickerProps) => {
+    const theme = useThemeStore((s) => s.theme);
     const { t } = useTranslation('filePicker');
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    // Состояние для hover и drag&drop
     const [isHover, setIsHover] = useState(false);
     const [isDragOver, setIsDragOver] = useState(false);
+    const isActive = isHover || isDragOver || active;
 
+    // Клик по области вызывает скрытый input[type="file"]
     const handleClick = useCallback(() => {
         inputRef.current?.click();
     }, []);
 
+    // Обработка выбора файла вручную через input
     const handleChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             const files = e.target.files;
-            if (!files || files.length === 0) {
-                onChange(null);
-                return;
-            }
+            if (!files?.length) return onChange(null);
 
             const first = files[0] as File & { webkitRelativePath?: string };
-            const folderName = first?.webkitRelativePath?.split('/')[0] ?? '';
-
-            onChange(files, folderName);
+            const folder = first.webkitRelativePath?.split('/')[0] ?? '';
+            onChange(files, folder);
         },
         [onChange],
     );
 
-    const matchFileType = (file: File): boolean => {
+    // Проверка типа файла на соответствие accept
+    const matchFileType = (file: File) => {
         if (!accept) return true;
-        const acceptList = accept.split(',').map((s) => s.trim());
-        return acceptList.some((type) => {
-            if (type.startsWith('.')) {
-                return file.name.toLowerCase().endsWith(type.toLowerCase());
-            }
-            return file.type === type;
-        });
+        return accept
+            .split(',')
+            .some((type) =>
+                type.trim().startsWith('.')
+                    ? file.name.toLowerCase().endsWith(type.trim().toLowerCase())
+                    : file.type === type.trim(),
+            );
     };
 
+    // Обработка drag&drop, включая поддержку папок (webkitGetAsEntry API)
     const handleDrop = useCallback(
         async (e: DragEvent<HTMLDivElement>) => {
             e.preventDefault();
             setIsDragOver(false);
 
             const items = e.dataTransfer.items;
+            const entries = Array.from(items)
+                .map((item) => item.webkitGetAsEntry?.())
+                .filter((e): e is FileSystemEntry => !!e);
+
             const files: File[] = [];
+            let folder: string | null = null;
 
-            let folderName: string | null = null;
+            // Рекурсивный обход вложенных директорий
+            const traverse = async (entry: FileSystemEntry) => {
+                if (entry.isFile) {
+                    const file = await new Promise<File>((res) =>
+                        (entry as FileSystemFileEntry).file(res),
+                    );
+                    files.push(file);
+                } else if (entry.isDirectory) {
+                    folder ??= entry.name;
+                    const reader = (entry as FileSystemDirectoryEntry).createReader();
+                    const read = (): Promise<FileSystemEntry[]> =>
+                        new Promise((res) => reader.readEntries(res));
 
-            const traverseFileTree = async (item: FileSystemEntry, path = '') => {
-                if (item.isFile) {
-                    await new Promise<void>((resolve) => {
-                        (item as FileSystemFileEntry).file((file) => {
-                            files.push(file);
-                            resolve();
-                        });
-                    });
-                } else if (item.isDirectory) {
-                    if (!folderName) {
-                        // сохраняем имя только первой папки верхнего уровня
-                        folderName = item.name;
-                    }
-
-                    const dirReader = (item as FileSystemDirectoryEntry).createReader();
-                    const readEntries = () =>
-                        new Promise<FileSystemEntry[]>((resolve) => dirReader.readEntries(resolve));
-
-                    let entries: FileSystemEntry[] = [];
+                    let batch: FileSystemEntry[] = [];
                     do {
-                        entries = await readEntries();
-                        for (const entry of entries) {
-                            await traverseFileTree(entry, `${path}${item.name}/`);
-                        }
-                    } while (entries.length > 0);
+                        batch = await read();
+                        await Promise.all(batch.map(traverse));
+                    } while (batch.length);
                 }
             };
 
-            const entries = Array.from(items)
-                .map((item) => item.webkitGetAsEntry?.())
-                .filter((entry): entry is FileSystemEntry => !!entry);
+            if (!entries.length) return onChange(null);
 
-            if (entries.length === 0) {
-                onChange(null);
-                return;
-            }
-
-            for (const entry of entries) {
-                await traverseFileTree(entry);
-            }
+            await Promise.all(entries.map(traverse));
 
             const filtered = files.filter(matchFileType);
-            if (filtered.length > 0) {
-                const fileList = new DataTransfer();
-                filtered.forEach((f) => fileList.items.add(f));
+            if (!filtered.length) return onChange(null);
 
-                onChange(fileList.files, folderName ?? '');
-            } else {
-                onChange(null);
-            }
+            const list = new DataTransfer();
+            filtered.forEach((f) => list.items.add(f));
+            onChange(list.files, folder ?? '');
         },
-        [onChange, accept],
+        [accept, onChange],
     );
-
-    const isActive = isHover || active || isDragOver;
 
     return (
         <>
+            {/* Основная зона выбора файла / папки */}
             <div
-                className={`flex-shrink-0 flex justify-center items-center rounded-md border-2 border-dashed cursor-pointer max-w-32 max-h-32 mx-auto transition-colors ${className || ''}`}
-                style={{
-                    borderColor: theme['--primary-color'] || '#880015',
-                    color: isActive ? '#fff' : theme['--primary-color'] || '#880015',
-                    width: '6rem',
-                    height: '6rem',
-                    backgroundColor: isActive ? theme['--primary-color'] : 'transparent',
-                    ...style,
-                }}
                 title={title ?? t('title')}
                 onClick={handleClick}
                 onMouseEnter={() => setIsHover(true)}
@@ -161,21 +137,31 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
                 }}
                 onDragLeave={() => setIsDragOver(false)}
                 onDrop={handleDrop}
+                className={`flex-shrink-0 flex justify-center items-center mx-auto max-w-32 max-h-32 rounded-md border-2 border-dashed cursor-pointer transition-colors ${className}`}
+                style={{
+                    width: '6rem',
+                    height: '6rem',
+                    borderColor: theme['--primary-color'],
+                    color: isActive ? '#fff' : theme['--primary-color'],
+                    backgroundColor: isActive ? theme['--primary-color'] : 'transparent',
+                    ...style,
+                }}
             >
                 {previewUrl ? (
                     <img
                         src={previewUrl}
                         alt="preview"
-                        className="object-cover rounded-md w-full h-full"
+                        className="object-cover w-full h-full rounded-md"
                     />
                 ) : (
                     placeholder
                 )}
             </div>
 
+            {/* Скрытый input для ручного выбора файлов */}
             <input
-                type="file"
                 ref={inputRef}
+                type="file"
                 accept={accept}
                 onChange={handleChange}
                 className="hidden"
@@ -185,4 +171,6 @@ const FilePickerComponent: React.FC<FilePickerProps> = ({
     );
 };
 
+// Обёртка в memo для предотвращения лишних ререндеров
 export const FilePicker = memo(FilePickerComponent);
+FilePicker.displayName = 'FilePicker';

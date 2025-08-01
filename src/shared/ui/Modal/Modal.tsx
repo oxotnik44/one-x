@@ -37,7 +37,6 @@ export const Modal: React.FC<ModalProps> = ({
 
     useEffect(() => {
         if (isOpen) {
-            // При открытии сразу сбрасываем флаг «скрытия»
             setIsHiding(false);
             setMounted(true);
         } else {
@@ -47,6 +46,11 @@ export const Modal: React.FC<ModalProps> = ({
                 setMounted(false);
             }, ANIMATION_DELAY);
         }
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+        };
     }, [isOpen]);
 
     const handleClose = useCallback(() => {
@@ -60,30 +64,20 @@ export const Modal: React.FC<ModalProps> = ({
 
     const handleKey = useCallback(
         (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && closable) {
-                handleClose();
-            }
+            if (closable && e.key === 'Escape') handleClose();
         },
-        [handleClose, closable],
+        [closable, handleClose],
     );
 
-    const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
-        if (closable && e.target === e.currentTarget) {
-            handleClose();
-        }
-    };
-
     useEffect(() => {
-        if (isOpen) {
-            window.addEventListener('keydown', handleKey);
-        }
-        return () => {
-            window.removeEventListener('keydown', handleKey);
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-        };
+        if (!isOpen) return;
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
     }, [isOpen, handleKey]);
+
+    const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
+        if (closable && e.target === e.currentTarget) handleClose();
+    };
 
     if (lazy && !mounted) return null;
 
@@ -97,23 +91,20 @@ export const Modal: React.FC<ModalProps> = ({
                         'opacity-100 pointer-events-auto z-50': isOpen && !isHiding,
                         'opacity-0 pointer-events-none -z-10': !isOpen || isHiding,
                     },
-                    [className],
+                    className,
                 )}
             >
                 <div
-                    className={classNames(
-                        'relative rounded-2xl p-5 transition-transform duration-300',
-                        {
-                            'scale-100': isOpen && !isHiding,
-                            'scale-50': !isOpen || isHiding,
-                        },
-                    )}
                     onClick={(e) => e.stopPropagation()}
                     style={{
                         backgroundColor: theme['--bg-container'],
                         width: 'fit-content',
                         maxWidth: '100%',
                     }}
+                    className={classNames(
+                        'relative rounded-2xl p-5 transition-transform duration-300',
+                        { 'scale-100': isOpen && !isHiding, 'scale-50': !isOpen || isHiding },
+                    )}
                 >
                     {closable && (
                         <button

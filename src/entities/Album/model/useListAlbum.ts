@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useGroupStore } from 'entities/Group';
 import { useAlbumStore } from 'entities/Album';
 import { useUserStore } from 'entities/User';
-import { fetchAlbums } from 'entities/Album/model/api/fetchAlbums/fetchAlbums';
+import { fetchAlbums } from './api/fetchAlbums/fetchAlbums';
 
 export function useListAlbum() {
     const { t } = useTranslation('listAlbum');

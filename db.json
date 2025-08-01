@@ -1,265 +1,269 @@
 {
-    "users": [
+  "users": [
+    {
+      "id": "71ef2da7-dbce-4776-b12f-500745d0493b",
+      "email": "a@gmail.com",
+      "password": "$2b$10$DhyH3s1AbbI1OA8ieV5wl.dVusn0l6B/i1Luw6.eI9T7kQOPd7S2u",
+      "avatar": "",
+      "username": "",
+      "createdAt": "2025-07-19T06:25:40.579Z",
+      "likedTracks": [
+        "efda1fe5-5af0-447d-9fa6-108995a11a55"
+      ],
+      "likedAlbums": [
+        "3defbaaa-cec4-454b-8dd2-5e7457d28a13"
+      ],
+      "recommendation": [
         {
-            "id": "71ef2da7-dbce-4776-b12f-500745d0493b",
-            "email": "a@gmail.com",
-            "password": "$2b$10$DhyH3s1AbbI1OA8ieV5wl.dVusn0l6B/i1Luw6.eI9T7kQOPd7S2u",
-            "avatar": "",
-            "username": "",
-            "createdAt": "2025-07-19T06:25:40.579Z",
-            "likedTracks": [],
-            "likedAlbums": [],
-            "recommendation": [
-                {
-                    "genre": "Рок",
-                    "percent": 10
-                },
-                {
-                    "genre": "Метал",
-                    "percent": 10
-                },
-                {
-                    "genre": "Поп",
-                    "percent": 10
-                },
-                {
-                    "genre": "Джаз",
-                    "percent": 10
-                },
-                {
-                    "genre": "Классика",
-                    "percent": 10
-                },
-                {
-                    "genre": "Хип-хоп",
-                    "percent": 10
-                },
-                {
-                    "genre": "Электроника",
-                    "percent": 10
-                },
-                {
-                    "genre": "Блюз",
-                    "percent": 10
-                },
-                {
-                    "genre": "Регги",
-                    "percent": 10
-                },
-                {
-                    "genre": "Панк",
-                    "percent": 10
-                }
-            ]
+          "genre": "Рок",
+          "percent": 15
         },
         {
-            "id": "893298ed-5e4d-4249-bb0f-19959f7ebbb2",
-            "email": "s@gmail.com",
-            "password": "$2b$10$panOJbHCqvuy5DTcX7an1OJ/rfBIv1c5csYhNhbCi7SArGwhc65Re",
-            "avatar": "",
-            "username": "",
-            "createdAt": "2025-07-23T16:36:13.688Z"
+          "genre": "Метал",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Поп",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Джаз",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Классика",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Хип-хоп",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Электроника",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Блюз",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Регги",
+          "percent": 9.444444444444445
+        },
+        {
+          "genre": "Панк",
+          "percent": 9.444444444444445
         }
-    ],
-    "albums": [
-        {
-            "id": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "name": "Human",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "description": "",
-            "createdAt": "2025-07-23T16:14:29.980Z",
-            "trackIds": [
-                "a2c76f37-805f-4dfe-a4cf-9f2193c3cb8e",
-                "c96109cb-f27f-47b5-aad0-3f080e1b00b4",
-                "33cc049f-d43e-404f-8d1f-261ea58bece9",
-                "d26672fc-ea20-4af8-9dd6-0e53c31e2874",
-                "e077bbfe-ec22-4e3a-a6e0-eff166bf6598",
-                "09df7320-31bd-4093-b080-475b8728d9bf",
-                "27bf81bc-4ef1-4c2b-8cf3-5eca678f15f4",
-                "84b05351-f588-43c5-a169-d82dd4bfb6d7",
-                "d3c11ee1-4a99-45a2-8b9e-0a9f657218c6",
-                "72b59702-d47e-4b17-aa42-15ec9ecc6068",
-                "1bc52c1a-28fc-49ab-b156-3831a688f0d9",
-                "1c239b8a-c0b1-480f-9881-05756f044481"
-            ]
-        }
-    ],
-    "groups": [
-        {
-            "id": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "name": "Three Days Grace",
-            "description": "фывфывфыв",
-            "userId": "71ef2da7-dbce-4776-b12f-500745d0493b",
-            "genre": "Рок",
-            "cover": "http://localhost:4001/groups/Three Days Grace/cover.webp?v=1752908269676",
-            "createdAt": "2025-07-19T06:32:17.916Z",
-            "updatedAt": "2025-07-19T06:57:49.679Z"
-        },
-        {
-            "id": "6bdbce80-42ab-4fcf-8c7b-18469e6b0ccd",
-            "name": "Лазарев",
-            "description": "",
-            "userId": "893298ed-5e4d-4249-bb0f-19959f7ebbb2",
-            "genre": "Поп",
-            "cover": "http://localhost:4001/groups/Лазарев/cover.webp?v=1753288622063",
-            "createdAt": "2025-07-23T16:37:02.064Z",
-            "updatedAt": ""
-        }
-    ],
-    "tracks": [
-        {
-            "id": "a2c76f37-805f-4dfe-a4cf-9f2193c3cb8e",
-            "title": "Three Days Grace - Car Crash",
-            "duration": 171,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Car Crash.mp3?v=1753287269972",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "27bf81bc-4ef1-4c2b-8cf3-5eca678f15f4",
-            "title": "Three Days Grace - One Too Many",
-            "duration": 161,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - One Too Many.mp3?v=1753287269976",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "84b05351-f588-43c5-a169-d82dd4bfb6d7",
-            "title": "Three Days Grace - Painkiller",
-            "duration": 179,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Painkiller.mp3?v=1753287269977",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "d3c11ee1-4a99-45a2-8b9e-0a9f657218c6",
-            "title": "Three Days Grace - So What",
-            "duration": 178,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - So What.mp3?v=1753287269977",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "72b59702-d47e-4b17-aa42-15ec9ecc6068",
-            "title": "Three Days Grace - Tell Me Why",
-            "duration": 211,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Tell Me Why.mp3?v=1753287269978",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "1bc52c1a-28fc-49ab-b156-3831a688f0d9",
-            "title": "Three Days Grace - The End Is Not The Answer",
-            "duration": 173,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The End Is Not The Answer.mp3?v=1753287269978",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "1c239b8a-c0b1-480f-9881-05756f044481",
-            "title": "Three Days Grace - The Real You",
-            "duration": 236,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The Real You.mp3?v=1753287269979",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "c96109cb-f27f-47b5-aad0-3f080e1b00b4",
-            "title": "Three Days Grace - Fallen Angel",
-            "duration": 186,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Fallen Angel.mp3?v=1753287269973",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "33cc049f-d43e-404f-8d1f-261ea58bece9",
-            "title": "Three Days Grace - Human Race",
-            "duration": 249,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Human Race.mp3?v=1753287269974",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "d26672fc-ea20-4af8-9dd6-0e53c31e2874",
-            "title": "Three Days Grace - I Am Machine",
-            "duration": 200,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - I Am Machine.mp3?v=1753287269974",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "e077bbfe-ec22-4e3a-a6e0-eff166bf6598",
-            "title": "Three Days Grace - Landmine",
-            "duration": 205,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Landmine.mp3?v=1753287269975",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "09df7320-31bd-4093-b080-475b8728d9bf",
-            "title": "Three Days Grace - Nothing's Fair In Love And War",
-            "duration": 225,
-            "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
-            "groupName": "Three Days Grace",
-            "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
-            "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
-            "genre": "Рок",
-            "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Nothing's Fair In Love And War.mp3?v=1753287269976",
-            "createdAt": "2025-07-23T16:14:29.986Z"
-        },
-        {
-            "id": "efda1fe5-5af0-447d-9fa6-108995a11a55",
-            "title": "We are love",
-            "duration": 191,
-            "cover": "http://localhost:4001/groups/Лазарев/Tracks/We are love/cover.webp?v=1753288630352",
-            "groupId": "6bdbce80-42ab-4fcf-8c7b-18469e6b0ccd",
-            "audioUrl": "http://localhost:4001/groups/Лазарев/Tracks/We are love/We are love.mp3?v=1753288630352",
-            "createdAt": "2025-07-23T16:37:10.353Z"
-        }
-    ]
+      ]
+    },
+    {
+      "id": "893298ed-5e4d-4249-bb0f-19959f7ebbb2",
+      "email": "s@gmail.com",
+      "password": "$2b$10$panOJbHCqvuy5DTcX7an1OJ/rfBIv1c5csYhNhbCi7SArGwhc65Re",
+      "avatar": "",
+      "username": "",
+      "createdAt": "2025-07-23T16:36:13.688Z"
+    }
+  ],
+  "albums": [
+    {
+      "id": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "name": "Human",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "description": "",
+      "createdAt": "2025-07-23T16:14:29.980Z",
+      "trackIds": [
+        "a2c76f37-805f-4dfe-a4cf-9f2193c3cb8e",
+        "c96109cb-f27f-47b5-aad0-3f080e1b00b4",
+        "33cc049f-d43e-404f-8d1f-261ea58bece9",
+        "d26672fc-ea20-4af8-9dd6-0e53c31e2874",
+        "e077bbfe-ec22-4e3a-a6e0-eff166bf6598",
+        "09df7320-31bd-4093-b080-475b8728d9bf",
+        "27bf81bc-4ef1-4c2b-8cf3-5eca678f15f4",
+        "84b05351-f588-43c5-a169-d82dd4bfb6d7",
+        "d3c11ee1-4a99-45a2-8b9e-0a9f657218c6",
+        "72b59702-d47e-4b17-aa42-15ec9ecc6068",
+        "1bc52c1a-28fc-49ab-b156-3831a688f0d9",
+        "1c239b8a-c0b1-480f-9881-05756f044481"
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "name": "Three Days Grace",
+      "description": "фывфывфыв",
+      "userId": "71ef2da7-dbce-4776-b12f-500745d0493b",
+      "genre": "Рок",
+      "cover": "http://localhost:4001/groups/Three Days Grace/cover.webp?v=1752908269676",
+      "createdAt": "2025-07-19T06:32:17.916Z",
+      "updatedAt": "2025-07-19T06:57:49.679Z"
+    },
+    {
+      "id": "6bdbce80-42ab-4fcf-8c7b-18469e6b0ccd",
+      "name": "Лазарев",
+      "description": "",
+      "userId": "893298ed-5e4d-4249-bb0f-19959f7ebbb2",
+      "genre": "Поп",
+      "cover": "http://localhost:4001/groups/Лазарев/cover.webp?v=1753288622063",
+      "createdAt": "2025-07-23T16:37:02.064Z",
+      "updatedAt": ""
+    }
+  ],
+  "tracks": [
+    {
+      "id": "a2c76f37-805f-4dfe-a4cf-9f2193c3cb8e",
+      "title": "Three Days Grace - Car Crash",
+      "duration": 171,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Car Crash.mp3?v=1753287269972",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "27bf81bc-4ef1-4c2b-8cf3-5eca678f15f4",
+      "title": "Three Days Grace - One Too Many",
+      "duration": 161,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - One Too Many.mp3?v=1753287269976",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "84b05351-f588-43c5-a169-d82dd4bfb6d7",
+      "title": "Three Days Grace - Painkiller",
+      "duration": 179,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Painkiller.mp3?v=1753287269977",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "d3c11ee1-4a99-45a2-8b9e-0a9f657218c6",
+      "title": "Three Days Grace - So What",
+      "duration": 178,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - So What.mp3?v=1753287269977",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "72b59702-d47e-4b17-aa42-15ec9ecc6068",
+      "title": "Three Days Grace - Tell Me Why",
+      "duration": 211,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Tell Me Why.mp3?v=1753287269978",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "1bc52c1a-28fc-49ab-b156-3831a688f0d9",
+      "title": "Three Days Grace - The End Is Not The Answer",
+      "duration": 173,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The End Is Not The Answer.mp3?v=1753287269978",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "1c239b8a-c0b1-480f-9881-05756f044481",
+      "title": "Three Days Grace - The Real You",
+      "duration": 236,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - The Real You.mp3?v=1753287269979",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "c96109cb-f27f-47b5-aad0-3f080e1b00b4",
+      "title": "Three Days Grace - Fallen Angel",
+      "duration": 186,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Fallen Angel.mp3?v=1753287269973",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "33cc049f-d43e-404f-8d1f-261ea58bece9",
+      "title": "Three Days Grace - Human Race",
+      "duration": 249,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Human Race.mp3?v=1753287269974",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "d26672fc-ea20-4af8-9dd6-0e53c31e2874",
+      "title": "Three Days Grace - I Am Machine",
+      "duration": 200,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - I Am Machine.mp3?v=1753287269974",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "e077bbfe-ec22-4e3a-a6e0-eff166bf6598",
+      "title": "Three Days Grace - Landmine",
+      "duration": 205,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Landmine.mp3?v=1753287269975",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "09df7320-31bd-4093-b080-475b8728d9bf",
+      "title": "Three Days Grace - Nothing's Fair In Love And War",
+      "duration": 225,
+      "cover": "http://localhost:4001/groups/Three Days Grace/Albums/Human/cover.webp?v=1753287269979",
+      "groupName": "Three Days Grace",
+      "albumId": "3defbaaa-cec4-454b-8dd2-5e7457d28a13",
+      "groupId": "236d217d-c205-4f15-a131-ff1e0cd58590",
+      "genre": "Рок",
+      "audioUrl": "http://localhost:4001/groups/Three Days Grace/Albums/Human/Three Days Grace - Nothing's Fair In Love And War.mp3?v=1753287269976",
+      "createdAt": "2025-07-23T16:14:29.986Z"
+    },
+    {
+      "id": "efda1fe5-5af0-447d-9fa6-108995a11a55",
+      "title": "We are love",
+      "duration": 191,
+      "cover": "http://localhost:4001/groups/Лазарев/Tracks/We are love/cover.webp?v=1753288630352",
+      "groupId": "6bdbce80-42ab-4fcf-8c7b-18469e6b0ccd",
+      "audioUrl": "http://localhost:4001/groups/Лазарев/Tracks/We are love/We are love.mp3?v=1753288630352",
+      "createdAt": "2025-07-23T16:37:10.353Z"
+    }
+  ]
 }

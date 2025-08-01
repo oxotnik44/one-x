@@ -1,6 +1,6 @@
 import { memo, type ReactNode } from 'react';
-import clsx from 'clsx';
 import { useThemeStore } from 'shared/config/theme/themeStore';
+import { classNames } from 'shared/lib';
 
 type TextSize = 'small' | 'medium' | 'large' | 'default';
 
@@ -35,13 +35,9 @@ export const Text = memo(
             default: 'text-lg',
         };
 
-        // Если в className есть текстовый класс text-4xl, используем его напрямую
         const hasText4xl = className.includes('text-4xl');
-
-        // Выбираем размер: либо text-4xl из className, либо из sizeClassMap
         const fontSizeClass = hasText4xl ? 'text-4xl' : sizeClassMap[size];
 
-        // Цвет текста (priority: error > isActive > isLink > default)
         const textColor = error
             ? theme['--primary-color']
             : isActive
@@ -50,17 +46,14 @@ export const Text = memo(
                 ? '#ff9a75'
                 : theme['--text-color'];
 
-        const textClass = clsx(
+        const textClass = classNames(
             'font-semibold',
             fontSizeClass,
-            {
-                'underline cursor-pointer transition-colors duration-200 ease-in-out': isLink,
-            },
-            // В className может уже быть text-4xl — добавляем его, чтобы остальные стили сохранились
+            isLink && 'underline cursor-pointer transition-colors duration-200 ease-in-out',
             className,
         );
 
-        const titleClass = clsx('text-3xl font-bold mb-8 text-center', className);
+        const titleClass = classNames('text-3xl font-bold mb-8 text-center', className);
 
         return (
             <div>
@@ -69,14 +62,9 @@ export const Text = memo(
                         {title}
                     </p>
                 )}
-                {text && (
+                {(text || children) && (
                     <p className={textClass} style={{ color: textColor }}>
-                        {text}
-                    </p>
-                )}
-                {children && (
-                    <p className={textClass} style={{ color: textColor }}>
-                        {children}
+                        {text ?? children}
                     </p>
                 )}
             </div>

@@ -1,45 +1,45 @@
-// src/shared/ui/AutoHideScroll.tsx
-import { useRef, useState, useEffect, type FC, type ReactNode } from 'react';
+import { useRef, useState, useEffect, type FC, type ReactNode, memo } from 'react';
+import { classNames } from 'shared/lib/classNames/classNames';
 
 interface AutoHideScrollProps {
     className?: string;
     children: ReactNode;
 }
 
-export const AutoHideScroll: FC<AutoHideScrollProps> = ({ className = '', children }) => {
+const AutoHideScrollComponent: FC<AutoHideScrollProps> = ({ className = '', children }) => {
     const ref = useRef<HTMLDivElement>(null);
     const [scrolling, setScrolling] = useState(false);
 
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
+
         let timeoutId: number;
 
-        const onScroll = () => {
+        const handleScroll = () => {
             setScrolling(true);
             clearTimeout(timeoutId);
             timeoutId = window.setTimeout(() => setScrolling(false), 800);
         };
 
-        el.addEventListener('scroll', onScroll);
+        el.addEventListener('scroll', handleScroll);
         return () => {
-            el.removeEventListener('scroll', onScroll);
+            el.removeEventListener('scroll', handleScroll);
             clearTimeout(timeoutId);
         };
     }, []);
 
+    const containerClass = classNames(
+        'h-full overflow-auto pr-2.5 -mr-2.5 scrollbar-auto-hide',
+        { scrolling },
+        className,
+    );
+
     return (
-        <div
-            ref={ref}
-            className={`
-        h-full overflow-auto
-        pr-2.5 -mr-2.5            /* смещение скроллбара на 10px */
-        scrollbar-auto-hide
-        ${scrolling ? 'scrolling' : ''}
-        ${className}
-      `}
-        >
+        <div ref={ref} className={containerClass}>
             {children}
         </div>
     );
 };
+
+export const AutoHideScroll = memo(AutoHideScrollComponent);

@@ -1,1 +1,1 @@
-export { Main as defaut } from './ui/Main';
+export { Main } from './ui/Main';

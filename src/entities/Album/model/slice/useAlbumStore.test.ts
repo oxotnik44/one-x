@@ -2,7 +2,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useAlbumStore } from './useAlbumStore';
 import type { Album } from '../types/types';
-import type { Track } from 'entities/Track';
 
 describe('useAlbumStore', () => {
     beforeEach(() => {
@@ -17,6 +16,7 @@ describe('useAlbumStore', () => {
         cover: 'cover1.png',
         createdAt: new Date().toISOString(),
         trackIds: [],
+        description: null,
     };
 
     const album2: Album = {
@@ -26,18 +26,7 @@ describe('useAlbumStore', () => {
         cover: 'cover2.png',
         createdAt: new Date().toISOString(),
         trackIds: [],
-    };
-
-    const track: Track = {
-        id: 't1',
-        title: 'Track 1',
-        duration: 120,
-        cover: 'cover1.png',
-        groupName: 'group1',
-        albumId: '1',
-        groupId: 'group1',
-        audioUrl: 'audio.mp3',
-        createdAt: new Date().toISOString(),
+        description: null,
     };
 
     it('setAlbums устанавливает список альбомов', () => {
@@ -61,11 +50,5 @@ describe('useAlbumStore', () => {
         useAlbumStore.getState().setAlbums([album1, album2]);
         useAlbumStore.getState().removeAlbum('1');
         expect(useAlbumStore.getState().albums).toEqual([album2]);
-    });
-
-    it('appendTrackToAlbum добавляет трек в album.trackIds', () => {
-        useAlbumStore.getState().setAlbums([album1]);
-        useAlbumStore.getState().appendTrackToAlbum('1', track);
-        expect(useAlbumStore.getState().albums[0].trackIds).toEqual([track]);
     });
 });

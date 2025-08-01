@@ -27,3 +27,45 @@
     border-radius: 3px;
     transition: background-color 0.3s;
 }
+/* src/shared/styles/global.css */
+.bg-rainbow-radial {
+    background: radial-gradient(circle, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 200% 200%;
+    mask-image: radial-gradient(circle at center, white 0%, transparent 70%);
+    animation: radialRainbow 8s linear infinite;
+    transform-origin: center;
+}
+.bg-rainbow-gradient {
+    background: radial-gradient(
+        circle at center,
+        red,
+        orange,
+        yellow,
+        green,
+        cyan,
+        blue,
+        violet,
+        red
+    );
+    background-size: 400% 400%;
+    background-repeat: no-repeat;
+    animation: gradientShift 8s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.mask-radial {
+    mask-image: radial-gradient(circle at center, white 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle at center, white 0%, transparent 70%);
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Button, ButtonSize, ButtonTheme } from 'shared/ui/Button/Button';
 import { FaStepBackward, FaStepForward } from 'react-icons/fa';
 
@@ -12,34 +12,29 @@ interface TrackControlButtonProps {
     ariaLabel?: string;
 }
 
-export const TrackControlButton = React.memo(
+export const TrackControlButton = memo(
     ({
         direction,
         onClick,
         theme = ButtonTheme.OUTLINE,
-        className = '',
+        className,
         ariaLabel,
-    }: TrackControlButtonProps) => {
-        const icon =
-            direction === 'prev' ? (
+    }: TrackControlButtonProps) => (
+        <Button
+            size={ButtonSize.M}
+            square
+            theme={theme}
+            onClick={onClick}
+            className={className}
+            aria-label={ariaLabel}
+        >
+            {direction === 'prev' ? (
                 <FaStepBackward className="h-5 w-5" />
             ) : (
                 <FaStepForward className="h-5 w-5" />
-            );
-
-        return (
-            <Button
-                size={ButtonSize.M}
-                square
-                theme={theme}
-                {...(onClick ? { onClick } : {})} // передаем onClick только если он есть
-                className={className}
-                aria-label={ariaLabel}
-            >
-                {icon}
-            </Button>
-        );
-    },
+            )}
+        </Button>
+    ),
 );
 
 TrackControlButton.displayName = 'TrackControlButton';

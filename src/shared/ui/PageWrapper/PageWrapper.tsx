@@ -2,6 +2,7 @@ import React, { type ReactNode, memo } from 'react';
 import { sidebarSize, playerSize } from 'shared/config/theme/global/variables';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 import { useSidebarStore } from 'widgets/Sidebar/model/sidebarStore';
+import { classNames } from 'shared/lib/classNames/classNames';
 
 interface PageWrapperProps {
     children: ReactNode;
@@ -12,11 +13,10 @@ export const PageWrapper: React.FC<PageWrapperProps> = memo(({ children, notCent
     const theme = useThemeStore((state) => state.theme);
     const isCollapsed = useSidebarStore((state) => state.isCollapsed);
 
-    // Формируем класс динамически
-    const baseClasses = 'rounded-3xl transition-all duration-300 ease-in-out';
-    const conditionalClasses = notCenter ? '' : 'p-5 flex items-center justify-center';
-
-    const className = [baseClasses, conditionalClasses].filter(Boolean).join(' ');
+    const className = classNames(
+        'rounded-3xl transition-all duration-300 ease-in-out',
+        !notCenter && 'p-5 flex items-center justify-center',
+    );
 
     return (
         <div

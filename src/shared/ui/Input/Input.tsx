@@ -1,5 +1,6 @@
-import { memo, type InputHTMLAttributes } from 'react';
+import { memo, type InputHTMLAttributes, useCallback } from 'react';
 import { useThemeStore } from 'shared/config/theme/themeStore';
+import { classNames } from 'shared/lib';
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'readOnly'>;
 
@@ -12,8 +13,8 @@ interface InputProps extends HTMLInputProps {
     className?: string;
 }
 
-export const Input = memo((props: InputProps) => {
-    const {
+export const Input = memo(
+    ({
         value,
         onChangeHandler,
         onChange,
@@ -23,45 +24,41 @@ export const Input = memo((props: InputProps) => {
         readonly,
         className,
         ...otherProps
-    } = props;
+    }: InputProps) => {
+        const theme = useThemeStore((s) => s.theme);
 
-    const theme = useThemeStore((state) => state.theme);
+        const handleChange = useCallback(
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange?.(e);
+                onChangeHandler?.(e.target.value);
+            },
+            [onChange, onChangeHandler],
+        );
 
-    return (
-        <div className="relative w-full">
-            <input
-                type={type}
-                value={value}
-                onChange={(e) => {
-                    onChange?.(e);
-                    onChangeHandler?.(e.target.value);
-                }}
-                readOnly={readonly}
-                autoFocus={autofocus}
-                placeholder={placeholder}
-                style={{
-                    borderColor: theme['--input-color'],
-                    color: theme['--text-color'],
-                    backgroundColor: readonly ? '#f3f3f3' : 'white',
-                }}
-                className={[
-                    'w-full',
-                    'px-4',
-                    'py-2',
-                    'border-2',
-                    'rounded',
-                    'transition',
-                    'text-[16px]',
-                    'placeholder:text-[color:var(--text-color)]',
-                    'focus:outline-none',
-                    readonly ? 'cursor-not-allowed' : '',
-                    className,
-                ]
-                    .filter(Boolean)
-                    .join(' ')}
-                {...otherProps}
-            />
-        </div>
-    );
-});
+        return (
+            <div className="relative w-full">
+                <input
+                    type={type}
+                    value={value}
+                    onChange={handleChange}
+                    readOnly={readonly}
+                    autoFocus={autofocus}
+                    placeholder={placeholder}
+                    style={{
+                        borderColor: theme['--input-color'],
+                        color: theme['--text-color'],
+                        backgroundColor: readonly ? '#f3f3f3' : 'white',
+                    }}
+                    className={classNames(
+                        'w-full px-4 py-2 border-2 rounded transition text-[16px] focus:outline-none placeholder:text-[color:var(--text-color)]',
+                        readonly && 'cursor-not-allowed',
+                        className,
+                    )}
+                    {...otherProps}
+                />
+            </div>
+        );
+    },
+);
+
 Input.displayName = 'Input';

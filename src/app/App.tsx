@@ -15,13 +15,11 @@ function App() {
     const [isOpen, setIsOpen] = useState(true);
     const [isLogin, setIsLogin] = useState(true);
     const [loadingGroup, setLoadingGroup] = useState(false);
-
     useEffect(() => {
         const tryLogin = async () => {
             // Читаем куку 'user'
             const cookie = document.cookie.split('; ').find((row) => row.startsWith('user='));
             if (!cookie) return;
-
             try {
                 const userFromCookie = JSON.parse(decodeURIComponent(cookie.split('=')[1]));
                 if (userFromCookie?.email && userFromCookie?.password) {
@@ -38,7 +36,6 @@ function App() {
 
         tryLogin();
     }, []);
-
     useEffect(() => {
         const loadGroups = async () => {
             if (!user) return;
@@ -51,8 +48,7 @@ function App() {
         };
 
         loadGroups();
-    }, [user?.id]);
-
+    }, [user?.id, setCurrentGroup]);
     if (!user)
         return (
             <Suspense fallback={null}>
@@ -75,13 +71,11 @@ function App() {
                 overflowX: 'hidden',
             }}
         >
-            <Suspense fallback={null}>
-                <Sidebar />
-                <div className="content-page pl-24 pr-6 pt-6">
-                    <AppRouter />
-                </div>
-                <Player />
-            </Suspense>
+            <Sidebar />
+            <div className="content-page pl-24 pr-6 pt-6">
+                <AppRouter />
+            </div>
+            <Player />
         </div>
     );
 }

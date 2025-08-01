@@ -1,17 +1,12 @@
-export async function getAudioDuration(file: File): Promise<number> {
-    return new Promise((resolve) => {
-        const audio = document.createElement('audio');
+export const getAudioDuration = (file: File): Promise<number> =>
+    new Promise((resolve) => {
+        const audio = new Audio(URL.createObjectURL(file));
         audio.preload = 'metadata';
-        audio.src = URL.createObjectURL(file);
 
         audio.onloadedmetadata = () => {
-            const duration = Math.round(audio.duration); // округляем до целых
             URL.revokeObjectURL(audio.src);
-            resolve(duration);
+            resolve(Math.round(audio.duration));
         };
 
-        audio.onerror = () => {
-            resolve(0); // безопасная заглушка
-        };
+        audio.onerror = () => resolve(0);
     });
-}

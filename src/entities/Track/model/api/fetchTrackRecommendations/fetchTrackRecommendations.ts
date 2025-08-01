@@ -1,82 +1,78 @@
+// src/features/recommendations/fetchTrackRecommendations.ts
+
 import { apiBase, apiJson } from 'shared/api/api';
-import type { Group } from 'entities/Group/model/types/group';
-import type { Track } from 'entities/Track/model/types/track';
-import { getRandomInt, getRecommendedGenre } from 'shared/lib/recomendation/recommendations';
-import { useTrackStore } from 'entities/Track';
+import { getRecommendedGenre } from 'shared/lib/recomendation/recommendations';
+import { useTrackStore, type Track } from 'entities/Track';
 import { usePlayerStore } from 'entities/Player/model';
+import { useGroupStore } from 'entities/Group';
+
+const shuffle = <T>(arr: T[]): T[] => {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+};
+
+interface TrackInfo {
+    coverUrl: string | null;
+    audioUrl: string | null;
+}
 
 export async function fetchTrackRecommendations(): Promise<void> {
     const genre = getRecommendedGenre();
     if (!genre) return;
 
+    const groups = useGroupStore.getState().groups?.filter((g) => g.genre === genre) ?? [];
+    if (!groups.length) return;
+
     try {
-        const { data: groups } = await apiJson.get<Group[]>('/groups', {
-            params: { genre },
-        });
-        if (!groups.length) return;
+        // Собираем и перемешиваем все треки из отфильтрованных групп
+        const all = (
+            await Promise.all(
+                groups.map((g) =>
+                    apiJson
+                        .get<Track[]>('/tracks', { params: { groupId: g.id } })
+                        .then((r) => (r.data ?? []).map((t) => ({ ...t, groupName: g.name }))),
+                ),
+            )
+        ).flat();
+        if (!all.length) return;
 
-        const allTracks: Track[] = [];
-        for (const group of groups) {
-            const { data: tracks } = await apiJson.get<Track[]>('/tracks', {
-                params: { groupId: group.id },
-            });
-            if (Array.isArray(tracks) && tracks.length > 0) {
-                allTracks.push(
-                    ...tracks.map((t) => ({
-                        ...t,
-                        groupName: group.name,
-                        groupId: group.id,
-                    })),
-                );
-            }
-        }
+        const recommended = shuffle(all);
 
-        if (!allTracks.length) return;
+        // Кладём весь массив рандомизированных треков в глобальный стор
+        const trackStore = useTrackStore.getState();
+        trackStore.setTracks(recommended);
 
-        const randomIndex = getRandomInt(0, allTracks.length - 1);
-        const track = allTracks[randomIndex];
+        // Берём первый трек и загружаем его в плеер
+        const first = recommended[0];
+        const player = usePlayerStore.getState();
 
-        let albumName: string | undefined;
+        // Опционально: получаем имя альбома
+        const albums = first.albumId
+            ? (
+                  await apiJson.get<{ id: string; name: string }[]>('/albums', {
+                      params: { groupId: first.groupId },
+                  })
+              ).data
+            : [];
+        const albumName = albums.find((a) => a.id === first.albumId)?.name;
 
-        if (track.albumId && track.groupId) {
-            const { data: albums } = await apiJson.get<{ id: string; name: string }[]>('/albums', {
-                params: { groupId: track.groupId },
-            });
-
-            const foundAlbum = albums.find((a) => a.id === track.albumId);
-            if (foundAlbum) {
-                albumName = foundAlbum.name;
-            }
-        }
-
-        const queryParams = albumName ? `?albumName=${encodeURIComponent(albumName)}` : '';
-
-        const { data: info } = await apiBase.get<{
-            coverUrl: string | null;
-            audioUrl: string | null;
-        }>(
-            `/trackInfo/${encodeURIComponent(track.groupName!)}/${encodeURIComponent(track.title)}${queryParams}`,
+        // Запрашиваем media-данные
+        const { data: info } = await apiBase.get<TrackInfo>(
+            `/trackInfo/${encodeURIComponent(first.groupName)}/${encodeURIComponent(first.title)}`,
+            albumName ? { params: { albumName } } : {},
         );
-
         if (!info.audioUrl || !info.coverUrl) return;
 
         const fullTrack: Track = {
-            ...track,
-            cover: info.coverUrl,
+            ...first,
             audioUrl: info.audioUrl,
+            cover: info.coverUrl,
         };
-        console.log(
-            `[Рекомендации] Загружаем трек: "${track.title}" — ${track.groupName}${albumName ? ` (альбом: ${albumName})` : ''}`,
-        );
-
-        usePlayerStore.getState().setCurrentTrack(fullTrack);
-
-        const existing = useTrackStore.getState().tracks;
-        const alreadyExists = existing?.some((t) => t.id === fullTrack.id);
-        if (!alreadyExists) {
-            useTrackStore.getState().setTracks([...existing, fullTrack]);
-        }
-    } catch (err) {
-        console.error('Ошибка при загрузке рекомендаций:', err);
+        player.setCurrentTrack(fullTrack);
+    } catch (e) {
+        console.error('Ошибка при загрузке рекомендаций:', e);
     }
 }

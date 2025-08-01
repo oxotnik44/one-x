@@ -1,29 +1,15 @@
 // src/pages/MainPage.tsx
-import { useGroupStore, type Group } from 'entities/Group';
-import { Button } from 'shared/ui';
-import { apiJson } from 'shared/api';
-import { fetchTrackRecommendations } from 'entities/Track';
+import { ButtonTheme, PlayButton } from 'shared/ui';
 
 export const Main = () => {
-    const setGroups = useGroupStore((state) => state.setGroups);
-
-    const handleClick = async () => {
-        try {
-            // 1) Загружаем группы
-            const { data: groups } = await apiJson.get<Group[]>('/groups');
-            setGroups(groups);
-
-            fetchTrackRecommendations();
-        } catch (error) {
-            console.error('Ошибка при загрузке данных', error);
-        }
-    };
-
     return (
         <div className="p-4">
-            <Button onClick={handleClick} className="px-6 py-3 rounded-2xl shadow-md">
-                Посмотреть рекомендации (консоль)
-            </Button>
+            <div className="text-center space-y-4">
+                <h1 className="text-3xl font-bold text-white drop-shadow-md">
+                    🎵 Рекомендации для вас
+                </h1>
+                <PlayButton theme={ButtonTheme.OUTLINE} recommendation />
+            </div>
         </div>
     );
 };

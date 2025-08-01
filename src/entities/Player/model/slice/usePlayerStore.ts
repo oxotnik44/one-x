@@ -11,6 +11,9 @@ export interface PlayerState {
     volume: number;
     isMuted: boolean;
     audio: HTMLAudioElement | null;
+    // Новые поля для рекомендаций
+    isRecommendation: boolean;
+    setIsRecommendation: (isRecommendation: boolean) => void;
 
     setCurrentTrack: (track: Track) => void;
     setProgress: (progress: number) => void;
@@ -30,41 +33,36 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     volume: 1,
     isMuted: false,
     audio: null,
+    // Инициализация массива рекомендаций
+    isRecommendation: false,
 
     setCurrentTrack: (track) => {
         const prev = get();
 
-        // Останавливаем прежнее аудио
         if (prev.audio) {
             prev.audio.pause();
             prev.audio.src = '';
         }
 
-        // Создаем новый аудиопоток
         const audio = new Audio(track.audioUrl);
         audio.volume = prev.isMuted ? 0 : prev.volume;
 
-        // При окончании дорожки запускаем следующую
         audio.addEventListener('ended', () => {
             const state = get();
             const allTracks = useTrackStore.getState().tracks ?? [];
             const idx = allTracks.findIndex((t) => t.id === state.currentTrack?.id);
             if (idx !== -1 && idx < allTracks.length - 1) {
-                const next = allTracks[idx + 1];
-                state.setCurrentTrack(next);
+                state.setCurrentTrack(allTracks[idx + 1]);
             } else {
-                // Конец плейлиста
                 audio.pause();
                 set({ isPlaying: false });
             }
         });
 
-        // Обновляем длительность при загрузке метаданных
         audio.addEventListener('loadedmetadata', () => {
             set({ duration: audio.duration });
         });
 
-        // Обновляем прогресс и текущее время
         audio.addEventListener('timeupdate', () => {
             set({
                 progress: (audio.currentTime / audio.duration) * 100,
@@ -72,14 +70,15 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
             });
         });
 
-        // Пытаемся запустить (автовоспроизведение может быть запрещено)
         audio.play().catch(() => {
             console.warn('Автовоспроизведение запрещено браузером');
         });
 
         set({ currentTrack: track, audio, isPlaying: true });
     },
-
+    setIsRecommendation: (isRecommendation) => {
+        set({ isRecommendation });
+    },
     setProgress: (progress) => {
         const audio = get().audio;
         if (audio) {

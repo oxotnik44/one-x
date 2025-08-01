@@ -93,7 +93,11 @@ export const Player: FC = React.memo(() => {
 
                 {/* Управление треком */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
-                    {currentTrack && <Like liked={liked} onToggle={toggleLike} />}
+                    <Like
+                        liked={liked}
+                        onToggle={toggleLike}
+                        className={currentTrack ? '' : 'hidden'}
+                    />
                     <TrackControlButton direction="prev" onClick={onPrev} ariaLabel={t('prev')} />
                     <PlayButton theme={ButtonTheme.OUTLINE} trackForPlay={currentTrack} />
 

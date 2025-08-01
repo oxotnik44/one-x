@@ -10,25 +10,22 @@ export const likeAlbum = async (albumId: string): Promise<void> => {
         toast.error('Войдите, чтобы лайкать');
         return;
     }
+    // 1. Обновляем локально стор (лайки + рекомендации)
+    toggleLikeAlbum(albumId);
 
-    // Формируем обновлённый likedAlbums локально, без вызова toggleLikeAlbum
-    const updatedLikedAlbums = authData.likedAlbums?.includes(albumId)
-        ? authData.likedAlbums.filter((id) => id !== albumId)
-        : [...(authData.likedAlbums || []), albumId];
+    // 2. Получаем актуальные данные после обновления
+    const { authData: updatedUser } = useUserStore.getState();
+    if (!updatedUser) return;
 
+    const likedAlbums = updatedUser.likedAlbums ?? [];
     try {
-        await apiJson.patch<Partial<User>>(`/users/${authData.id}`, {
-            likedAlbums: updatedLikedAlbums,
-            recommendation: authData.recommendation,
+        await apiJson.patch<Partial<User>>(`/users/${updatedUser.id}`, {
+            likedAlbums,
+            recommendation: updatedUser.recommendation,
         });
 
-        // Только после успешного запроса обновляем локальный стор
-        toggleLikeAlbum(albumId);
-
         toast.success(
-            updatedLikedAlbums.includes(albumId)
-                ? '❤️ Добавлено в избранное'
-                : '💔 Убрано из избранного',
+            likedAlbums.includes(albumId) ? '❤️ Добавлено в избранное' : '💔 Убрано из избранного',
         );
     } catch {
         toast.error('Не удалось обновить лайк');

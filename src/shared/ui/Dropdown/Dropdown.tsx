@@ -1,5 +1,5 @@
 import { memo, forwardRef, type ReactNode, type CSSProperties, type ForwardedRef } from 'react';
-import clsx from 'clsx';
+import { classNames } from 'shared/lib/classNames/classNames';
 import { useThemeStore } from 'shared/config/theme/themeStore';
 
 interface DropdownProps {
@@ -7,7 +7,7 @@ interface DropdownProps {
     onClose: () => void;
     children: ReactNode;
     style?: CSSProperties;
-    className?: string; // добавлен проп
+    className?: string;
 }
 
 const DropdownComponent = (
@@ -21,9 +21,9 @@ const DropdownComponent = (
     return (
         <div
             ref={ref}
-            className={clsx(
+            className={classNames(
                 'fixed z-50 shadow-lg rounded p-2 transition-colors duration-200',
-                className, // передаем сюда проп className
+                className,
             )}
             style={{
                 backgroundColor: theme['--bg-container'],

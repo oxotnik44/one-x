@@ -1,3 +1,1 @@
-export function extractTitleFromFile(file: File): string {
-    return file.name.replace(/\.[^/.]+$/, '');
-}
+export const extractTitleFromFile = (file: File): string => file.name.replace(/\.[^/.]+$/, '');
