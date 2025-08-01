@@ -1,0 +1,5 @@
+import{j as s,r as c}from"./iframe-C0kfoYRU.js";import{a as m}from"./Button-BG29j6-m.js";import{L as t}from"./Like-CU83MUjH.js";import"./classNames-CSVCBH4b.js";import"./index-DJP2UdXn.js";import"./iconBase-BzJrSpo7.js";import"./useTranslation-DTQxaVaH.js";const j={title:"shared/Like",component:t,args:{size:m.M}},i=({initialLiked:o=!1})=>{const[a,n]=c.useState(o),d=()=>n(p=>!p);return s.jsx("div",{className:"p-4 bg-black rounded-md inline-block",children:s.jsx(t,{liked:a,onToggle:d})})},e={render:()=>s.jsx(i,{initialLiked:!1})},r={render:()=>s.jsx(i,{initialLiked:!0})};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  render: () => <LikeWrapper initialLiked={false} />
+}`,...e.parameters?.docs?.source}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  render: () => <LikeWrapper initialLiked={true} />
+}`,...r.parameters?.docs?.source}}};const S=["NotLiked","Liked"];export{r as Liked,e as NotLiked,S as __namedExportsOrder,j as default};

@@ -1,0 +1,14 @@
+import{j as r}from"./iframe-C0kfoYRU.js";import{P as t}from"./PageWrapper-CUwEEPPt.js";import"./sidebarStore-DngkkDiT.js";import"./classNames-CSVCBH4b.js";const i={title:"shared/PageWrapper",component:t,tags:["autodocs"]},e={render:()=>r.jsx(t,{children:r.jsx("div",{style:{width:300,height:200,color:"white",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:12,fontWeight:"bold"}})})};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  render: () => <PageWrapper>\r
+            <div style={{
+      width: 300,
+      height: 200,
+      color: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 12,
+      fontWeight: 'bold'
+    }}></div>\r
+        </PageWrapper>
+}`,...e.parameters?.docs?.source}}};const d=["Default"];export{e as Default,d as __namedExportsOrder,i as default};

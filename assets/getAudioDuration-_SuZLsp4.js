@@ -1,0 +1,1 @@
+const t=e=>new Promise(a=>{const o=new Audio(URL.createObjectURL(e));o.preload="metadata",o.onloadedmetadata=()=>{URL.revokeObjectURL(o.src),a(Math.round(o.duration))},o.onerror=()=>a(0)});export{t as g};
